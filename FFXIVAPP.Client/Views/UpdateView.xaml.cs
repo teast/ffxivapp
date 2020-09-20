@@ -32,9 +32,8 @@ namespace FFXIVAPP.Client.Views
                     else
                     {
                         _spinner.Stop();
-                        Avalonia.Threading.DispatcherTimer.RunOnce(() => {
-                            _rotate.Angle = 0;
-                        }, new TimeSpan(0));
+                        Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+                            _rotate.Angle = 0);
                     }
                 }
             };
@@ -42,9 +41,8 @@ namespace FFXIVAPP.Client.Views
 
         private void SpinnerRotatingTimer(object sender, ElapsedEventArgs e)
         {
-            Avalonia.Threading.DispatcherTimer.RunOnce(() => {
-                _rotate.Angle = _rotate.Angle + 10;
-            }, new TimeSpan(0));
+            Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+            _rotate.Angle = _rotate.Angle + 10);
         }
 
         private void InitializeComponent()

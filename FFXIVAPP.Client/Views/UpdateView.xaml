@@ -8,7 +8,7 @@
              xmlns:rs="clr-namespace:FFXIVAPP.ResourceFiles;assembly=FFXIVAPP.ResourceFiles"
              xmlns:Utilities="clr-namespace:FFXIVAPP.Common.Utilities;assembly=FFXIVAPP.Common"
              xmlns:ViewModels="clr-namespace:FFXIVAPP.Client.ViewModels"
-             xmlns:datagrid="clr-namespace:Teast.Controls;Assembly=Teast.Controls.DataGrid"             
+             xmlns:datagrid="clr-namespace:Teast.Controls;Assembly=Teast.Controls.DataGrid"
              xmlns:converters="clr-namespace:FFXIVAPP.Common.Converters;assembly=FFXIVAPP.Common">
     <UserControl.Resources>
         <converters:ToUpperConverter x:Key="ToUpperConverter" />

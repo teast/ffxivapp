@@ -184,7 +184,7 @@ namespace FFXIVAPP.Client
                         var iX = (int)ShellView.View.Position.X;
                         var iY = (int)ShellView.View.Position.Y;
                         if (iX != Settings.Default.Left || iY != Settings.Default.Top) {
-                            ShellView.View.Position = new Avalonia.Point(Settings.Default.Left, Settings.Default.Top);
+                            ShellView.View.Position = new Avalonia.PixelPoint(Settings.Default.Left, Settings.Default.Top);
                         }
                         break;
                     }

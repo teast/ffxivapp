@@ -40,28 +40,27 @@ namespace FFXIVAPP.Client {
         public ShellView()
         {
             View = this;
-            View.Position = new Avalonia.Point(Settings.Default.Left, Settings.Default.Top);
+            View.Position = new Avalonia.PixelPoint(Settings.Default.Left, Settings.Default.Top);
             this.Initialized += this.InitDone;
             InitializeComponent();
+            /* TODO:
             var spinner = this.FindControl<Image>("PluginUpdateSpinner");
             _rotate = (RotateTransform)spinner.RenderTransform;
             _spinner = new Timer(25);
             _spinner.Elapsed += SpinnerRotatingTimer;
-
+            */
             ViewModels.UpdateViewModel.Instance.PropertyChanged += (o, e) => 
             {
                 if (e.PropertyName == nameof(ViewModels.UpdateViewModel.UpdatingAvailablePlugins))
                 {
                     if (ViewModels.UpdateViewModel.Instance.UpdatingAvailablePlugins)
                     {
-                        _spinner.Start();
+                        //_spinner.Start();
                     }
                     else
                     {
-                        _spinner.Stop();
-                        Avalonia.Threading.DispatcherTimer.RunOnce(() => {
-                            _rotate.Angle = 0;
-                        }, new TimeSpan(0));
+                        //_spinner.Stop();
+                        //Avalonia.Threading.Dispatcher.UIThread.Post(() => _rotate.Angle = 0);
                     }
                 }
             };
@@ -119,9 +118,7 @@ namespace FFXIVAPP.Client {
 
         private void SpinnerRotatingTimer(object sender, ElapsedEventArgs e)
         {
-            Avalonia.Threading.DispatcherTimer.RunOnce(() => {
-                _rotate.Angle = _rotate.Angle + 10;
-            }, new TimeSpan(0));
+            Avalonia.Threading.Dispatcher.UIThread.Post(() => _rotate.Angle = _rotate.Angle + 10);
         }
 
         private void InitializeComponent()

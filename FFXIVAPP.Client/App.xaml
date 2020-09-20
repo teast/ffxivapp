@@ -75,8 +75,13 @@
         <sys:Double x:Key="FontSizeLarge">16</sys:Double>
 
       </Style.Resources>
-
     </Style>
+    <Style Selector="TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
+      <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}" />
+      <Setter Property="FontWeight" Value="Normal" />
+    </Style>
+<!--
     <Style Selector="DropDown">
       <Setter Property="MinHeight" Value="26" />
     </Style>
@@ -112,11 +117,11 @@
       <Setter Property="Padding" Value="2"/>
     </Style>
     <Style Selector="datagrid|DataGridCell:selected">
-      <Setter Property="Background" Value="{DynamicResource ThemeControlMidBrush}" /><!--#FF70C5E9" />-->
+      <Setter Property="Background" Value="{DynamicResource ThemeControlMidBrush}" />
     </Style>
     <Style Selector="datagrid|DataGridCell:hover">
-      <Setter Property="Background" Value="{DynamicResource HighlightBrush}" /><!--#FFA0D8F0" />-->
+      <Setter Property="Background" Value="{DynamicResource HighlightBrush}" />
     </Style>
-
+-->
   </Application.Styles>
 </Application>

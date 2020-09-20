@@ -110,12 +110,7 @@ namespace FFXIVAPP.Client.Helpers
             this.Content = grid;
         }
 
-        public static async Task<bool> ShowAsync(string title, string message, MessageDialogStyle msgStyle, Action okAction = null , Action cancelAction = null)
-        {
-            return await ShowAsync(null, title, message, msgStyle, okAction, cancelAction);
-        }
-
-        public static async Task<bool> ShowAsync(WindowBase owner, string title, string message, MessageDialogStyle msgStyle, Action okAction = null , Action cancelAction = null)
+        public static async Task<bool> ShowAsync(Window owner, string title, string message, MessageDialogStyle msgStyle, Action okAction = null , Action cancelAction = null)
         {
             var msg = new MessageBox(ShellView.View, msgStyle == MessageDialogStyle.AffirmativeAndNegative)
             {
@@ -123,7 +118,7 @@ namespace FFXIVAPP.Client.Helpers
                 Message = message
             };
 
-            var result = await msg.ShowDialog<bool>();
+            var result = await msg.ShowDialog<bool>(owner);
             if (result)
             {
                 okAction?.Invoke();

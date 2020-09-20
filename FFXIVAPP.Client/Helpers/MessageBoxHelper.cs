@@ -42,7 +42,7 @@ namespace FFXIVAPP.Client.Helpers {
         /// <param name="cancelAction"></param>
         private static void HandleMessage(string title, string message, Action okAction = null, Action cancelAction = null) {
             DispatcherHelper.Invoke(async () =>{
-                await MessageBox.ShowAsync(title, message, cancelAction != null ? MessageDialogStyle.AffirmativeAndNegative : MessageDialogStyle.Affirmative, okAction, cancelAction);
+                await MessageBox.ShowAsync(Avalonia.Application.Current.Windows.First(), title, message, cancelAction != null ? MessageDialogStyle.AffirmativeAndNegative : MessageDialogStyle.Affirmative, okAction, cancelAction);
             }, DispatcherPriority.Send);
         }
     }

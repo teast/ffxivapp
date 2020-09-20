@@ -23,18 +23,11 @@
     <EmbeddedResource Include="Resources\**\*.nlog"/>
   </ItemGroup>
   <ItemGroup>
-<!--
-    <PackageReference Include="Avalonia" Version="0.6.2-build5756-beta"/>
-    <PackageReference Include="Avalonia.Desktop" Version="0.6.2-build5756-beta"/>
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.6.2-build5756-beta"/>
--->
-    <PackageReference Include="Avalonia" Version="0.6.2"/>
-    <PackageReference Include="Avalonia.Desktop" Version="0.6.2"/>
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.6.2"/>
-
+    <PackageReference Include="Avalonia" Version="0.8.1"/>
+    <PackageReference Include="Avalonia.Desktop" Version="0.8.1"/>
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.8.1"/>
     <PackageReference Include="Fody" Version="3.2.1"/>
     <PackageReference Include="PropertyChanged.Fody" Version="2.5.9"/>
-
     <PackageReference Include="HtmlAgilityPack" Version="1.8.7"/>
     <PackageReference Include="Teast.Controls.GroupBox" Version="1.0.6"/>
     <PackageReference Include="Teast.Controls.DataGrid" Version="1.0.4"/>
