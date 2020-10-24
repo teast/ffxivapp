@@ -1,4 +1,5 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+﻿
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="xMetroWindowDataGrid.xaml.cs" company="SyndicatedLife">
 //   Copyright© 2007 - 2020 Ryan Wilson &amp;lt;syndicated.life@gmail.com&amp;gt; (https://syndicated.life/)
 //   Licensed under the MIT license. See LICENSE.md in the solution root for full license information.
@@ -7,8 +8,14 @@
 //   xMetroWindowDataGrid.xaml.cs Implementation
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace FFXIVAPP.Client.Windows {
+    using Avalonia.Controls;
+
+    public class xMetroWindowDataGrid: Window
+    {
+
+    }
+/* TODO: Implement this
     using System.Collections.Generic;
     using System.Windows;
 
@@ -32,4 +39,5 @@ namespace FFXIVAPP.Client.Windows {
                 });
         }
     }
+*/
 }

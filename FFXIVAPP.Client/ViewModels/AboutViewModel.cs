@@ -8,18 +8,17 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FFXIVAPP.Client.ViewModels {
+namespace FFXIVAPP.Client.ViewModels
+{
     using System;
     using System.ComponentModel;
-    using System.ComponentModel.Composition;
     using System.Runtime.CompilerServices;
     using System.Windows.Input;
-    using System.Windows.Threading;
-
+    using Avalonia.Threading;
     using FFXIVAPP.Common.Helpers;
     using FFXIVAPP.Common.ViewModelBase;
 
-    [Export(typeof(AboutViewModel)),]
+    // TODO: needed? [Export(typeof(AboutViewModel)),]
     internal sealed class AboutViewModel : INotifyPropertyChanged {
         private static Lazy<AboutViewModel> _instance = new Lazy<AboutViewModel>(() => new AboutViewModel());
 

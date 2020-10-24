@@ -8,16 +8,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FFXIVAPP.Client.ViewModels {
+namespace FFXIVAPP.Client.ViewModels
+{
     using System;
     using System.ComponentModel;
-    using System.ComponentModel.Composition;
     using System.Runtime.CompilerServices;
     using System.Windows.Input;
 
     using FFXIVAPP.Common.ViewModelBase;
 
-    [Export(typeof(DefaultViewModel)),]
+    // TODO: needed? [Export(typeof(DefaultViewModel)),]
     internal sealed class DefaultViewModel : INotifyPropertyChanged {
         private static Lazy<DefaultViewModel> _instance = new Lazy<DefaultViewModel>(() => new DefaultViewModel());
 

@@ -8,16 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FFXIVAPP.Client.Helpers {
+namespace FFXIVAPP.Client.Helpers
+{
     using System;
-    using System.Linq;
-    using System.Windows;
-    using System.Windows.Threading;
-
+    using Avalonia.Threading;
     using FFXIVAPP.Common.Helpers;
-
-    using MahApps.Metro.Controls;
-    using MahApps.Metro.Controls.Dialogs;
+    using FFXIVAPP.Common.WPF;
 
     internal static class MessageBoxHelper {
         /// <summary>
@@ -46,38 +42,31 @@ namespace FFXIVAPP.Client.Helpers {
         /// <param name="cancelAction"></param>
         private static void HandleMessage(string title, string message, Action okAction = null, Action cancelAction = null) {
             DispatcherHelper.Invoke(
-                delegate {
-                    MetroWindow mw = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
-                    if (mw != null) {
-                        mw.MetroDialogOptions.AffirmativeButtonText = AppViewModel.Instance.Locale["app_OKButtonText"];
-                        mw.MetroDialogOptions.NegativeButtonText = AppViewModel.Instance.Locale["app_CancelButtonText"];
-                        if (okAction == null && cancelAction == null) {
-                            mw.ShowMessageAsync(title, message);
+                async delegate {
+                    try
+                    {
+                    if (cancelAction != null) {
+                        var result = await MessageBox.Show(message, title, MessageBoxButton.OKCancel);
+                        if (result == MessageBoxResult.OK) {
+                            if (okAction != null) {
+                                DispatcherHelper.Invoke(okAction, DispatcherPriority.Send);
+                            }
                         }
-                        else {
-                            if (cancelAction != null) {
-                                mw.ShowMessageAsync(title, message, MessageDialogStyle.AffirmativeAndNegative).ContinueWith(
-                                    x => DispatcherHelper.Invoke(
-                                        delegate {
-                                            if (x.Result == MessageDialogResult.Affirmative) {
-                                                if (okAction != null) {
-                                                    DispatcherHelper.Invoke(okAction, DispatcherPriority.Send);
-                                                }
-                                            }
 
-                                            if (x.Result == MessageDialogResult.Negative) {
-                                                DispatcherHelper.Invoke(cancelAction, DispatcherPriority.Send);
-                                            }
-                                        }, DispatcherPriority.Send));
-                            }
-                            else {
-                                mw.ShowMessageAsync(title, message).ContinueWith(x => DispatcherHelper.Invoke(() => DispatcherHelper.Invoke(okAction), DispatcherPriority.Send));
-                            }
+                        if (result == MessageBoxResult.Cancel) {
+                            DispatcherHelper.Invoke(cancelAction, DispatcherPriority.Send);
                         }
                     }
                     else {
-                        MessageBox.Show($"Unable to process MessageBox[{message}]:NotProcessingResult", title, MessageBoxButton.OK);
+                        await MessageBox.Show(title, message,MessageBoxButton.OK);
+                        DispatcherHelper.Invoke(() => DispatcherHelper.Invoke(okAction), DispatcherPriority.Send);
                     }
+                    }
+                    catch(Exception)
+                    {
+                        await MessageBox.Show($"Unable to process MessageBox[{message}]:NotProcessingResult", title, MessageBoxButton.OK);
+                    }
+
                 }, DispatcherPriority.Send);
         }
     }

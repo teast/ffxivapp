@@ -9,7 +9,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace FFXIVAPP.Client.Localization {
-    using System.Windows;
+    using Avalonia.Controls;
 
     internal abstract class English {
         private static readonly ResourceDictionary Dictionary = new ResourceDictionary();

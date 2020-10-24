@@ -8,18 +8,24 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FFXIVAPP.Client {
+namespace FFXIVAPP.Client
+{
     using System;
+    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
-    using System.Windows;
-    using System.Windows.Threading;
-
+    using System.Timers;
+    using Avalonia;
+    using Avalonia.Controls;
+    using Avalonia.Markup.Xaml;
+    using Avalonia.Media;
+    using Avalonia.Threading;
     using FFXIVAPP.Client.Helpers;
     using FFXIVAPP.Client.Models;
     using FFXIVAPP.Client.Properties;
+    using FFXIVAPP.Client.Views;
     using FFXIVAPP.Common.Helpers;
     using FFXIVAPP.Common.Models;
     using FFXIVAPP.Common.Utilities;
@@ -29,15 +35,63 @@ namespace FFXIVAPP.Client {
     /// <summary>
     ///     Interaction logic for ShellView.xaml
     /// </summary>
-    public partial class ShellView {
+    public partial class ShellView : Window {
         public static ShellView View;
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly Timer _spinner;
 
+        public ComboBox LanguageSelect { get; }
+        public Button save { get; }
+        public Button screenshot { get; }
+        public Grid LayoutRoot { get; }
+        public TabControl ShellViewTC { get; }
+        public TabItem MainTI { get; }
+        public MainView MainV { get; }
+        public TabItem PluginsTI { get; }
+        public TabControl PluginsTC { get; }
+        public TabItem SettingsTI { get; }
+        public SettingsView SettingsV { get; }
+        public TabItem UpdateTI { get; }
+        public Image PluginUpdateSpinner { get; }
+        public UpdateView UpdateV { get; }
+        public TabItem AboutTI { get; }
+        public AboutView AboutV { get; }
+
+        public ObservableCollection<TabItem> PluginsTCItems { get; }
+        
         public ShellView() {
-            this.InitializeComponent();
             View = this;
             View.Topmost = true;
+            this.InitializeComponent();
+            LanguageSelect = this.FindControl<ComboBox>("LanguageSelect");
+            save = this.FindControl<Button>("save");
+            screenshot = this.FindControl<Button>("screenshot");
+            LayoutRoot = this.FindControl<Grid>("LayoutRoot");
+            ShellViewTC = this.FindControl<TabControl>("ShellViewTC");
+            MainTI = this.FindControl<TabItem>("MainTI");
+            MainV = this.FindControl<MainView>("MainV");
+            PluginsTI = this.FindControl<TabItem>("PluginsTI");
+            PluginsTC = this.FindControl<TabControl>("PluginsTC");
+            SettingsTI = this.FindControl<TabItem>("SettingsTI");
+            SettingsV = this.FindControl<SettingsView>("SettingsV");
+            UpdateTI = this.FindControl<TabItem>("UpdateTI");
+            PluginUpdateSpinner = this.FindControl<Image>("PluginUpdateSpinner");
+            UpdateV = this.FindControl<UpdateView>("UpdateV");
+            AboutTI = this.FindControl<TabItem>("AboutTI");
+            AboutV = this.FindControl<AboutView>("AboutV");
+
+            // To spin the refresh icon
+            var rotate = (RotateTransform)PluginUpdateSpinner.RenderTransform;
+            _spinner = new Timer(25);
+            _spinner.Elapsed += (s, a) => {
+                DispatcherHelper.Invoke(() => rotate.Angle = rotate.Angle + 10);
+            };
+        }
+
+        private void InitializeComponent()
+        {
+            AvaloniaXamlLoader.Load(this);
         }
 
         public bool IsRendered { get; set; }
@@ -46,7 +100,6 @@ namespace FFXIVAPP.Client {
         /// </summary>
         /// <param name="update"></param>
         public static void CloseApplication(bool update = false) {
-            Application.Current.MainWindow.WindowState = WindowState.Normal;
             SettingsHelper.Save(update);
             foreach (PluginInstance pluginInstance in App.Plugins.Loaded.Cast<PluginInstance>().Where(pluginInstance => pluginInstance.Loaded)) {
                 pluginInstance.Instance.Dispose(update);
@@ -63,7 +116,8 @@ namespace FFXIVAPP.Client {
         /// </summary>
         /// <param name="update"></param>
         private static void CloseDelegate(bool update = false) {
-            AppViewModel.Instance.NotifyIcon.Visible = false;
+            // TODO: Implement this
+            //AppViewModel.Instance.NotifyIcon.Visible = false;
             if (update) {
                 try {
                     Process[] updaters = Process.GetProcessesByName("FFXIVAPP.Updater");
@@ -87,20 +141,16 @@ namespace FFXIVAPP.Client {
             Environment.Exit(0);
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="sender"> </param>
-        /// <param name="e"> </param>
-        private void MetroWindowClosing(object sender, CancelEventArgs e) {
+        protected override void OnClosing(CancelEventArgs e)
+        {
             e.Cancel = true;
             DispatcherHelper.Invoke(() => CloseApplication(), DispatcherPriority.Send);
+            base.OnClosing(e);
         }
+        public override void EndInit()
+        {
+            base.EndInit();
 
-        /// <summary>
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MetroWindowContentRendered(object sender, EventArgs e) {
             if (this.IsRendered) {
                 return;
             }
@@ -129,25 +179,29 @@ namespace FFXIVAPP.Client {
 
             Initializer.GetHomePlugin();
             Initializer.UpdatePluginConstants();
-        }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="sender"> </param>
-        /// <param name="e"> </param>
-        private void MetroWindowLoaded(object sender, RoutedEventArgs e) {
             View.Topmost = Settings.Default.TopMost;
 
+            /* TODO: Implement this
             ThemeHelper.ChangeTheme(Settings.Default.Theme, null);
-
             AppViewModel.Instance.NotifyIcon.Text = "FFXIVAPP";
             AppViewModel.Instance.NotifyIcon.ContextMenu.MenuItems[0].Enabled = false;
+            */
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        internal void StartSpinner()
+        {
+            _spinner.Start();
+        }
+
+        internal void StopSpinner()
+        {
+            var rotate = (RotateTransform)PluginUpdateSpinner.RenderTransform;
+            _spinner.Stop();
+            DispatcherHelper.Invoke(() => rotate.Angle = 0);
+        }
+
+        /* TODO: Implement this
         private void MetroWindowStateChanged(object sender, EventArgs e) {
             switch (View.WindowState) {
                 case WindowState.Minimized:
@@ -162,5 +216,6 @@ namespace FFXIVAPP.Client {
                     break;
             }
         }
+        */
     }
 }

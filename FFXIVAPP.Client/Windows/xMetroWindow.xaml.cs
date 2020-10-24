@@ -9,6 +9,14 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace FFXIVAPP.Client.Windows {
+    using Avalonia.Controls;
+    
+    public class xMetroWindow: Window
+    {
+        
+    }
+
+/* TODO: Implement this
     using System.Collections.Generic;
     using System.Windows;
 
@@ -32,4 +40,5 @@ namespace FFXIVAPP.Client.Windows {
                 });
         }
     }
+*/
 }

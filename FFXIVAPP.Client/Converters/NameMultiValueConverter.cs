@@ -11,6 +11,7 @@
 namespace FFXIVAPP.Client.Converters {
     using System;
     using System.Globalization;
+    /* TODO: Implement this
     using System.Windows.Data;
 
     internal class NameMultiValueConverter : IMultiValueConverter {
@@ -22,4 +23,5 @@ namespace FFXIVAPP.Client.Converters {
             throw new NotImplementedException();
         }
     }
+    */
 }

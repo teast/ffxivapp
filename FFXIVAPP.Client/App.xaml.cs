@@ -8,9 +8,32 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Markup.Xaml;
+
 namespace FFXIVAPP.Client {
     /// <summary>
     ///     Interaction logic for App.xaml
     /// </summary>
-    internal partial class App { }
+    internal partial class App : Application
+    {
+        public override void Initialize()
+        {
+            AvaloniaXamlLoader.Load(this);
+        }
+
+        public override void OnFrameworkInitializationCompleted()
+        {
+            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                desktop.MainWindow = new ShellView
+                {
+                    DataContext = new ShellViewModel(),
+                };
+            }
+
+            base.OnFrameworkInitializationCompleted();
+        }
+    }
 }

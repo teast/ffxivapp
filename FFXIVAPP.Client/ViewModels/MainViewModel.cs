@@ -11,14 +11,13 @@
 namespace FFXIVAPP.Client.ViewModels {
     using System;
     using System.ComponentModel;
-    using System.ComponentModel.Composition;
     using System.Diagnostics;
     using System.Runtime.CompilerServices;
 
     using FFXIVAPP.Client.Helpers;
     using FFXIVAPP.Common.ViewModelBase;
 
-    [Export(typeof(MainViewModel)),]
+    // TODO: needed? [Export(typeof(MainViewModel)),]
     internal sealed class MainViewModel : INotifyPropertyChanged {
         private static Lazy<MainViewModel> _instance = new Lazy<MainViewModel>(() => new MainViewModel());
 

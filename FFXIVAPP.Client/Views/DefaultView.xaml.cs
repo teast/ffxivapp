@@ -8,16 +8,24 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Avalonia.Controls;
+using Avalonia.Markup.Xaml;
+
 namespace FFXIVAPP.Client.Views {
     /// <summary>
     ///     Interaction logic for DefaultView.xaml
     /// </summary>
-    public partial class DefaultView {
+    public class DefaultView: UserControl {
         public static DefaultView View;
 
         public DefaultView() {
-            this.InitializeComponent();
             View = this;
+            this.InitializeComponent();
+        }
+
+        private void InitializeComponent()
+        {
+            AvaloniaXamlLoader.Load(this);
         }
     }
 }

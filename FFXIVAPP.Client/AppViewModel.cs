@@ -8,21 +8,19 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FFXIVAPP.Client {
+namespace FFXIVAPP.Client
+{
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
-    using System.ComponentModel.Composition;
     using System.Drawing;
     using System.IO;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Forms;
-    using System.Windows.Threading;
-
+    using Avalonia.Controls;
+    using Avalonia.Styling;
+    using Avalonia.Threading;
     using FFXIVAPP.Client.Models;
     using FFXIVAPP.Client.Properties;
     using FFXIVAPP.Common.Helpers;
@@ -30,9 +28,7 @@ namespace FFXIVAPP.Client {
     using Sharlayan.Core;
     using Sharlayan.Models;
 
-    using ContextMenu = System.Windows.Forms.ContextMenu;
-
-    [Export(typeof(AppViewModel)),]
+    // TODO: needed? [Export(typeof(AppViewModel)),]
     internal sealed class AppViewModel : INotifyPropertyChanged {
         private static bool _hasPlugins;
 
@@ -58,7 +54,8 @@ namespace FFXIVAPP.Client {
 
         private string _logsPath;
 
-        private NotifyIcon _notifyIcon;
+        // TODO: Implement this
+        //private NotifyIcon _notifyIcon;
 
         private string _pluginsSettingsPath;
 
@@ -233,6 +230,7 @@ namespace FFXIVAPP.Client {
             }
         }
 
+        /* TODO: Implement this
         public NotifyIcon NotifyIcon {
             get {
                 if (this._notifyIcon == null) {
@@ -256,6 +254,7 @@ namespace FFXIVAPP.Client {
                 return this._notifyIcon;
             }
         }
+        */
 
         public string PluginsSettingsPath {
             get {
@@ -368,6 +367,7 @@ namespace FFXIVAPP.Client {
             }
         }
 
+        /* TODO: Implement this
         public Style TabControlCollapsedHeader {
             get {
                 if (this._tabControlCollapsedHeader == null) {
@@ -384,6 +384,7 @@ namespace FFXIVAPP.Client {
                 this.RaisePropertyChanged();
             }
         }
+        */
 
         public ObservableCollection<UILanguage> UILanguages {
             get {
@@ -415,15 +416,13 @@ namespace FFXIVAPP.Client {
             DispatcherHelper.Invoke(() => ShellView.CloseApplication(), DispatcherPriority.Send);
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="mouseEventArgs"></param>
+        /* TODO: Implement this
         private static void NotifyIconOnMouseDoubleClick(object sender, MouseEventArgs mouseEventArgs) {
             ShellView.View.WindowState = WindowState.Normal;
             ShellView.View.Topmost = true;
             ShellView.View.Topmost = Settings.Default.TopMost;
         }
+        */
 
         /// <summary>
         /// </summary>

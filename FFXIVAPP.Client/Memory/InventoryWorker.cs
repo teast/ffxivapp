@@ -14,6 +14,7 @@ namespace FFXIVAPP.Client.Memory {
     using System.Diagnostics;
     using System.Globalization;
     using System.Runtime.CompilerServices;
+    using System.Threading.Tasks;
     using System.Timers;
 
     using FFXIVAPP.Client.Helpers;
@@ -76,15 +77,14 @@ namespace FFXIVAPP.Client.Memory {
                 this._scanTimer.Interval = refresh;
             }
 
-            Func<bool> scanner = delegate {
+            Task.Run(delegate {
                 InventoryResult readResult = Reader.GetInventory();
 
                 AppContextHelper.Instance.RaiseInventoryContainersUpdated(readResult.InventoryContainers);
 
                 this._isScanning = false;
                 return true;
-            };
-            scanner.BeginInvoke(delegate { }, scanner);
+            });
         }
     }
 }

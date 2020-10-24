@@ -9,11 +9,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace FFXIVAPP.Client.Helpers {
-    using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
-    using System.Windows;
+    using Avalonia.Controls;
 
     using FFXIVAPP.Client.Localization;
     using FFXIVAPP.Client.Models;
@@ -54,7 +53,7 @@ namespace FFXIVAPP.Client.Helpers {
                 dictionary = English.Context();
             }
 
-            Dictionary<string, string> locale = dictionary.Cast<DictionaryEntry>().ToDictionary(item => (string) item.Key, item => (string) item.Value);
+            Dictionary<string, string> locale = dictionary.ToDictionary(item => item.Key as string, item => item.Value as string);
             AppViewModel.Instance.Locale = locale;
             foreach (PluginInstance pluginInstance in App.Plugins.Loaded.Cast<PluginInstance>().Where(pluginInstance => pluginInstance.Loaded)) {
                 pluginInstance.Instance.Locale = locale;

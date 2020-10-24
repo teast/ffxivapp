@@ -13,6 +13,7 @@ namespace FFXIVAPP.Client.Memory {
     using System.ComponentModel;
     using System.Globalization;
     using System.Runtime.CompilerServices;
+    using System.Threading.Tasks;
     using System.Timers;
 
     using FFXIVAPP.Client.Helpers;
@@ -73,15 +74,14 @@ namespace FFXIVAPP.Client.Memory {
                 this._scanTimer.Interval = refresh;
             }
 
-            Func<bool> scanner = delegate {
+            Task.Run(delegate {
                 CurrentPlayerResult readResult = Reader.GetCurrentPlayer();
 
                 AppContextHelper.Instance.RaiseCurrentPlayerUpdated(readResult.CurrentPlayer);
 
                 this._isScanning = false;
                 return true;
-            };
-            scanner.BeginInvoke(delegate { }, scanner);
+            });
         }
     }
 }

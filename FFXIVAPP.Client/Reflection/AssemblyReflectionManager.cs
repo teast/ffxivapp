@@ -171,9 +171,11 @@ namespace FFXIVAPP.Client.Reflection {
         }
 
         private AppDomain CreateChildDomain(AppDomain parentDomain, string domainName) {
-            var evidence = new Evidence(parentDomain.Evidence);
-            AppDomainSetup setup = parentDomain.SetupInformation;
-            return AppDomain.CreateDomain(domainName, evidence, setup);
+            // TODO: Implement this
+            //var evidence = new Evidence(parentDomain.Evidence);
+            //AppDomainSetup setup = parentDomain.SetupInformation;
+            //return AppDomain.CreateDomain(domainName, evidence, setup);
+            return AppDomain.CreateDomain(domainName);
         }
     }
 }

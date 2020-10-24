@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PluginHost.cs" company="SyndicatedLife">
-//   Copyright© 2007 - 2020 Ryan Wilson &amp;lt;syndicated.life@gmail.com&amp;gt; (https://syndicated.life/)
+//   Copyrightï¿½ 2007 - 2020 Ryan Wilson &amp;lt;syndicated.life@gmail.com&amp;gt; (https://syndicated.life/)
 //   Licensed under the MIT license. See LICENSE.md in the solution root for full license information.
 // </copyright>
 // <summary>
@@ -25,6 +25,7 @@ namespace FFXIVAPP.Client {
     using FFXIVAPP.Common.Core.Network;
     using FFXIVAPP.Common.Models;
     using FFXIVAPP.Common.Utilities;
+    using FFXIVAPP.Common.WPF;
     using FFXIVAPP.IPluginInterface;
     using FFXIVAPP.IPluginInterface.Events;
 
@@ -111,7 +112,7 @@ namespace FFXIVAPP.Client {
                 path = Directory.Exists(path)
                            ? path
                            : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
-                var settings = $@"{path}\PluginInfo.xml";
+                var settings = Path.Combine(path, "PluginInfo.xml");
                 if (!File.Exists(settings)) {
                     return;
                 }
@@ -126,7 +127,7 @@ namespace FFXIVAPP.Client {
 
                     switch (xKey) {
                         case "FileName":
-                            this.VerifyPlugin($@"{path}\{xValue}");
+                            this.VerifyPlugin(Path.Combine(path, xValue));
                             break;
                     }
                 }

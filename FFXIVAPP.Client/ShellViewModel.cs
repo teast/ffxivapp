@@ -8,22 +8,19 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FFXIVAPP.Client {
+namespace FFXIVAPP.Client
+{
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.ComponentModel.Composition;
-    using System.IO;
     using System.Runtime.CompilerServices;
-    using System.Windows.Controls;
     using System.Windows.Input;
-
+    using Avalonia.Controls;
     using FFXIVAPP.Client.Helpers;
     using FFXIVAPP.Client.Properties;
-    using FFXIVAPP.Common.Utilities;
     using FFXIVAPP.Common.ViewModelBase;
 
-    [Export(typeof(ShellViewModel)),]
+    // TODO: Needed? [Export(typeof(ShellViewModel)),]
     internal sealed class ShellViewModel : INotifyPropertyChanged {
         private static Lazy<ShellViewModel> _instance = new Lazy<ShellViewModel>(() => new ShellViewModel());
 
@@ -36,12 +33,15 @@ namespace FFXIVAPP.Client {
             "Korean",
         };
 
+        private TabItem _pluginsTCSelectedItem;
+
+        private TabItem _shellViewTCSelectedItem;
+
         public ShellViewModel() {
+            UpdateTitle();
             this.SetLocaleCommand = new DelegateCommand(SetLocale);
             this.SaveAndClearHistoryCommand = new DelegateCommand(SaveAndClearHistory);
             this.ScreenShotCommand = new DelegateCommand(ScreenShot);
-            this.UpdateSelectedPluginCommand = new DelegateCommand(UpdateSelectedPlugin);
-            this.UpdateTitleCommand = new DelegateCommand(UpdateTitle);
         }
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
@@ -58,10 +58,6 @@ namespace FFXIVAPP.Client {
 
         public ICommand SetLocaleCommand { get; set; }
 
-        public ICommand UpdateSelectedPluginCommand { get; private set; }
-
-        public ICommand UpdateTitleCommand { get; private set; }
-
         /// <summary>
         /// </summary>
         private static void SaveAndClearHistory() {
@@ -72,6 +68,7 @@ namespace FFXIVAPP.Client {
         /// </summary>
         private static void ScreenShot() {
             try {
+                /* TODO: Implement this
                 var date = DateTime.Now.ToString("yyyy_MM_dd_HH.mm.ss_");
                 var fileName = Path.Combine(AppViewModel.Instance.ScreenShotsPath, $"{date}.jpg");
                 byte[] screenShot = ScreenCapture.GetJpgImage(ShellView.View, 1, 100);
@@ -79,6 +76,7 @@ namespace FFXIVAPP.Client {
                 using (var stream = new BinaryWriter(fileStream)) {
                     stream.Write(screenShot);
                 }
+                */
             }
             catch (Exception ex) {
                 var title = AppViewModel.Instance.Locale["app_WarningMessage"];
@@ -87,7 +85,7 @@ namespace FFXIVAPP.Client {
         }
 
         private static void SetLocale() {
-            var uiLanguage = ShellView.View?.LanguageSelect.SelectedValue.ToString();
+            var uiLanguage = ShellView.View?.LanguageSelect.SelectedItem.ToString();
             if (string.IsNullOrWhiteSpace(uiLanguage)) {
                 return;
             }
@@ -120,23 +118,39 @@ namespace FFXIVAPP.Client {
             }
         }
 
-        /// <summary>
-        /// </summary>
-        private static void UpdateSelectedPlugin() {
-            var selectedItem = (TabItem) ShellView.View.PluginsTC.SelectedItem;
-            try {
-                AppViewModel.Instance.Selected = selectedItem.Header.ToString();
-            }
-            catch (Exception) {
-                AppViewModel.Instance.Selected = "(NONE)";
-            }
+        public TabItem PluginsTCSelectedItem {
+            get => _pluginsTCSelectedItem;
+            set {
+                _pluginsTCSelectedItem = value;
 
-            UpdateTitle();
+                var selectedItem = (TabItem) ShellView.View.PluginsTC.SelectedItem;
+                try {
+                    AppViewModel.Instance.Selected = selectedItem.Header.ToString();
+                }
+                catch (Exception) {
+                    AppViewModel.Instance.Selected = "(NONE)";
+                }
+
+                UpdateTitle();
+
+                RaisePropertyChanged();
+            }
         }
 
+        public TabItem ShellViewTCSelectedItem {
+            get => _shellViewTCSelectedItem;
+            set {
+                _shellViewTCSelectedItem = value;
+
+                UpdateTitle();
+
+                RaisePropertyChanged();
+            }
+        }
+        
         /// <summary>
         /// </summary>
-        private static void UpdateTitle() {
+        public static void UpdateTitle() {
             var currentMain = ((TabItem) ShellView.View.ShellViewTC.SelectedItem).Name;
             switch (currentMain) {
                 case "PluginsTI":

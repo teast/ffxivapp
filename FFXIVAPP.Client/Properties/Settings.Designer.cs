@@ -8,591 +8,390 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FFXIVAPP.Client.Properties {
-    
-    
-    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.7.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Text;
+using Newtonsoft.Json;
+
+namespace FFXIVAPP.Client.Properties
+{
+
+    internal delegate void SettingChangingEventHandler(object sender, SettingChangingEventArgs e);
+
+    internal sealed class Settings : INotifyPropertyChanged
+    {
+        private static Lazy<Settings> defaultInstance = new Lazy<Settings>(() =>
+        {
+            var s = new Settings();
+            s.Reload();
+            return s;
+        });
+
+        public static Settings Default => defaultInstance.Value;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public event SettingChangingEventHandler SettingChanging;
+
+        #region fields
+        private bool _enableNLog;
+        private bool _application_UpgradeRequired;
+        private string _characterName;
+        private string _gameLanguage;
+        private string _uILanguage;
+        private CultureInfo _culture;
+        private bool _cultureSet;
+        private string _serverName;
+        private bool _enableNetworkReading;
+        private bool _enableHelpLabels;
+        private string _theme;
+        private string _uIScale;
+        private string _defaultAudioDevice;
+        private string _homePlugin;
+        private bool _topMost;
+        private bool _useLocalMemoryJSONDataCache;
+        private List<string> _defaultAudioDeviceList;
+        private List<string> _homePluginList;
+        private string _cICUID;
+        private double _actorWorkerRefresh;
+        private double _chatLogWorkerRefresh;
+        private double _hotBarRecastWorkerRefresh;
+        private double _inventoryWorkerRefresh;
+        private double _partyInfoWorkerRefresh;
+        private double _playerInfoWorkerRefresh;
+        private double _targetWorkerRefresh;
+        private bool _saveLog;
+        private ObservableCollection<string> _gameLanguageList;
+        private ObservableCollection<string> _serverList;
+        #endregion
+
+        #region Properties
+        public bool EnableNLog
+        {
+            get => _enableNLog;
+            set => Set(ref _enableNLog, value);
+        }
+        public bool Application_UpgradeRequired
+        {
+            get => _application_UpgradeRequired;
+            set => Set(ref _application_UpgradeRequired, value);
+        }
+        public string CharacterName
+        {
+            get => _characterName;
+            set => Set(ref _characterName, value);
+        }
+        public string GameLanguage
+        {
+            get => _gameLanguage;
+            set => Set(ref _gameLanguage, value);
+        }
+        public string UILanguage
+        {
+            get => _uILanguage;
+            set => Set(ref _uILanguage, value);
+        }
+        public CultureInfo Culture
+        {
+            get => _culture;
+            set => Set(ref _culture, value);
+        }
+        public bool CultureSet
+        {
+            get => _cultureSet;
+            set => Set(ref _cultureSet, value);
+        }
+        public string ServerName
+        {
+            get => _serverName;
+            set => Set(ref _serverName, value);
+        }
+        public bool EnableNetworkReading
+        {
+            get => _enableNetworkReading;
+            set => Set(ref _enableNetworkReading, value);
+        }
+        public bool EnableHelpLabels
+        {
+            get => _enableHelpLabels;
+            set => Set(ref _enableHelpLabels, value);
+        }
+        public string Theme
+        {
+            get => _theme;
+            set => Set(ref _theme, value);
+        }
+        public string UIScale
+        {
+            get => _uIScale;
+            set => Set(ref _uIScale, value);
+        }
+        public string DefaultAudioDevice
+        {
+            get => _defaultAudioDevice;
+            set => Set(ref _defaultAudioDevice, value);
+        }
+        public string HomePlugin
+        {
+            get => _homePlugin;
+            set => Set(ref _homePlugin, value);
+        }
+        public bool TopMost
+        {
+            get => _topMost;
+            set => Set(ref _topMost, value);
+        }
+        public bool UseLocalMemoryJSONDataCache
+        {
+            get => _useLocalMemoryJSONDataCache;
+            set => Set(ref _useLocalMemoryJSONDataCache, value);
+        }
+
+        private readonly string _path;
+
+        public List<string> DefaultAudioDeviceList
+        {
+            get => _defaultAudioDeviceList;
+            set => Set(ref _defaultAudioDeviceList, value);
+        }
+        public List<string> HomePluginList
+        {
+            get => _homePluginList;
+            set => Set(ref _homePluginList, value);
+        }
+        public string CICUID
+        {
+            get => _cICUID;
+            set => Set(ref _cICUID, value);
+        }
+        public double ActorWorkerRefresh
+        {
+            get => _actorWorkerRefresh;
+            set => Set(ref _actorWorkerRefresh, value);
+        }
+        public double ChatLogWorkerRefresh
+        {
+            get => _chatLogWorkerRefresh;
+            set => Set(ref _chatLogWorkerRefresh, value);
+        }
+        public double HotBarRecastWorkerRefresh
+        {
+            get => _hotBarRecastWorkerRefresh;
+            set => Set(ref _hotBarRecastWorkerRefresh, value);
+        }
+        public double InventoryWorkerRefresh
+        {
+            get => _inventoryWorkerRefresh;
+            set => Set(ref _inventoryWorkerRefresh, value);
+        }
+        public double PartyInfoWorkerRefresh
+        {
+            get => _partyInfoWorkerRefresh;
+            set => Set(ref _partyInfoWorkerRefresh, value);
+        }
+        public double PlayerInfoWorkerRefresh
+        {
+            get => _playerInfoWorkerRefresh;
+            set => Set(ref _playerInfoWorkerRefresh, value);
+        }
+        public double TargetWorkerRefresh
+        {
+            get => _targetWorkerRefresh;
+            set => Set(ref _targetWorkerRefresh, value);
+        }
+        public bool SaveLog
+        {
+            get => _saveLog;
+            set => Set(ref _saveLog, value);
+        }
+
+        public ObservableCollection<string> GameLanguageList
+        {
+            get => _gameLanguageList;
+            set => Set(ref _gameLanguageList, value);
+        }
+
+        public ObservableCollection<string> ServerList
+        {
+            get => _serverList;
+            set => Set(ref _serverList, value);
+        }
+        #endregion
+
+        public Settings()
+        {
+            object[] att = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
+            var companyName = ((AssemblyCompanyAttribute)att[0]).Company;
+            var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            _path = Path.Combine(appDataPath, companyName);
+
+            GameLanguageList = new ObservableCollection<string>();
+            ServerList = new ObservableCollection<string>();
+
+            Reset();
+        }
+
+        public void Reset()
+        {
+            DefaultAudioDeviceList = new List<string>();
+            HomePluginList = new List<string>();
+            GameLanguage = "English";
+            EnableNLog = true;
+            GameLanguageList.Clear();
+            GameLanguageList.Add("English");
+            GameLanguageList.Add("Japanese");
+            GameLanguageList.Add("French");
+            GameLanguageList.Add("German");
+            GameLanguageList.Add("Chinese");
+            GameLanguageList.Add("Korean");
+
+            #region serverlist
+            ServerList.Clear();
+            ServerList.Add("Adamantoise");
+            ServerList.Add("Aegis");
+            ServerList.Add("Alexander");
+            ServerList.Add("Anima");
+            ServerList.Add("Asura");
+            ServerList.Add("Atomos");
+            ServerList.Add("Bahamut");
+            ServerList.Add("Balmung");
+            ServerList.Add("Behemoth");
+            ServerList.Add("Belias");
+            ServerList.Add("Brynhildr");
+            ServerList.Add("Cactuar");
+            ServerList.Add("Carbuncle");
+            ServerList.Add("Cerberus");
+            ServerList.Add("Chocobo");
+            ServerList.Add("Coeurl");
+            ServerList.Add("Diabolos");
+            ServerList.Add("Durandal");
+            ServerList.Add("Excalibur");
+            ServerList.Add("Exodus");
+            ServerList.Add("Faerie");
+            ServerList.Add("Famfrit");
+            ServerList.Add("Fenrir");
+            ServerList.Add("Garuda");
+            ServerList.Add("Gilgamesh");
+            ServerList.Add("Goblin");
+            ServerList.Add("Gungnir");
+            ServerList.Add("Hades");
+            ServerList.Add("Hyperion");
+            ServerList.Add("Ifrit");
+            ServerList.Add("Ixion");
+            ServerList.Add("Jenova");
+            ServerList.Add("Kujata");
+            ServerList.Add("Lamia");
+            ServerList.Add("Leviathan");
+            ServerList.Add("Lich");
+            ServerList.Add("Malboro");
+            ServerList.Add("Mandragora");
+            ServerList.Add("Masamune");
+            ServerList.Add("Mateus");
+            ServerList.Add("Midgardsormr");
+            ServerList.Add("Moogle");
+            ServerList.Add("Odin");
+            ServerList.Add("Pandaemonium");
+            ServerList.Add("Phoenix");
+            ServerList.Add("Ragnarok");
+            ServerList.Add("Ramuh");
+            ServerList.Add("Ridill");
+            ServerList.Add("Sargatanas");
+            ServerList.Add("Shinryu");
+            ServerList.Add("Shiva");
+            ServerList.Add("Siren");
+            ServerList.Add("Tiamat");
+            ServerList.Add("Titan");
+            ServerList.Add("Tonberry");
+            ServerList.Add("Typhon");
+            ServerList.Add("Ultima");
+            ServerList.Add("Ultros");
+            ServerList.Add("Unicorn");
+            ServerList.Add("Valefor");
+            ServerList.Add("Yojimbo");
+            ServerList.Add("Zalera");
+            ServerList.Add("Zeromus");
+            #endregion
+
+            ActorWorkerRefresh = 100;
+            ChatLogWorkerRefresh = 250;
+            HotBarRecastWorkerRefresh = 100;
+            InventoryWorkerRefresh = 100;
+            PartyInfoWorkerRefresh = 1000;
+            PlayerInfoWorkerRefresh = 1000;
+            TargetWorkerRefresh = 100;
+        }
+
+        public void Save()
+        {
+            if (!Directory.Exists(_path))
+                Directory.CreateDirectory(_path);
+
+            var file = Path.Combine(_path, "FFXIVAPP_config.json");
+            File.WriteAllText(file, JsonConvert.SerializeObject(this), Encoding.UTF8);
+        }
+
+        public void Reload()
+        {
+            var file = Path.Combine(_path, "FFXIVAPP_config.json");
+            if (!File.Exists(file))
+                return;
+
+            var content = File.ReadAllText(file);
+            var config = JsonConvert.DeserializeObject<Settings>(content);
+
+            var type = typeof(Settings);
+            var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (var property in properties)
+            {
+                // Hack to handle ObservableCollection...
+                if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(ObservableCollection<>))
+                {
+                    var dest = property.GetValue(this) as dynamic;
+                    var source = property.GetValue(config) as dynamic;
+                    dest.Clear();
+                    AddRange(dest, source);
+
+                    continue;
+                }
+
+                property.SetValue(this, property.GetValue(config));
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool Application_UpgradeRequired {
-            get {
-                return ((bool)(this["Application_UpgradeRequired"]));
-            }
-            set {
-                this["Application_UpgradeRequired"] = value;
-            }
+
+        private void AddRange<T>(ObservableCollection<T> dest, ObservableCollection<T> source)
+        {
+            foreach (var items in source.Distinct())
+                dest.Add(items);
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int Top {
-            get {
-                return ((int)(this["Top"]));
-            }
-            set {
-                this["Top"] = value;
-            }
+
+        public void Upgrade()
+        {
+
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int Left {
-            get {
-                return ((int)(this["Left"]));
-            }
-            set {
-                this["Left"] = value;
-            }
+
+        private void Set<T>(ref T field, T value, [CallerMemberName] string name = "")
+        {
+            field = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("720")]
-        public int Width {
-            get {
-                return ((int)(this["Width"]));
-            }
-            set {
-                this["Width"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("480")]
-        public int Height {
-            get {
-                return ((int)(this["Height"]));
-            }
-            set {
-                this["Height"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("en")]
-        public global::System.Globalization.CultureInfo Culture {
-            get {
-                return ((global::System.Globalization.CultureInfo)(this["Culture"]));
-            }
-            set {
-                this["Culture"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool CultureSet {
-            get {
-                return ((bool)(this["CultureSet"]));
-            }
-            set {
-                this["CultureSet"] = value;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsi=\"http://www.w3." +
-            "org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <s" +
-            "tring>Red|Light</string>\r\n  <string>Green|Light</string>\r\n  <string>Blue|Light</" +
-            "string>\r\n  <string>Purple|Light</string>\r\n  <string>Orange|Light</string>\r\n  <st" +
-            "ring>Brown|Light</string>\r\n  <string>Cobalt|Light</string>\r\n  <string>Crimson|Li" +
-            "ght</string>\r\n  <string>Cyan|Light</string>\r\n  <string>Emerald|Light</string>\r\n " +
-            " <string>Indigo|Light</string>\r\n  <string>Magenta|Light</string>\r\n  <string>Mauv" +
-            "e|Light</string>\r\n  <string>Olive|Light</string>\r\n  <string>Sienna|Light</string" +
-            ">\r\n  <string>Steel|Light</string>\r\n  <string>Teal|Light</string>\r\n  <string>Viol" +
-            "et|Light</string>\r\n  <string>Amber|Light</string>\r\n  <string>Yellow|Light</strin" +
-            "g>\r\n  <string>Lime|Light</string>\r\n  <string>Pink|Light</string>\r\n  <string>Red|" +
-            "Dark</string>\r\n  <string>Green|Dark</string>\r\n  <string>Blue|Dark</string>\r\n  <s" +
-            "tring>Purple|Dark</string>\r\n  <string>Orange|Dark</string>\r\n  <string>Brown|Dark" +
-            "</string>\r\n  <string>Cobalt|Dark</string>\r\n  <string>Crimson|Dark</string>\r\n  <s" +
-            "tring>Cyan|Dark</string>\r\n  <string>Emerald|Dark</string>\r\n  <string>Indigo|Dark" +
-            "</string>\r\n  <string>Magenta|Dark</string>\r\n  <string>Mauve|Dark</string>\r\n  <st" +
-            "ring>Olive|Dark</string>\r\n  <string>Sienna|Dark</string>\r\n  <string>Steel|Dark</" +
-            "string>\r\n  <string>Teal|Dark</string>\r\n  <string>Violet|Dark</string>\r\n  <string" +
-            ">Amber|Dark</string>\r\n  <string>Yellow|Dark</string>\r\n  <string>Lime|Dark</strin" +
-            "g>\r\n  <string>Pink|Dark</string>\r\n</ArrayOfString>")]
-        public global::System.Collections.Specialized.StringCollection ThemeList {
-            get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["ThemeList"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Blue|Light")]
-        public string Theme {
-            get {
-                return ((string)(this["Theme"]));
-            }
-            set {
-                this["Theme"] = value;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsi=\"http://www.w3." +
-            "org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <s" +
-            "tring>Adamantoise</string>\r\n  <string>Aegis</string>\r\n  <string>Alexander</strin" +
-            "g>\r\n  <string>Anima</string>\r\n  <string>Asura</string>\r\n  <string>Atomos</string" +
-            ">\r\n  <string>Bahamut</string>\r\n  <string>Balmung</string>\r\n  <string>Behemoth</s" +
-            "tring>\r\n  <string>Belias</string>\r\n  <string>Brynhildr</string>\r\n  <string>Cactu" +
-            "ar</string>\r\n  <string>Carbuncle</string>\r\n  <string>Cerberus</string>\r\n  <strin" +
-            "g>Chocobo</string>\r\n  <string>Coeurl</string>\r\n  <string>Diabolos</string>\r\n  <s" +
-            "tring>Durandal</string>\r\n  <string>Excalibur</string>\r\n  <string>Exodus</string>" +
-            "\r\n  <string>Faerie</string>\r\n  <string>Famfrit</string>\r\n  <string>Fenrir</strin" +
-            "g>\r\n  <string>Garuda</string>\r\n  <string>Gilgamesh</string>\r\n  <string>Goblin</s" +
-            "tring>\r\n  <string>Gungnir</string>\r\n  <string>Hades</string>\r\n  <string>Hyperion" +
-            "</string>\r\n  <string>Ifrit</string>\r\n  <string>Ixion</string>\r\n  <string>Jenova<" +
-            "/string>\r\n  <string>Kujata</string>\r\n  <string>Lamia</string>\r\n  <string>Leviath" +
-            "an</string>\r\n  <string>Lich</string>\r\n  <string>Malboro</string>\r\n  <string>Mand" +
-            "ragora</string>\r\n  <string>Masamune</string>\r\n  <string>Mateus</string>\r\n  <stri" +
-            "ng>Midgardsormr</string>\r\n  <string>Moogle</string>\r\n  <string>Odin</string>\r\n  " +
-            "<string>Pandaemonium</string>\r\n  <string>Phoenix</string>\r\n  <string>Ragnarok</s" +
-            "tring>\r\n  <string>Ramuh</string>\r\n  <string>Ridill</string>\r\n  <string>Sargatana" +
-            "s</string>\r\n  <string>Shinryu</string>\r\n  <string>Shiva</string>\r\n  <string>Sire" +
-            "n</string>\r\n  <string>Tiamat</string>\r\n  <string>Titan</string>\r\n  <string>Tonbe" +
-            "rry</string>\r\n  <string>Typhon</string>\r\n  <string>Ultima</string>\r\n  <string>Ul" +
-            "tros</string>\r\n  <string>Unicorn</string>\r\n  <string>Valefor</string>\r\n  <string" +
-            ">Yojimbo</string>\r\n  <string>Zalera</string>\r\n  <string>Zeromus</string>\r\n</Arra" +
-            "yOfString>")]
-        public global::System.Collections.Specialized.StringCollection ServerList {
-            get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["ServerList"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
-<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <string>English</string>
-  <string>Japanese</string>
-  <string>French</string>
-  <string>German</string>
-  <string>Chinese</string>
-  <string>Korean</string>
-</ArrayOfString>")]
-        public global::System.Collections.Specialized.StringCollection GameLanguageList {
-            get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["GameLanguageList"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("English")]
-        public string GameLanguage {
-            get {
-                return ((string)(this["GameLanguage"]));
-            }
-            set {
-                this["GameLanguage"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string CICUID {
-            get {
-                return ((string)(this["CICUID"]));
-            }
-            set {
-                this["CICUID"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string ServerName {
-            get {
-                return ((string)(this["ServerName"]));
-            }
-            set {
-                this["ServerName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string CharacterName {
-            get {
-                return ((string)(this["CharacterName"]));
-            }
-            set {
-                this["CharacterName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string FirstName {
-            get {
-                return ((string)(this["FirstName"]));
-            }
-            set {
-                this["FirstName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string LastName {
-            get {
-                return ((string)(this["LastName"]));
-            }
-            set {
-                this["LastName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Segoe UI")]
-        public global::System.Windows.Media.FontFamily LicenseFont {
-            get {
-                return ((global::System.Windows.Media.FontFamily)(this["LicenseFont"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool SaveLog {
-            get {
-                return ((bool)(this["SaveLog"]));
-            }
-            set {
-                this["SaveLog"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool EnableNLog {
-            get {
-                return ((bool)(this["EnableNLog"]));
-            }
-            set {
-                this["EnableNLog"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool AllowXIVDBIntegration {
-            get {
-                return ((bool)(this["AllowXIVDBIntegration"]));
-            }
-            set {
-                this["AllowXIVDBIntegration"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool EnableHelpLabels {
-            get {
-                return ((bool)(this["EnableHelpLabels"]));
-            }
-            set {
-                this["EnableHelpLabels"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool TopMost {
-            get {
-                return ((bool)(this["TopMost"]));
-            }
-            set {
-                this["TopMost"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("#FF000000")]
-        public global::System.Windows.Media.Color ChatBackgroundColor {
-            get {
-                return ((global::System.Windows.Media.Color)(this["ChatBackgroundColor"]));
-            }
-            set {
-                this["ChatBackgroundColor"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("#FF800080")]
-        public global::System.Windows.Media.Color TimeStampColor {
-            get {
-                return ((global::System.Windows.Media.Color)(this["TimeStampColor"]));
-            }
-            set {
-                this["TimeStampColor"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Microsoft Sans Serif, 12pt")]
-        public global::System.Drawing.Font ChatFont {
-            get {
-                return ((global::System.Drawing.Font)(this["ChatFont"]));
-            }
-            set {
-                this["ChatFont"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Parse")]
-        public string HomePlugin {
-            get {
-                return ((string)(this["HomePlugin"]));
-            }
-            set {
-                this["HomePlugin"] = value;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsi=\"http://www.w3." +
-            "org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <s" +
-            "tring>None</string>\r\n</ArrayOfString>")]
-        public global::System.Collections.Specialized.StringCollection HomePluginList {
-            get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["HomePluginList"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.0")]
-        public string UIScale {
-            get {
-                return ((string)(this["UIScale"]));
-            }
-            set {
-                this["UIScale"] = value;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
-<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <string>0.8</string>
-  <string>0.9</string>
-  <string>1.0</string>
-  <string>1.1</string>
-  <string>1.2</string>
-  <string>1.3</string>
-  <string>1.4</string>
-  <string>1.5</string>
-</ArrayOfString>")]
-        public global::System.Collections.Specialized.StringCollection UIScaleList {
-            get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["UIScaleList"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("System Default")]
-        public string DefaultAudioDevice {
-            get {
-                return ((string)(this["DefaultAudioDevice"]));
-            }
-            set {
-                this["DefaultAudioDevice"] = value;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsi=\"http://www.w3." +
-            "org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <s" +
-            "tring>System Default</string>\r\n</ArrayOfString>")]
-        public global::System.Collections.Specialized.StringCollection DefaultAudioDeviceList {
-            get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["DefaultAudioDeviceList"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
-        public string ActorWorkerRefresh {
-            get {
-                return ((string)(this["ActorWorkerRefresh"]));
-            }
-            set {
-                this["ActorWorkerRefresh"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("250")]
-        public string ChatLogWorkerRefresh {
-            get {
-                return ((string)(this["ChatLogWorkerRefresh"]));
-            }
-            set {
-                this["ChatLogWorkerRefresh"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
-        public string PartyInfoWorkerRefresh {
-            get {
-                return ((string)(this["PartyInfoWorkerRefresh"]));
-            }
-            set {
-                this["PartyInfoWorkerRefresh"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
-        public string PlayerInfoWorkerRefresh {
-            get {
-                return ((string)(this["PlayerInfoWorkerRefresh"]));
-            }
-            set {
-                this["PlayerInfoWorkerRefresh"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
-        public string TargetWorkerRefresh {
-            get {
-                return ((string)(this["TargetWorkerRefresh"]));
-            }
-            set {
-                this["TargetWorkerRefresh"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
-        public string InventoryWorkerRefresh {
-            get {
-                return ((string)(this["InventoryWorkerRefresh"]));
-            }
-            set {
-                this["InventoryWorkerRefresh"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DefaultNetworkInterface {
-            get {
-                return ((string)(this["DefaultNetworkInterface"]));
-            }
-            set {
-                this["DefaultNetworkInterface"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool EnableNetworkReading {
-            get {
-                return ((bool)(this["EnableNetworkReading"]));
-            }
-            set {
-                this["EnableNetworkReading"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string UILanguage {
-            get {
-                return ((string)(this["UILanguage"]));
-            }
-            set {
-                this["UILanguage"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool NetworkUseWinPCap {
-            get {
-                return ((bool)(this["NetworkUseWinPCap"]));
-            }
-            set {
-                this["NetworkUseWinPCap"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool UseLocalMemoryJSONDataCache {
-            get {
-                return ((bool)(this["UseLocalMemoryJSONDataCache"]));
-            }
-            set {
-                this["UseLocalMemoryJSONDataCache"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
-        public string HotBarRecastWorkerRefresh {
-            get {
-                return ((string)(this["HotBarRecastWorkerRefresh"]));
-            }
-            set {
-                this["HotBarRecastWorkerRefresh"] = value;
-            }
+    }
+
+    internal class SettingChangingEventArgs : EventArgs
+    {
+        public string SettingKey { get; }
+        public string NewValue { get; }
+
+        public SettingChangingEventArgs(string settingKey, string newValue)
+        {
+            SettingKey = settingKey;
+            NewValue = newValue;
         }
     }
 }

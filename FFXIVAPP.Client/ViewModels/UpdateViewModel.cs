@@ -8,11 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FFXIVAPP.Client.ViewModels {
+namespace FFXIVAPP.Client.ViewModels
+{
     using System;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
-    using System.ComponentModel.Composition;
     using System.IO;
     using System.Linq;
     using System.Net;
@@ -21,13 +21,10 @@ namespace FFXIVAPP.Client.ViewModels {
     using System.Runtime.CompilerServices;
     using System.Text;
     using System.Text.RegularExpressions;
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Controls.Primitives;
-    using System.Windows.Data;
+    using System.Threading.Tasks;
     using System.Windows.Input;
-    using System.Windows.Threading;
-
+    using Avalonia.Controls;
+    using Avalonia.Threading;
     using FFXIVAPP.Client.Models;
     using FFXIVAPP.Client.Utilities;
     using FFXIVAPP.Client.Views;
@@ -38,7 +35,7 @@ namespace FFXIVAPP.Client.ViewModels {
 
     using NLog;
 
-    [Export(typeof(UpdateViewModel)),]
+    // TODO: needed? [Export(typeof(UpdateViewModel)),]
     internal sealed class UpdateViewModel : INotifyPropertyChanged {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -116,11 +113,14 @@ namespace FFXIVAPP.Client.ViewModels {
         public ICommand UnInstallCommand { get; private set; }
 
         public void SetupGrouping() {
+            Logging.Log(Logger, $"TODO: SetupGrouping called");
+            /* TODO: Implement this
             ICollectionView cvEvents = CollectionViewSource.GetDefaultView(UpdateView.View.AvailableDG.ItemsSource);
             if (cvEvents != null && cvEvents.CanGroup) {
                 cvEvents.GroupDescriptions.Clear();
                 cvEvents.GroupDescriptions.Add(new PropertyGroupDescription("Status"));
             }
+            */
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace FFXIVAPP.Client.ViewModels {
                 Instance.AvailableSources[index] = pluginSourceItem;
             }
 
-            UpdateView.View.PluginSourceDG.UnselectAll();
+            UpdateView.View.PluginSourceDG.SelectedIndex = -1;
             UpdateView.View.TSource.Text = string.Empty;
         }
 
@@ -204,7 +204,7 @@ namespace FFXIVAPP.Client.ViewModels {
         /// </summary>
         /// <param name="listView"> </param>
         /// <param name="key"> </param>
-        private static string GetValueBySelectedItem(Selector listView, string key) {
+        private static string GetValueBySelectedItem(DataGrid listView, string key) {
             Type type = listView.SelectedItem.GetType();
             PropertyInfo property = type.GetProperty(key);
             return property.GetValue(listView.SelectedItem, null).ToString();
@@ -224,9 +224,9 @@ namespace FFXIVAPP.Client.ViewModels {
                 return;
             }
 
-            UpdateView.View.AvailableLoadingInformation.Visibility = Visibility.Visible;
-            UpdateView.View.AvailableLoadingProgressMessage.Visibility = Visibility.Visible;
-            Func<bool> install = delegate {
+            UpdateView.View.AvailableLoadingInformation.IsVisible = true;
+            UpdateView.View.AvailableLoadingProgressMessage.IsVisible = true;
+            Task.Run(delegate {
                 var updateCount = 0;
                 var updateLimit = plugin.Files.Count;
                 var sb = new StringBuilder();
@@ -275,8 +275,8 @@ namespace FFXIVAPP.Client.ViewModels {
                                                 }
 
                                                 UpdateView.View.AvailableLoadingProgressMessage.Text = string.Empty;
-                                                UpdateView.View.AvailableLoadingInformation.Visibility = Visibility.Collapsed;
-                                                UpdateView.View.AvailableLoadingProgressMessage.Visibility = Visibility.Collapsed;
+                                                UpdateView.View.AvailableLoadingInformation.IsVisible = false;
+                                                UpdateView.View.AvailableLoadingProgressMessage.IsVisible = false;
                                             }, DispatcherPriority.Send);
                                     }
                                 };
@@ -300,14 +300,13 @@ namespace FFXIVAPP.Client.ViewModels {
 
                     DispatcherHelper.Invoke(
                         delegate {
-                            UpdateView.View.AvailableLoadingInformation.Visibility = Visibility.Collapsed;
-                            UpdateView.View.AvailableLoadingProgressMessage.Visibility = Visibility.Collapsed;
+                            UpdateView.View.AvailableLoadingInformation.IsVisible = false;
+                            UpdateView.View.AvailableLoadingProgressMessage.IsVisible = false;
                         }, DispatcherPriority.Send);
                 }
 
                 return true;
-            };
-            install.BeginInvoke(delegate { }, install);
+            });
         }
 
         private static void RefreshAvailable() {
@@ -317,6 +316,7 @@ namespace FFXIVAPP.Client.ViewModels {
 
         /// <summary>
         /// </summary>
+        // TODO: Move this logic to the view Updateview.xaml with an binding on TSource... Remove this if it works
         private static void SourceSelection() {
             if (UpdateView.View.PluginSourceDG.SelectedItems.Count != 1) {
                 return;
@@ -364,8 +364,8 @@ namespace FFXIVAPP.Client.ViewModels {
 
                             Instance.SetupGrouping();
                             PluginHost.Instance.UnloadPlugin(plugin.Name);
-                            for (var i = ShellView.View.PluginsTC.Items.Count - 1; i > 0; i--) {
-                                if (((TabItem) ShellView.View.PluginsTC.Items[i]).Name == Regex.Replace(plugin.Name, @"[^A-Za-z]", string.Empty)) {
+                            for (var i = ShellView.View.PluginsTCItems.Count - 1; i > 0; i--) {
+                                if ((ShellView.View.PluginsTCItems[i]).Name == Regex.Replace(plugin.Name, @"[^A-Za-z]", string.Empty)) {
                                     AppViewModel.Instance.PluginTabItems.RemoveAt(i);
                                 }
                             }

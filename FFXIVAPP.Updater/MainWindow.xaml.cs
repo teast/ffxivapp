@@ -128,11 +128,10 @@ namespace FFXIVAPP.Updater {
         /// <param name="sender"></param>
         /// <param name="asyncCompletedEventArgs"></param>
         private void WebClientOnDownloadFileCompleted(object sender, AsyncCompletedEventArgs asyncCompletedEventArgs) {
-            Func<bool> download = delegate {
+            Task.Run(delegate {
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new ThreadStart(this.ExtractAndClean));
                 return true;
-            };
-            download.BeginInvoke(delegate { }, download);
+            });
         }
 
         /// <summary>
@@ -168,11 +167,10 @@ namespace FFXIVAPP.Updater {
                     }
                 }
 
-                Func<bool> update = delegate {
+                Task.Run(delegate {
                     Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new ThreadStart(this.DownloadUpdate));
                     return true;
-                };
-                update.BeginInvoke(delegate { }, update);
+                });
             }
         }
     }

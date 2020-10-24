@@ -8,7 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FFXIVAPP.Client {
+namespace FFXIVAPP.Client
+{
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -21,7 +22,7 @@ namespace FFXIVAPP.Client {
     using System.Reflection;
     using System.Text;
     using System.Text.RegularExpressions;
-    using System.Windows;
+    using System.Threading.Tasks;
     using System.Xml.Linq;
 
     using FFXIVAPP.Client.Helpers;
@@ -36,12 +37,6 @@ namespace FFXIVAPP.Client {
     using FFXIVAPP.Common.RegularExpressions;
     using FFXIVAPP.Common.Utilities;
 
-    using Machina;
-    using Machina.Events;
-    using Machina.Models;
-
-    using NAudio.Wave;
-
     using Newtonsoft.Json.Linq;
 
     using NLog;
@@ -50,7 +45,6 @@ namespace FFXIVAPP.Client {
     using Sharlayan.Events;
     using Sharlayan.Models;
 
-    using Application = System.Windows.Forms.Application;
     using ExceptionEvent = Sharlayan.Events.ExceptionEvent;
 
     internal static class Initializer {
@@ -72,7 +66,9 @@ namespace FFXIVAPP.Client {
 
         public static bool NetworkWorking {
             get {
-                return NetworkHandler.Instance.IsRunning;
+                return false;
+                // TODO: Implement this
+                //return NetworkHandler.Instance.IsRunning;
             }
         }
 
@@ -98,7 +94,7 @@ namespace FFXIVAPP.Client {
                 Logging.Log(Logger, new LogItem(ex, true));
             }
 
-            Func<bool> update = delegate {
+            Task.Run(delegate {
                 var current = Assembly.GetExecutingAssembly().GetName().Version.ToString();
                 AppViewModel.Instance.CurrentVersion = current;
                 var httpWebRequest = (HttpWebRequest) WebRequest.Create("https://api.github.com/repos/Icehunter/ffxivapp/releases");
@@ -162,8 +158,7 @@ namespace FFXIVAPP.Client {
                 }
 
                 return true;
-            };
-            update.BeginInvoke(delegate { }, update);
+            });
         }
 
         /// <summary>
@@ -213,9 +208,11 @@ namespace FFXIVAPP.Client {
         /// <summary>
         /// </summary>
         public static void LoadAvailableAudioDevices() {
+            /* TODO: Implement this
             foreach (DirectSoundDeviceInfo device in App.AvailableAudioDevices) {
                 SettingsViewModel.Instance.AvailableAudioDevicesList.Add(device.Description);
             }
+            */
         }
 
         public static void LoadAvailableNetworkDevices() {
@@ -225,13 +222,13 @@ namespace FFXIVAPP.Client {
         }
 
         public static void LoadAvailablePlugins() {
-            UpdateView.View.AvailableLoadingInformation.Visibility = Visibility.Visible;
+            UpdateView.View.AvailableLoadingInformation.IsVisible = false;
             UpdateViewModel.Instance.AvailablePlugins.Clear();
 
-            UpdateView.View.PluginUpdateSpinner.Spin = true;
-            ShellView.View.PluginUpdateSpinner.Spin = true;
+            UpdateView.View.StartSpinner();
+            ShellView.View.StartSpinner();
 
-            Func<bool> update = delegate {
+            Task.Run(delegate {
                 List<PluginSourceItem> pluginSourceList = new List<PluginSourceItem>();
                 try {
                     var httpWebRequest = (HttpWebRequest) WebRequest.Create("https://github.com/Icehunter/ffxivapp/raw/master/PACKAGES.json");
@@ -355,21 +352,26 @@ namespace FFXIVAPP.Client {
 
                 DispatcherHelper.Invoke(
                     delegate {
+                        Logging.Log(Logger, $"TODO: Check Available plugin in datagrid");
+                        /*
+                         TODO: Implement this
+                         DataGrid.Items is an IEnumerable and therfore not able to do an count on...
                         if (UpdateView.View.AvailableDG.Items.Count == UpdateViewModel.Instance.AvailablePlugins.Count) {
-                            UpdateView.View.AvailableLoadingInformation.Visibility = Visibility.Collapsed;
+                            UpdateView.View.AvailableLoadingInformation.IsVisible = false;
                         }
+                        */
 
-                        UpdateView.View.AvailableDG.Items.Refresh();
+                        // TODO: Implement this
+                        //UpdateView.View.AvailableDG.Items.Refresh();
 
                         UpdateViewModel.Instance.SetupGrouping();
 
-                        UpdateView.View.PluginUpdateSpinner.Spin = false;
-                        ShellView.View.PluginUpdateSpinner.Spin = false;
+                        UpdateView.View.StopSpinner();
+                        ShellView.View.StopSpinner();
                     });
 
                 return true;
-            };
-            update.BeginInvoke(delegate { }, update);
+            });
         }
 
         public static void LoadAvailableSources() {
@@ -466,7 +468,7 @@ namespace FFXIVAPP.Client {
         /// <summary>
         /// </summary>
         public static void LoadPlugins() {
-            var pluginsDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Plugins");
+            var pluginsDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Plugins");
             App.Plugins.LoadPlugins(pluginsDirectory);
             foreach (PluginInstance pluginInstance in App.Plugins.Loaded) {
                 TabItemHelper.LoadPluginTabItem(pluginInstance);
@@ -509,11 +511,11 @@ namespace FFXIVAPP.Client {
         /// </summary>
         public static void SetProcessID() {
             StopMemoryWorkers();
-            if (SettingsView.View.PIDSelect.Text == string.Empty) {
+            if (SettingsView.View.PIDSelect.SelectedItem?.ToString() == string.Empty) {
                 return;
             }
 
-            Group ID = Regex.Match(SettingsView.View.PIDSelect.Text, @"\[(?<id>\d+)\]", SharedRegEx.DefaultOptions).Groups["id"];
+            Group ID = Regex.Match(SettingsView.View.PIDSelect?.ToString(), @"\[(?<id>\d+)\]", SharedRegEx.DefaultOptions).Groups["id"];
             UpdateProcessID(Constants.ProcessModels.FirstOrDefault(pm => pm.ProcessID == Convert.ToInt32(ID)));
             StartMemoryWorkers();
         }
@@ -533,15 +535,17 @@ namespace FFXIVAPP.Client {
         /// </summary>
         public static void StartMemoryWorkers() {
             StopMemoryWorkers();
-            var id = SettingsView.View.PIDSelect.Text == string.Empty
+            var id = (SettingsView.View.PIDSelect.SelectedItem?.ToString()??string.Empty) == string.Empty
                          ? GetProcessID()
                          : Constants.ProcessModel.ProcessID;
             Constants.IsOpen = true;
             if (id < 0) {
                 Constants.IsOpen = false;
+                ShellViewModel.UpdateTitle();
                 return;
             }
 
+            ShellViewModel.UpdateTitle();
             MemoryHandler.Instance.ExceptionEvent += MemoryHandler_ExceptionEvent;
             MemoryHandler.Instance.SignaturesFoundEvent += MemoryHandler_SignaturesFoundEvent;
 
@@ -564,6 +568,7 @@ namespace FFXIVAPP.Client {
         }
 
         public static void StartNetworkWorker() {
+            /* TODO: Implement this
             StopNetworkWorker();
 
             NetworkHandler.Instance.ExceptionEvent += NetworkHandler_ExceptionEvent;
@@ -579,6 +584,7 @@ namespace FFXIVAPP.Client {
             NetworkHandler.Instance.SetProcess(config);
 
             NetworkHandler.Instance.StartDecrypting();
+            */
         }
 
         /// <summary>
@@ -621,13 +627,17 @@ namespace FFXIVAPP.Client {
                 _hotBarRecastWorker.StopScanning();
                 _hotBarRecastWorker.Dispose();
             }
+
+            ShellViewModel.UpdateTitle();
         }
 
         public static void StopNetworkWorker() {
+            /* TODO: Implement this
             NetworkHandler.Instance.ExceptionEvent -= NetworkHandler_ExceptionEvent;
             NetworkHandler.Instance.NewNetworkPacketEvent -= NetworkHandler_NewPacketEvent;
 
             NetworkHandler.Instance.StopDecrypting();
+            */
         }
 
         public static void UpdatePluginConstants() {
@@ -664,13 +674,29 @@ namespace FFXIVAPP.Client {
                     });
             }
 
+            Constants.ProcessModels = new List<ProcessModel>();
+            foreach (Process process in Process.GetProcessesByName("ffxiv.exe")) {
+                Constants.ProcessModels.Add(
+                    new ProcessModel {
+                        Process = process,
+                    });
+            }
+
+            foreach (Process process in Process.GetProcessesByName("ffxiv_dx11.exe")) {
+                Constants.ProcessModels.Add(
+                    new ProcessModel {
+                        Process = process,
+                        IsWin64 = true,
+                    });
+            }
+
             if (Constants.ProcessModels.Any()) {
                 Constants.IsOpen = true;
                 foreach (ProcessModel processModel in Constants.ProcessModels) {
                     var platform = processModel.IsWin64
                                        ? "64-Bit"
                                        : "32-Bit";
-                    SettingsView.View.PIDSelect.Items.Add($"[{processModel.Process.Id}] - {platform}");
+                    SettingsViewModel.Instance.PIDSelectItems.Add($"[{processModel.Process.Id}] - {platform}");
                 }
 
                 SettingsView.View.PIDSelect.SelectedIndex = 0;
@@ -692,6 +718,7 @@ namespace FFXIVAPP.Client {
             }
         }
 
+        /* TODO: Implement this
         private static void NetworkHandler_ExceptionEvent(object sender, Machina.Events.ExceptionEvent e) {
             Logging.Log(e.Logger, new LogItem(e.Exception, e.LevelIsError));
         }
@@ -708,6 +735,7 @@ namespace FFXIVAPP.Client {
                     PacketDate = packet.PacketDate,
                 });
         }
+        */
 
         /// <summary>
         /// </summary>

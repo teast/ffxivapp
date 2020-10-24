@@ -8,27 +8,31 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FFXIVAPP.Client.SettingsProviders.Application {
-    using System;
-    using System.Collections.Generic;
+namespace FFXIVAPP.Client.SettingsProviders.Application
+{
     using System.ComponentModel;
-    using System.Configuration;
-    using System.Drawing;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Runtime.CompilerServices;
-    using System.Windows.Media;
-    using System.Xml.Linq;
-
-    using FFXIVAPP.Client.Models;
-    using FFXIVAPP.Client.ViewModels;
-    using FFXIVAPP.Common.Helpers;
-    using FFXIVAPP.Common.Models;
-    using FFXIVAPP.Common.Utilities;
 
     using NLog;
+    using SettingsData = FFXIVAPP.Client.Properties.Settings;
 
+    internal class Settings
+    {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        private static SettingsData _default;
+
+        public new event PropertyChangedEventHandler PropertyChanged = delegate { };
+
+        public static SettingsData Default {
+            get {
+                //return _default ?? (_default = (Settings) Synchronized(new Settings()));
+                return _default ?? (_default = new SettingsData());
+            }
+        }
+
+    }
+
+/*
     using ColorConverter = System.Windows.Media.ColorConverter;
     using FontFamily = System.Drawing.FontFamily;
 
@@ -184,4 +188,5 @@ namespace FFXIVAPP.Client.SettingsProviders.Application {
             }
         }
     }
+*/    
 }

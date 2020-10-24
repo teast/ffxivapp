@@ -8,19 +8,20 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FFXIVAPP.Client.ViewModels {
+namespace FFXIVAPP.Client.ViewModels
+{
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.ComponentModel;
-    using System.ComponentModel.Composition;
     using System.IO;
     using System.Linq;
     using System.Net;
     using System.Net.Cache;
     using System.Runtime.CompilerServices;
     using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
     using System.Web;
-    using System.Windows;
     using System.Windows.Input;
 
     using FFXIVAPP.Client.Helpers;
@@ -33,11 +34,9 @@ namespace FFXIVAPP.Client.ViewModels {
 
     using HtmlAgilityPack;
 
-    using MahApps.Metro.Controls;
-
     using NLog;
 
-    [Export(typeof(SettingsViewModel)),]
+    // TODO: needed? [Export(typeof(SettingsViewModel)),]
     internal sealed class SettingsViewModel : INotifyPropertyChanged {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -54,6 +53,8 @@ namespace FFXIVAPP.Client.ViewModels {
         private List<string> _homePluginList;
 
         public SettingsViewModel() {
+            this.ColorsItems = new ObservableCollection<string>();
+            this.PIDSelectItems = new ObservableCollection<string>();
             this.RefreshNetworkWorkerCommand = new DelegateCommand(RefreshNetworkWorker);
             this.RefreshMemoryWorkersCommand = new DelegateCommand(RefreshMemoryWorkers);
             this.SetProcessCommand = new DelegateCommand(SetProcess);
@@ -114,6 +115,9 @@ namespace FFXIVAPP.Client.ViewModels {
 
         public ICommand GetCICUIDCommand { get; private set; }
 
+        public ObservableCollection<string> ColorsItems { get; }
+        public ObservableCollection<string> PIDSelectItems { get; }
+
         public List<string> HomePluginList {
             get {
                 return this._homePluginList ?? (this._homePluginList = new List<string>(Settings.Default.HomePluginList.Cast<string>().ToList()));
@@ -148,9 +152,11 @@ namespace FFXIVAPP.Client.ViewModels {
         /// <summary>
         /// </summary>
         private static void ChangeTheme() {
+            /* TODO: Implement this
             List<MetroWindow> windows = (from object window in Application.Current.Windows
                                          select window as MetroWindow).ToList();
             ThemeHelper.ChangeTheme(Settings.Default.Theme, windows);
+            */
         }
 
         /// <summary>
@@ -212,7 +218,7 @@ namespace FFXIVAPP.Client.ViewModels {
 
                 return cicuid;
             };
-            lodestoneRender.BeginInvoke(LodestoneCallBack, lodestoneRender);
+            Task.Run(() => LodestoneCallBack(Task.Run(() => lodestoneRender())));
         }
 
         /// <summary>
@@ -231,7 +237,7 @@ namespace FFXIVAPP.Client.ViewModels {
         /// <summary>
         /// </summary>
         private static void RefreshList() {
-            SettingsView.View.PIDSelect.Items.Clear();
+            SettingsViewModel.Instance.PIDSelectItems.Clear();
             Initializer.StopMemoryWorkers();
             Initializer.ResetProcessID();
             Initializer.StartMemoryWorkers();
@@ -267,7 +273,6 @@ namespace FFXIVAPP.Client.ViewModels {
             }
 
             Constants.Colors[_key][0] = _value;
-            SettingsView.View.Colors.Items.Refresh();
         }
 
         private void RaisePropertyChanged([CallerMemberName,] string caller = "") {
