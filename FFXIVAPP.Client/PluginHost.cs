@@ -326,8 +326,19 @@ namespace FFXIVAPP.Client {
         /// <param name="assemblyPath"></param>
         private void VerifyPlugin(string assemblyPath) {
             try {
+                var pdb = Path.ChangeExtension(assemblyPath, "pdb");
                 byte[] bytes = File.ReadAllBytes(assemblyPath);
-                Assembly pAssembly = Assembly.Load(bytes);
+                Assembly pAssembly = null;
+                
+                if (File.Exists(pdb))
+                {
+                    pAssembly = Assembly.Load(bytes, File.ReadAllBytes(pdb));
+                }
+                else
+                {
+                    pAssembly = Assembly.Load(bytes);
+                }
+
                 Type pType = pAssembly.GetType(pAssembly.GetName().Name + ".Plugin");
                 var implementsIPlugin = typeof(IPlugin).IsAssignableFrom(pType);
                 if (!implementsIPlugin) {

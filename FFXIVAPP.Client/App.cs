@@ -87,9 +87,6 @@ namespace FFXIVAPP.Client
 
             try
             {
-                // Kickstart bootstrapper...
-                var p = AppBootstrapper.Instance;
-
                 AppBuilder.Configure<App>()
                                 .UsePlatformDetect()
                                 .LogToDebug()

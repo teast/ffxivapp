@@ -94,6 +94,15 @@ namespace FFXIVAPP.Client
             AvaloniaXamlLoader.Load(this);
         }
 
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+            // TODO: Kickstart bootstrapper...
+            System.Threading.Tasks.Task.Run(() => AppBootstrapper.Instance);
+            //var p = AppBootstrapper.Instance;
+        }
+
         public bool IsRendered { get; set; }
 
         /// <summary>
@@ -105,11 +114,10 @@ namespace FFXIVAPP.Client
                 pluginInstance.Instance.Dispose(update);
             }
 
-            Func<bool> export = () => SavedlLogsHelper.SaveCurrentLog(false);
-            export.BeginInvoke(
-                delegate {
-                    CloseDelegate(update);
-                }, export);
+            System.Threading.Tasks.Task.Run(() => {
+                SavedlLogsHelper.SaveCurrentLog(false);
+                CloseDelegate(update);
+            });
         }
 
         /// <summary>

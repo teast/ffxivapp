@@ -14,12 +14,14 @@ namespace FFXIVAPP.Client.Helpers
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using System.Threading;
     using Avalonia;
     using Avalonia.Controls;
     using Avalonia.Layout;
     using Avalonia.Media.Imaging;
     using FFXIVAPP.Client.Models;
     using FFXIVAPP.Client.ViewModels;
+    using FFXIVAPP.Common.Helpers;
     using FFXIVAPP.Common.Models;
     using FFXIVAPP.Common.Utilities;
     using FFXIVAPP.ResourceFiles;
@@ -35,7 +37,6 @@ namespace FFXIVAPP.Client.Helpers
         /// <param name="name"> </param>
         /// <returns> </returns>
         public static StackPanel ImageHeader(Bitmap image, string name) {
-            var dataTemplate = new StackPanel();
             var stackPanelFactory = new StackPanel { Orientation = Orientation.Horizontal };
             var imageFactory = new Image { 
                 Width = 24,
@@ -58,7 +59,7 @@ namespace FFXIVAPP.Client.Helpers
 
             stackPanelFactory.Children.Add(imageFactory);
             stackPanelFactory.Children.Add(labelFactory);
-            return dataTemplate;
+            return stackPanelFactory;
         }
 
         public static void LoadPluginTabItem(PluginInstance pluginInstance) {
@@ -73,15 +74,32 @@ namespace FFXIVAPP.Client.Helpers
                 }
 
                 SettingsViewModel.Instance.HomePluginList.Add(pluginName);
-                TabItem tabItem = pluginInstance.Instance.CreateTab();
-                tabItem.Name = Regex.Replace(pluginInstance.Instance.Name, @"[^A-Za-z]", string.Empty);
-                var iconfile = $"{Path.GetDirectoryName(pluginInstance.AssemblyPath)}\\{pluginInstance.Instance.Icon}";
-                Bitmap icon = Theme.DefaultPluginLogo;
-                icon = File.Exists(iconfile)
-                           ? ImageUtilities.LoadImageFromStream(iconfile)
-                           : icon;
-                tabItem.Header = ImageHeader(icon, pluginInstance.Instance.FriendlyName);
-                AppViewModel.Instance.PluginTabItems.Add(tabItem);
+                TabItem tabItem = null;
+                var creater = new AutoResetEvent(false);
+                DispatcherHelper.Invoke(() => {
+                    try
+                    {
+                        tabItem = pluginInstance.Instance.CreateTab();
+                        tabItem.Name = Regex.Replace(pluginInstance.Instance.Name, @"[^A-Za-z]", string.Empty);
+                        var iconfile = Path.Combine(Path.GetDirectoryName(pluginInstance.AssemblyPath), pluginInstance.Instance.Icon);
+                        Bitmap icon = Theme.DefaultPluginLogo;
+                        icon = File.Exists(iconfile)
+                                ? ImageUtilities.LoadImageFromStream(iconfile)
+                                : icon;
+                        tabItem.Header = ImageHeader(icon, pluginInstance.Instance.FriendlyName);
+                    }
+                    catch (Exception ex) {
+                        Logging.Log(Logger, new LogItem(ex, true));
+                    }
+                    finally
+                    {
+                        creater.Set();
+                    }
+                });
+
+                creater.WaitOne();
+                if (tabItem != null)
+                    AppViewModel.Instance.PluginTabItems.Add(tabItem);
             }
             catch (Exception ex) {
                 Logging.Log(Logger, new LogItem(ex, true));
