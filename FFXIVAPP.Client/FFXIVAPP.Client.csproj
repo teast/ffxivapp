@@ -44,6 +44,12 @@
     <PackageReference Include="NLog" Version="4.7.5" />
     <PackageReference Include="NLog.Config" Version="4.7.5" />
     <PackageReference Include="NLog.Schema" Version="4.7.5" />
+
+    <!-- TODO: This are in TeastParse and is only here because I have not solved how to load 3rd party dependencies on plugins...-->
+    <PackageReference Include="System.Data.SQLite" Version="1.0.113.1"/>
+    <PackageReference Include="Dapper" Version="2.0.35"/>
+    <PackageReference Include="Serilog" Version="2.10.0"/>
+    <PackageReference Include="Svg.Skia.Avalonia" Version="0.10.0-preview7"/>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ffxivapp-common\FFXIVAPP.Common\FFXIVAPP.Common.csproj" />

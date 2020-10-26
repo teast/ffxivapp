@@ -14,7 +14,7 @@ namespace FFXIVAPP.Client {
     using System.ComponentModel;
     using System.Globalization;
     using System.Runtime.CompilerServices;
-
+    using FFXIVAPP.Client.Helpers;
     using FFXIVAPP.Client.Models;
     using FFXIVAPP.Common.Utilities;
     using FFXIVAPP.ResourceFiles;
@@ -127,6 +127,7 @@ namespace FFXIVAPP.Client {
             Initializer.LoadAvailableNetworkDevices();
             Initializer.LoadSoundsIntoCache();
             Initializer.LoadPlugins();
+            ConstantsHelper.UpdatePluginConstants(); // Make sure all loaded plugins gets a fresh setup of constants...
         }
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
