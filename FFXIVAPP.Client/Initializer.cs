@@ -269,7 +269,7 @@ namespace FFXIVAPP.Client
                     Logging.Log(Logger, new LogItem(ex, true));
                 }
 
-                foreach (PluginSourceItem pluginSourceItem in UpdateViewModel.Instance.AvailableSources) {
+                foreach (PluginSourceItem pluginSourceItem in Settings.Default.AvailableSources) {
                     if (pluginSourceList.Any(p => string.Equals(p.SourceURI, pluginSourceItem.SourceURI, Constants.InvariantComparer))) {
                         continue;
                     }
@@ -352,18 +352,9 @@ namespace FFXIVAPP.Client
 
                 DispatcherHelper.Invoke(
                     delegate {
-                        Logging.Log(Logger, $"TODO: Check Available plugin in datagrid");
-                        /*
-                         TODO: Implement this, Available plugin
-                         DataGrid.Items is an IEnumerable and therfore not able to do an count on...
-                        if (UpdateView.View.AvailableDG.Items.Count == UpdateViewModel.Instance.AvailablePlugins.Count) {
+                        if (UpdateViewModel.Instance.AvailablePlugins.Count == UpdateViewModel.Instance.AvailablePlugins.Count) {
                             UpdateView.View.AvailableLoadingInformation.IsVisible = false;
                         }
-
-                        UpdateView.View.AvailableDG.Items.Refresh();
-                        */
-
-                        UpdateViewModel.Instance.SetupGrouping();
 
                         UpdateView.View.StopSpinner();
                         ShellView.View.StopSpinner();
@@ -405,9 +396,9 @@ namespace FFXIVAPP.Client
                         SourceURI = xSourceURI,
                         Enabled = xEnabled,
                     };
-                    var found = UpdateViewModel.Instance.AvailableSources.Any(source => source.Key == pluginSourceItem.Key);
+                    var found = Settings.Default.AvailableSources.Any(source => source.Key == pluginSourceItem.Key);
                     if (!found) {
-                        UpdateViewModel.Instance.AvailableSources.Add(pluginSourceItem);
+                        Settings.Default.AvailableSources.Add(pluginSourceItem);
                     }
                 }
             }

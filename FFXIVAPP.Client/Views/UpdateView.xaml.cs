@@ -44,10 +44,11 @@ namespace FFXIVAPP.Client.Views
             AvailableLoadingInformation = this.FindControl<Grid>("AvailableLoadingInformation");
             AvailableLoadingProgressMessage = this.FindControl<TextBlock>("AvailableLoadingProgressMessage");
             AvailableDG = this.FindControl<DataGrid>("AvailableDG");
+            PluginSourceDG = this.FindControl<DataGrid>("PluginSourceDG");
             StatusInfo = this.FindControl<TextBlock>("StatusInfo");
             PluginUpdateSpinner = this.FindControl<Image>("PluginUpdateSpinner");
             TSource = this.FindControl<TextBox>("TSource");
-
+            
             // To spin the refresh icon
             var rotate = (RotateTransform)PluginUpdateSpinner.RenderTransform;
             _spinner = new Timer(25);

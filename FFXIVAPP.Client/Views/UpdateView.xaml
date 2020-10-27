@@ -88,43 +88,6 @@
                                           MouseAction="LeftDoubleClick" />
                         </DataGrid.InputBindings>
                         -->
-                            <!--  Style for groups at top level.  -->
-                        <!-- TODO: Implement this, GroupStyle on DataGrid
-                        <DataGrid.GroupStyle>
-                            <GroupStyle>
-                                <GroupStyle.ContainerStyle>
-                                    <Style TargetType="{x:Type GroupItem}">
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                    <Expander Header="{Binding ElementName=StatusInfo, Path=Text}"
-                                                              HeaderTemplate="{StaticResource PluginHeaderTemplate}"
-                                                              IsExpanded="True">
-                                                        <Expander.Content>
-                                                            <StackPanel>
-                                                                <TextBlock x:Name="StatusInfo"
-                                                                           Padding="5"
-                                                                           IsVisible="False">
-                                                                    <TextBlock.Text>
-                                                                        <MultiBinding
-                                                                            Converter="{StaticResource NameMultiValueConverter}">
-                                                                            <Binding Path="Name" />
-                                                                            <Binding Path="ItemCount" />
-                                                                        </MultiBinding>
-                                                                    </TextBlock.Text>
-                                                                </TextBlock>
-                                                                <ItemsPresenter />
-                                                            </StackPanel>
-                                                        </Expander.Content>
-                                                    </Expander>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </GroupStyle.ContainerStyle>
-                            </GroupStyle>
-                        </DataGrid.GroupStyle>
-                        -->
                         <DataGrid.Columns>
                             <DataGridTextColumn SortMemberPath="FriendlyName" Binding="{Binding FriendlyName}">
                                 <DataGridTextColumn.Header>
@@ -207,7 +170,7 @@
                                   AutoGenerateColumns="False"
                                   BorderBrush="{DynamicResource AccentColorBrush}"
                                   BorderThickness="1"
-                                  Items="{Binding AvailableSources}"
+                                  Items="{Binding AvailableSources, Source={x:Static Properties:Settings.Default}}"
                                   SelectionMode="Single">
                             <DataGrid.Columns>
                                 <DataGridCheckBoxColumn SortMemberPath="Enabled"

@@ -18,6 +18,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+using FFXIVAPP.Client.Models;
 using Newtonsoft.Json;
 
 namespace FFXIVAPP.Client.Properties
@@ -69,9 +70,16 @@ namespace FFXIVAPP.Client.Properties
         private bool _saveLog;
         private ObservableCollection<string> _gameLanguageList;
         private ObservableCollection<string> _serverList;
+        private ObservableCollection<PluginSourceItem> _availableSources;
         #endregion
 
         #region Properties
+        public ObservableCollection<PluginSourceItem> AvailableSources
+        {
+            get => _availableSources;
+            set => Set(ref _availableSources, value);
+        }
+
         public bool EnableNLog
         {
             get => _enableNLog;
@@ -233,6 +241,7 @@ namespace FFXIVAPP.Client.Properties
 
             GameLanguageList = new ObservableCollection<string>();
             ServerList = new ObservableCollection<string>();
+            AvailableSources = new ObservableCollection<PluginSourceItem>();
 
             Reset();
         }

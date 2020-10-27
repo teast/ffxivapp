@@ -26,6 +26,7 @@ namespace FFXIVAPP.Client.ViewModels
     using Avalonia.Controls;
     using Avalonia.Threading;
     using FFXIVAPP.Client.Models;
+    using FFXIVAPP.Client.Properties;
     using FFXIVAPP.Client.Utilities;
     using FFXIVAPP.Client.Views;
     using FFXIVAPP.Common.Helpers;
@@ -43,8 +44,6 @@ namespace FFXIVAPP.Client.ViewModels
         private ObservableCollection<PluginDownloadItem> _availablePlugins;
 
         private int _availablePluginUpdates;
-
-        private ObservableCollection<PluginSourceItem> _availableSources;
 
         public UpdateViewModel() {
             this.RefreshAvailableCommand = new DelegateCommand(RefreshAvailable);
@@ -90,17 +89,6 @@ namespace FFXIVAPP.Client.ViewModels
             }
         }
 
-        public ObservableCollection<PluginSourceItem> AvailableSources {
-            get {
-                return this._availableSources ?? (this._availableSources = new ObservableCollection<PluginSourceItem>());
-            }
-
-            set {
-                this._availableSources = value;
-                this.RaisePropertyChanged();
-            }
-        }
-
         public ICommand DeleteSourceCommand { get; private set; }
 
         public ICommand InstallCommand { get; private set; }
@@ -110,17 +98,6 @@ namespace FFXIVAPP.Client.ViewModels
         public ICommand SourceSelectionCommand { get; private set; }
 
         public ICommand UnInstallCommand { get; private set; }
-
-        public void SetupGrouping() {
-            Logging.Log(Logger, $"TODO: SetupGrouping called");
-            /* TODO: Implement this, Grouping
-            ICollectionView cvEvents = CollectionViewSource.GetDefaultView(UpdateView.View.AvailableDG.ItemsSource);
-            if (cvEvents != null && cvEvents.CanGroup) {
-                cvEvents.GroupDescriptions.Clear();
-                cvEvents.GroupDescriptions.Add(new PropertyGroupDescription("Status"));
-            }
-            */
-        }
 
         /// <summary>
         /// </summary>
@@ -145,12 +122,12 @@ namespace FFXIVAPP.Client.ViewModels
             };
             if (selectedId == Guid.Empty) {
                 pluginSourceItem.Key = Guid.NewGuid();
-                Instance.AvailableSources.Add(pluginSourceItem);
+                Settings.Default.AvailableSources.Add(pluginSourceItem);
             }
             else {
                 pluginSourceItem.Key = selectedId;
-                var index = Instance.AvailableSources.TakeWhile(source => source.Key != selectedId).Count();
-                Instance.AvailableSources[index] = pluginSourceItem;
+                var index = Settings.Default.AvailableSources.TakeWhile(source => source.Key != selectedId).Count();
+                Settings.Default.AvailableSources[index] = pluginSourceItem;
             }
 
             UpdateView.View.PluginSourceDG.SelectedIndex = -1;
@@ -195,8 +172,8 @@ namespace FFXIVAPP.Client.ViewModels
                 return;
             }
 
-            var index = Instance.AvailableSources.TakeWhile(source => source.Key.ToString() != key).Count();
-            Instance.AvailableSources.RemoveAt(index);
+            var index = Settings.Default.AvailableSources.TakeWhile(source => source.Key.ToString() != key).Count();
+            Settings.Default.AvailableSources.RemoveAt(index);
         }
 
         /// <summary>
@@ -267,7 +244,6 @@ namespace FFXIVAPP.Client.ViewModels
                                             delegate {
                                                 if (plugin.Status != PluginStatus.Installed) {
                                                     plugin.Status = PluginStatus.Installed;
-                                                    Instance.SetupGrouping();
                                                     if (asyncAction != null) {
                                                         DispatcherHelper.Invoke(asyncAction);
                                                     }
@@ -291,7 +267,6 @@ namespace FFXIVAPP.Client.ViewModels
                 if (updateCount >= updateLimit) {
                     if (plugin.Status != PluginStatus.Installed) {
                         plugin.Status = PluginStatus.Installed;
-                        Instance.SetupGrouping();
                         if (asyncAction != null) {
                             DispatcherHelper.Invoke(asyncAction);
                         }
@@ -342,34 +317,27 @@ namespace FFXIVAPP.Client.ViewModels
                 return;
             }
 
-            Func<bool> uninstall = delegate {
-                try {
-                    var saveLocation = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Plugins", plugin.Name);
-                    Directory.Delete(saveLocation, true);
-                }
-                catch (Exception ex) {
-                    Logging.Log(Logger, new LogItem(ex, true));
-                }
-
-                return true;
-            };
-            uninstall.BeginInvoke(
+            DispatcherHelper.Invoke(
                 delegate {
-                    DispatcherHelper.Invoke(
-                        delegate {
-                            foreach (PluginDownloadItem pluginDownloadItem in Instance.AvailablePlugins.Where(pluginDownloadItem => string.Equals(pluginDownloadItem.Name, plugin.Name))) {
-                                pluginDownloadItem.Status = PluginStatus.NotInstalled;
-                            }
+                    foreach (PluginDownloadItem pluginDownloadItem in Instance.AvailablePlugins.Where(pluginDownloadItem => string.Equals(pluginDownloadItem.Name, plugin.Name))) {
+                        pluginDownloadItem.Status = PluginStatus.NotInstalled;
+                    }
 
-                            Instance.SetupGrouping();
-                            PluginHost.Instance.UnloadPlugin(plugin.Name);
-                            for (var i = ShellView.View.PluginsTCItems.Count - 1; i > 0; i--) {
-                                if ((ShellView.View.PluginsTCItems[i]).Name == Regex.Replace(plugin.Name, @"[^A-Za-z]", string.Empty)) {
-                                    AppViewModel.Instance.PluginTabItems.RemoveAt(i);
-                                }
-                            }
-                        }, DispatcherPriority.Send);
-                }, uninstall);
+                    PluginHost.Instance.UnloadPlugin(plugin.Name);
+                    for (var i = ShellView.View.PluginsTCItems.Count - 1; i > 0; i--) {
+                        if ((ShellView.View.PluginsTCItems[i]).Name == Regex.Replace(plugin.Name, @"[^A-Za-z]", string.Empty)) {
+                            AppViewModel.Instance.PluginTabItems.RemoveAt(i);
+                        }
+                    }
+
+                    try {
+                        var saveLocation = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Plugins", plugin.Name);
+                        Directory.Delete(saveLocation, true);
+                    }
+                    catch (Exception ex) {
+                        Logging.Log(Logger, new LogItem(ex, true));
+                    }
+            }, DispatcherPriority.Send);
         }
 
         private void RaisePropertyChanged([CallerMemberName,] string caller = "") {
