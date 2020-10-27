@@ -511,11 +511,11 @@ namespace FFXIVAPP.Client
         /// </summary>
         public static void SetProcessID() {
             StopMemoryWorkers();
-            if (SettingsView.View.PIDSelect.SelectedItem?.ToString() == string.Empty) {
+            if ((SettingsViewModel.Instance.PIDSelectedItem??string.Empty) == string.Empty) {
                 return;
             }
 
-            Group ID = Regex.Match(SettingsView.View.PIDSelect?.ToString(), @"\[(?<id>\d+)\]", SharedRegEx.DefaultOptions).Groups["id"];
+            Group ID = Regex.Match(SettingsViewModel.Instance.PIDSelectedItem, @"\[(?<id>\d+)\]", SharedRegEx.DefaultOptions).Groups["id"];
             UpdateProcessID(Constants.ProcessModels.FirstOrDefault(pm => pm.ProcessID == Convert.ToInt32(ID)));
             StartMemoryWorkers();
         }
@@ -535,7 +535,7 @@ namespace FFXIVAPP.Client
         /// </summary>
         public static void StartMemoryWorkers() {
             StopMemoryWorkers();
-            var id = (SettingsView.View.PIDSelect.SelectedItem?.ToString()??string.Empty) == string.Empty
+            var id = (SettingsViewModel.Instance.PIDSelectedItem??string.Empty) == string.Empty
                          ? GetProcessID()
                          : Constants.ProcessModel.ProcessID;
             Constants.IsOpen = true;
@@ -699,7 +699,7 @@ namespace FFXIVAPP.Client
                     SettingsViewModel.Instance.PIDSelectItems.Add($"[{processModel.Process.Id}] - {platform}");
                 }
 
-                SettingsView.View.PIDSelect.SelectedIndex = 0;
+                SettingsViewModel.Instance.PIDSelectedItem = SettingsViewModel.Instance.PIDSelectItems.FirstOrDefault();
                 UpdateProcessID(Constants.ProcessModels.First());
                 return Constants.ProcessModels.First().Process.Id;
             }

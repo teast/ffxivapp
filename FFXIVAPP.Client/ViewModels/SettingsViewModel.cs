@@ -51,6 +51,7 @@ namespace FFXIVAPP.Client.ViewModels
         private List<string> _availableNetworkInterfacesList;
 
         private List<string> _homePluginList;
+        private string _pidSelectedItem;
 
         public SettingsViewModel() {
             this.ColorsItems = new ObservableCollection<string>();
@@ -117,6 +118,17 @@ namespace FFXIVAPP.Client.ViewModels
 
         public ObservableCollection<string> ColorsItems { get; }
         public ObservableCollection<string> PIDSelectItems { get; }
+
+        public string PIDSelectedItem
+        {
+            get => _pidSelectedItem;
+            set {
+                if (_pidSelectedItem == value)
+                    return;
+                _pidSelectedItem = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public List<string> HomePluginList {
             get {

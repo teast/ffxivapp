@@ -14,8 +14,11 @@ namespace FFXIVAPP.Client {
     using System.ComponentModel;
     using System.Globalization;
     using System.Runtime.CompilerServices;
+    using System.Threading.Tasks;
     using FFXIVAPP.Client.Helpers;
     using FFXIVAPP.Client.Models;
+    using FFXIVAPP.Client.Properties;
+    using FFXIVAPP.Common.Helpers;
     using FFXIVAPP.Common.Utilities;
     using FFXIVAPP.ResourceFiles;
 
@@ -128,6 +131,38 @@ namespace FFXIVAPP.Client {
             Initializer.LoadSoundsIntoCache();
             Initializer.LoadPlugins();
             ConstantsHelper.UpdatePluginConstants(); // Make sure all loaded plugins gets a fresh setup of constants...
+
+            // Where earlier located in ShellView "OnLoaded"
+            if (string.IsNullOrWhiteSpace(Settings.Default.UILanguage)) {
+                Settings.Default.UILanguage = Settings.Default.GameLanguage;
+            }
+            else {
+                LocaleHelper.Update(Settings.Default.Culture);
+            }
+
+            DispatcherHelper.Invoke(
+                delegate {
+                    Initializer.LoadAvailableSources();
+                    Initializer.LoadAvailablePlugins();
+                    Initializer.CheckUpdates();
+                    Initializer.SetGlobals();
+                });
+
+            Initializer.GetHomePlugin();
+            Initializer.UpdatePluginConstants();
+
+            Task.Run(() => {
+                    Initializer.StartMemoryWorkers();
+                    if (Settings.Default.EnableNetworkReading && !Initializer.NetworkWorking) {
+                        Initializer.StartNetworkWorker();
+                    }
+            });
+
+            /* TODO: Implement this
+            ThemeHelper.ChangeTheme(Settings.Default.Theme, null);
+            AppViewModel.Instance.NotifyIcon.Text = "FFXIVAPP";
+            AppViewModel.Instance.NotifyIcon.ContextMenu.MenuItems[0].Enabled = false;
+            */
         }
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };

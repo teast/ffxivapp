@@ -103,8 +103,6 @@ namespace FFXIVAPP.Client
             //var p = AppBootstrapper.Instance;
         }
 
-        public bool IsRendered { get; set; }
-
         /// <summary>
         /// </summary>
         /// <param name="update"></param>
@@ -154,47 +152,6 @@ namespace FFXIVAPP.Client
             e.Cancel = true;
             DispatcherHelper.Invoke(() => CloseApplication(), DispatcherPriority.Send);
             base.OnClosing(e);
-        }
-        public override void EndInit()
-        {
-            base.EndInit();
-
-            if (this.IsRendered) {
-                return;
-            }
-
-            this.IsRendered = true;
-
-            if (string.IsNullOrWhiteSpace(Settings.Default.UILanguage)) {
-                Settings.Default.UILanguage = Settings.Default.GameLanguage;
-            }
-            else {
-                LocaleHelper.Update(Settings.Default.Culture);
-            }
-
-            DispatcherHelper.Invoke(
-                delegate {
-                    Initializer.LoadAvailableSources();
-                    Initializer.LoadAvailablePlugins();
-                    Initializer.CheckUpdates();
-                    Initializer.SetGlobals();
-
-                    Initializer.StartMemoryWorkers();
-                    if (Settings.Default.EnableNetworkReading && !Initializer.NetworkWorking) {
-                        Initializer.StartNetworkWorker();
-                    }
-                });
-
-            Initializer.GetHomePlugin();
-            Initializer.UpdatePluginConstants();
-
-            View.Topmost = Settings.Default.TopMost;
-
-            /* TODO: Implement this
-            ThemeHelper.ChangeTheme(Settings.Default.Theme, null);
-            AppViewModel.Instance.NotifyIcon.Text = "FFXIVAPP";
-            AppViewModel.Instance.NotifyIcon.ContextMenu.MenuItems[0].Enabled = false;
-            */
         }
 
         internal void StartSpinner()

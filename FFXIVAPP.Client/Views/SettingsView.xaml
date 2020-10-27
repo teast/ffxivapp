@@ -62,7 +62,7 @@
                                            Text="{Binding Locale[app_ProcessSelectedInfo], Source={x:Static Client:AppViewModel.Instance}}"
                                            TextWrapping="WrapWithOverflow"
                                            IsVisible="{Binding EnableHelpLabels, Source={x:Static Properties:Settings.Default}}" />
-                                <ComboBox x:Name="PIDSelect" Margin="5" Items="{Binding PIDSelectItems}" />
+                                <ComboBox x:Name="PIDSelect" Margin="5" Items="{Binding PIDSelectItems}" SelectedItem="{Binding PIDSelectedItem}" />
                                 <Button x:Name="SetProcess"
                                         Margin="5"
                                         Command="{Binding SetProcessCommand}"
