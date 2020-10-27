@@ -100,7 +100,6 @@ namespace FFXIVAPP.Client
 
             // TODO: Kickstart bootstrapper...
             System.Threading.Tasks.Task.Run(() => AppBootstrapper.Instance);
-            //var p = AppBootstrapper.Instance;
         }
 
         /// <summary>
@@ -122,7 +121,7 @@ namespace FFXIVAPP.Client
         /// </summary>
         /// <param name="update"></param>
         private static void CloseDelegate(bool update = false) {
-            // TODO: Implement this
+            // TODO: Implement this, NotifyIcon
             //AppViewModel.Instance.NotifyIcon.Visible = false;
             if (update) {
                 try {
@@ -166,7 +165,7 @@ namespace FFXIVAPP.Client
             DispatcherHelper.Invoke(() => rotate.Angle = 0);
         }
 
-        /* TODO: Implement this
+        /* TODO: Implement this, NotifyIcon
         private void MetroWindowStateChanged(object sender, EventArgs e) {
             switch (View.WindowState) {
                 case WindowState.Minimized:

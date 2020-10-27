@@ -28,7 +28,6 @@ namespace FFXIVAPP.Client
     using Sharlayan.Core;
     using Sharlayan.Models;
 
-    // TODO: needed? [Export(typeof(AppViewModel)),]
     internal sealed class AppViewModel : INotifyPropertyChanged {
         private static bool _hasPlugins;
 
@@ -54,7 +53,7 @@ namespace FFXIVAPP.Client
 
         private string _logsPath;
 
-        // TODO: Implement this
+        // TODO: Implement this, NotifyIcon
         //private NotifyIcon _notifyIcon;
 
         private string _pluginsSettingsPath;
@@ -230,7 +229,7 @@ namespace FFXIVAPP.Client
             }
         }
 
-        /* TODO: Implement this
+        /* TODO: Implement this, NotifyIcon
         public NotifyIcon NotifyIcon {
             get {
                 if (this._notifyIcon == null) {
@@ -367,25 +366,6 @@ namespace FFXIVAPP.Client
             }
         }
 
-        /* TODO: Implement this
-        public Style TabControlCollapsedHeader {
-            get {
-                if (this._tabControlCollapsedHeader == null) {
-                    var s = new Style();
-                    s.Setters.Add(new Setter(UIElement.VisibilityProperty, Visibility.Collapsed));
-                    this._tabControlCollapsedHeader = s;
-                }
-
-                return this._tabControlCollapsedHeader;
-            }
-
-            set {
-                this._tabControlCollapsedHeader = value;
-                this.RaisePropertyChanged();
-            }
-        }
-        */
-
         public ObservableCollection<UILanguage> UILanguages {
             get {
                 return this._uiLanguages ?? (this._uiLanguages = new ObservableCollection<UILanguage>());
@@ -416,7 +396,7 @@ namespace FFXIVAPP.Client
             DispatcherHelper.Invoke(() => ShellView.CloseApplication(), DispatcherPriority.Send);
         }
 
-        /* TODO: Implement this
+        /* TODO: Implement this, NotifyIcon
         private static void NotifyIconOnMouseDoubleClick(object sender, MouseEventArgs mouseEventArgs) {
             ShellView.View.WindowState = WindowState.Normal;
             ShellView.View.Topmost = true;

@@ -36,7 +36,6 @@ namespace FFXIVAPP.Client.ViewModels
 
     using NLog;
 
-    // TODO: needed? [Export(typeof(SettingsViewModel)),]
     internal sealed class SettingsViewModel : INotifyPropertyChanged {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -164,7 +163,7 @@ namespace FFXIVAPP.Client.ViewModels
         /// <summary>
         /// </summary>
         private static void ChangeTheme() {
-            /* TODO: Implement this
+            /* TODO: Implement this, Theme
             List<MetroWindow> windows = (from object window in Application.Current.Windows
                                          select window as MetroWindow).ToList();
             ThemeHelper.ChangeTheme(Settings.Default.Theme, windows);

@@ -16,11 +16,6 @@
              d:DesignWidth="300"
              mc:Ignorable="d">
 
-    <!-- TODO: Implement this
-    <UserControl.Resources>
-        <Converters:VisibilityConverter x:Key="VisibilityConverter" />
-    </UserControl.Resources>
-    -->
     <UserControl.DataContext>
         <Binding Source="{x:Static ViewModels:SettingsViewModel.Instance}" />
     </UserControl.DataContext>

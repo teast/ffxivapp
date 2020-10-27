@@ -21,7 +21,7 @@
                            Topmost="{Binding TopMost, Source={x:Static Properties:Settings.Default}}"
                            mc:Ignorable="d">
 
-<!-- TODO: Implement this
+<!-- TODO: Implement this, Properties Left/Top
 Properties that are not woring
 Left="{Binding Left, Mode=TwoWay, Source={x:Static Properties:Settings.Default}}"
 Top="{Binding Top, Mode=TwoWay, Source={x:Static Properties:Settings.Default}}"
@@ -29,29 +29,19 @@ Top="{Binding Top, Mode=TwoWay, Source={x:Static Properties:Settings.Default}}"
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <!--
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-                <ResourceDictionary
-                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedTabControl.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
-                <ResourceDictionary
-                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
-                    -->
-                <!-- TODO: Implement this
+                <!-- TODO: Implement this, Resource package
                 <ResourceDictionary
                     Source="pack://application:,,,/FFXIVAPP.Client;component/Resources/Styles/TabItem.xaml" />
                 -->
             </ResourceDictionary.MergedDictionaries>
-            <!-- TODO: Implement this
+            <!-- TODO: Implement this, Converters
             <Converters:VisibilityConverter x:Key="VisibilityConverter" />
             <Converters:TabStripBorderConverter x:Key="TabStripBorderConverter" />
             <<x:Static x:Key="UpdateViewModel" Member="ViewModels:UpdateViewModel.Instance" />
             -->
         </ResourceDictionary>
     </Window.Resources>
-    <!-- TODO: Implement this
+    <!-- TODO: Implement this, Top of window
         Should be at top of window
     <MetroControls:MetroWindow.RightWindowCommands>
         <MetroControls:WindowCommands>
@@ -199,7 +189,7 @@ Top="{Binding Top, Mode=TwoWay, Source={x:Static Properties:Settings.Default}}"
             <TabItem x:Name="UpdateTI">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
-                    <!-- TODO: Implement this
+                    <!-- TODO: Implement this, MetroControls:Badged
                             What is badged?
                             It did cover the border below this comments
                         <MetroControls:Badged

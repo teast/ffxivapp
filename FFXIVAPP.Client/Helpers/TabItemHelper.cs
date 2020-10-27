@@ -51,7 +51,7 @@ namespace FFXIVAPP.Client.Helpers
                 Margin = Thickness.Parse("5,0,0,0") 
             };
 
-            /* TODO: Implement this
+            /* TODO: Implement this, Binding EnableHelpLabels
             Binding binding = BindingHelper.VisibilityBinding(Settings.Default, "EnableHelpLabels");
             labelFactory.SetBinding(UIElement.VisibilityProperty, binding);
             labelFactory.SetValue(ContentControl.ContentProperty, name);

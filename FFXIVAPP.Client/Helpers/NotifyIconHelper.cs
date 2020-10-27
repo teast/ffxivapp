@@ -18,7 +18,7 @@ namespace FFXIVAPP.Client.Helpers {
         /// <param name="message"> </param>
         /// <param name="eventHandler"></param>
         public static void ShowBalloonMessage(string title = "Information!", string message = "Unassigned Message", EventHandler eventHandler = null) {
-            /* TODO: Implement this
+            /* TODO: Implement this, NotifyIcon
             if (eventHandler != null) {
                 AppViewModel.Instance.NotifyIcon.BalloonTipClicked += eventHandler;
             }

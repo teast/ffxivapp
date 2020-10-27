@@ -16,11 +16,7 @@
              mc:Ignorable="d">
 
     <UserControl.Resources>
-    <!-- TODO: Implement this
-        <x:Static x:Key="UpdateViewModel" Member="ViewModels:UpdateViewModel.Instance" />
-    -->
-        <!-- TODO: Implement this
-        <Converters:VisibilityConverter x:Key="VisibilityConverter" />
+        <!-- TODO: Implement this, Converters
         <converters:NameMultiValueConverter x:Key="NameMultiValueConverter" />
         -->
         <Converters:ToUpperConverter x:Key="ToUpperConverter" />
@@ -86,14 +82,14 @@
                               BorderThickness="1"
                               Items="{Binding AvailablePlugins}"
                               SelectionMode="Extended">
-                        <!-- TODO: Implement this
+                        <!-- TODO: Implement this, DataGrid InputBinding
                         <DataGrid.InputBindings>
                             <MouseBinding Command="{Binding AvailableDGDoubleClickCommand}"
                                           MouseAction="LeftDoubleClick" />
                         </DataGrid.InputBindings>
                         -->
                             <!--  Style for groups at top level.  -->
-                        <!-- TODO: Implement this
+                        <!-- TODO: Implement this, GroupStyle on DataGrid
                         <DataGrid.GroupStyle>
                             <GroupStyle>
                                 <GroupStyle.ContainerStyle>

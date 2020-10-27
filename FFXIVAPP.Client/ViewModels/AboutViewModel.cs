@@ -18,7 +18,6 @@ namespace FFXIVAPP.Client.ViewModels
     using FFXIVAPP.Common.Helpers;
     using FFXIVAPP.Common.ViewModelBase;
 
-    // TODO: needed? [Export(typeof(AboutViewModel)),]
     internal sealed class AboutViewModel : INotifyPropertyChanged {
         private static Lazy<AboutViewModel> _instance = new Lazy<AboutViewModel>(() => new AboutViewModel());
 

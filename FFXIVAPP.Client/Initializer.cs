@@ -67,7 +67,7 @@ namespace FFXIVAPP.Client
         public static bool NetworkWorking {
             get {
                 return false;
-                // TODO: Implement this
+                // TODO: Implement this, Network
                 //return NetworkHandler.Instance.IsRunning;
             }
         }
@@ -208,7 +208,7 @@ namespace FFXIVAPP.Client
         /// <summary>
         /// </summary>
         public static void LoadAvailableAudioDevices() {
-            /* TODO: Implement this
+            /* TODO: Implement this, Audio
             foreach (DirectSoundDeviceInfo device in App.AvailableAudioDevices) {
                 SettingsViewModel.Instance.AvailableAudioDevicesList.Add(device.Description);
             }
@@ -354,15 +354,14 @@ namespace FFXIVAPP.Client
                     delegate {
                         Logging.Log(Logger, $"TODO: Check Available plugin in datagrid");
                         /*
-                         TODO: Implement this
+                         TODO: Implement this, Available plugin
                          DataGrid.Items is an IEnumerable and therfore not able to do an count on...
                         if (UpdateView.View.AvailableDG.Items.Count == UpdateViewModel.Instance.AvailablePlugins.Count) {
                             UpdateView.View.AvailableLoadingInformation.IsVisible = false;
                         }
-                        */
 
-                        // TODO: Implement this
-                        //UpdateView.View.AvailableDG.Items.Refresh();
+                        UpdateView.View.AvailableDG.Items.Refresh();
+                        */
 
                         UpdateViewModel.Instance.SetupGrouping();
 
@@ -568,7 +567,7 @@ namespace FFXIVAPP.Client
         }
 
         public static void StartNetworkWorker() {
-            /* TODO: Implement this
+            /* TODO: Implement this, Network
             StopNetworkWorker();
 
             NetworkHandler.Instance.ExceptionEvent += NetworkHandler_ExceptionEvent;
@@ -632,7 +631,7 @@ namespace FFXIVAPP.Client
         }
 
         public static void StopNetworkWorker() {
-            /* TODO: Implement this
+            /* TODO: Implement this, Network
             NetworkHandler.Instance.ExceptionEvent -= NetworkHandler_ExceptionEvent;
             NetworkHandler.Instance.NewNetworkPacketEvent -= NetworkHandler_NewPacketEvent;
 
@@ -718,7 +717,7 @@ namespace FFXIVAPP.Client
             }
         }
 
-        /* TODO: Implement this
+        /* TODO: Implement this, Network
         private static void NetworkHandler_ExceptionEvent(object sender, Machina.Events.ExceptionEvent e) {
             Logging.Log(e.Logger, new LogItem(e.Exception, e.LevelIsError));
         }

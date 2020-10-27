@@ -40,7 +40,7 @@ namespace FFXIVAPP.Client
 
         private static IEnumerable<NetworkInterface> _availableNetworkInterfaces;
 
-        // TODO: Implement this
+        // TODO: Implement this, Audio
         internal static IEnumerable<object> AvailableAudioDevices
         {
             get
@@ -80,10 +80,6 @@ namespace FFXIVAPP.Client
             Settings.Default.PropertyChanged += SettingsPropertyChanged;
             Settings.Default.SettingChanging += SettingsSettingChanging;
             CheckSettings();
-
-            // TODO: Implement this
-            //var resourceLocater = new Uri("/FFXIVAPP.Client;component/App.xaml", UriKind.Relative);
-            //LoadComponent(this, resourceLocater);
 
             try
             {
@@ -230,7 +226,7 @@ namespace FFXIVAPP.Client
                         }
                         else
                         {
-                            /* TODO: Implement this
+                            /* TODO: Implement this, Audio
                             foreach (var audioDevice in AvailableAudioDevices.Where(device => device.Guid != Guid.Empty))
                             {
                                 if (audioDevice.Description == Settings.Default.DefaultAudioDevice)

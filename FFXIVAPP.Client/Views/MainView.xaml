@@ -20,7 +20,7 @@
                 <Button Width="200"
                         Command="{Binding OpenWebSiteCommand}"
                         Content="Open https://xivapp.com" />
-                <!-- TODO: Implement this
+                <!-- TODO: Implement this, WebBrowser, GoogleAnalytics
                     <WebBrowser x:Name="GoogleAnalytics" Visibility="Collapsed" />
                 -->
             </StackPanel>

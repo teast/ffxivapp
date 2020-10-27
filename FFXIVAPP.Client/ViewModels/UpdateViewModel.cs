@@ -35,7 +35,6 @@ namespace FFXIVAPP.Client.ViewModels
 
     using NLog;
 
-    // TODO: needed? [Export(typeof(UpdateViewModel)),]
     internal sealed class UpdateViewModel : INotifyPropertyChanged {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -114,7 +113,7 @@ namespace FFXIVAPP.Client.ViewModels
 
         public void SetupGrouping() {
             Logging.Log(Logger, $"TODO: SetupGrouping called");
-            /* TODO: Implement this
+            /* TODO: Implement this, Grouping
             ICollectionView cvEvents = CollectionViewSource.GetDefaultView(UpdateView.View.AvailableDG.ItemsSource);
             if (cvEvents != null && cvEvents.CanGroup) {
                 cvEvents.GroupDescriptions.Clear();
@@ -316,7 +315,7 @@ namespace FFXIVAPP.Client.ViewModels
 
         /// <summary>
         /// </summary>
-        // TODO: Move this logic to the view Updateview.xaml with an binding on TSource... Remove this if it works
+        // TODO: AvailableSource, Move this logic to the view Updateview.xaml with an binding on TSource... Remove this if it works
         private static void SourceSelection() {
             if (UpdateView.View.PluginSourceDG.SelectedItems.Count != 1) {
                 return;

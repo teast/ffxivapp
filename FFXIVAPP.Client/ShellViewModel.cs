@@ -20,7 +20,6 @@ namespace FFXIVAPP.Client
     using FFXIVAPP.Client.Properties;
     using FFXIVAPP.Common.ViewModelBase;
 
-    // TODO: Needed? [Export(typeof(ShellViewModel)),]
     internal sealed class ShellViewModel : INotifyPropertyChanged {
         private static Lazy<ShellViewModel> _instance = new Lazy<ShellViewModel>(() => new ShellViewModel());
 
@@ -68,7 +67,7 @@ namespace FFXIVAPP.Client
         /// </summary>
         private static void ScreenShot() {
             try {
-                /* TODO: Implement this
+                /* TODO: Implement this, Screenshot
                 var date = DateTime.Now.ToString("yyyy_MM_dd_HH.mm.ss_");
                 var fileName = Path.Combine(AppViewModel.Instance.ScreenShotsPath, $"{date}.jpg");
                 byte[] screenShot = ScreenCapture.GetJpgImage(ShellView.View, 1, 100);
