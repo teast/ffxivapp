@@ -231,7 +231,7 @@ namespace FFXIVAPP.Client
             Task.Run(delegate {
                 List<PluginSourceItem> pluginSourceList = new List<PluginSourceItem>();
                 try {
-                    var httpWebRequest = (HttpWebRequest) WebRequest.Create("https://github.com/teast/ffxivapp/raw/master/PACKAGES.json");
+                    var httpWebRequest = (HttpWebRequest) WebRequest.Create("https://github.com/teast/ffxivapp/raw/new_master/PACKAGES.json");
                     httpWebRequest.UserAgent = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.70 Safari/533.4";
                     httpWebRequest.Headers.Add("Accept-Language", "en;q=0.8");
                     httpWebRequest.ContentType = "application/text; charset=utf-8";
