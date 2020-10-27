@@ -9,7 +9,7 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <Deterministic>false</Deterministic>    
+    <Deterministic>false</Deterministic>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Models\" />
