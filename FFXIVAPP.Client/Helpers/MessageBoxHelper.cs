@@ -45,26 +45,28 @@ namespace FFXIVAPP.Client.Helpers
                 async delegate {
                     try
                     {
-                    if (cancelAction != null) {
-                        var result = await MessageBox.Show(message, title, MessageBoxButton.OKCancel);
-                        if (result == MessageBoxResult.OK) {
+                        if (cancelAction != null) {
+                            var result = await MessageBox.Show(message, title, MessageBoxButton.OKCancel);
+                            if (result == MessageBoxResult.OK) {
+                                if (okAction != null) {
+                                    DispatcherHelper.Invoke(okAction, DispatcherPriority.Send);
+                                }
+                            }
+
+                            if (result == MessageBoxResult.Cancel) {
+                                DispatcherHelper.Invoke(cancelAction, DispatcherPriority.Send);
+                            }
+                        }
+                        else {
+                            await MessageBox.Show(message, title,MessageBoxButton.OK);
                             if (okAction != null) {
                                 DispatcherHelper.Invoke(okAction, DispatcherPriority.Send);
                             }
                         }
-
-                        if (result == MessageBoxResult.Cancel) {
-                            DispatcherHelper.Invoke(cancelAction, DispatcherPriority.Send);
-                        }
-                    }
-                    else {
-                        await MessageBox.Show(title, message,MessageBoxButton.OK);
-                        DispatcherHelper.Invoke(() => DispatcherHelper.Invoke(okAction), DispatcherPriority.Send);
-                    }
                     }
                     catch(Exception)
                     {
-                        await MessageBox.Show($"Unable to process MessageBox[{message}]:NotProcessingResult", title, MessageBoxButton.OK);
+                        await MessageBox.Show(title, $"Unable to process MessageBox[{message}]:NotProcessingResult", MessageBoxButton.OK);
                     }
 
                 }, DispatcherPriority.Send);
