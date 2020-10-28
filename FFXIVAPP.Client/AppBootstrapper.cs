@@ -74,53 +74,55 @@ namespace FFXIVAPP.Client {
             AppViewModel.Instance.UILanguages.Add(
                 new UILanguage {
                     Language = "English",
-                    ImageURI = Theme.GetImagePackURI("en"),
+                    ImageURI = Theme.EnglishFlag,
                     Title = "English",
                     CultureInfo = new CultureInfo("en"),
                 });
             AppViewModel.Instance.UILanguages.Add(
                 new UILanguage {
                     Language = "Japanese",
-                    ImageURI = Theme.GetImagePackURI("ja"),
+                    ImageURI = Theme.JapaneseFlag,
                     Title = "日本語",
                     CultureInfo = new CultureInfo("ja"),
                 });
             AppViewModel.Instance.UILanguages.Add(
                 new UILanguage {
                     Language = "French",
-                    ImageURI = Theme.GetImagePackURI("fr"),
+                    ImageURI = Theme.FrenchFlag,
                     Title = "Français",
                     CultureInfo = new CultureInfo("fr"),
                 });
             AppViewModel.Instance.UILanguages.Add(
                 new UILanguage {
                     Language = "German",
-                    ImageURI = Theme.GetImagePackURI("de"),
+                    ImageURI = Theme.GermanFlag,
                     Title = "Deutsch",
                     CultureInfo = new CultureInfo("de"),
                 });
             AppViewModel.Instance.UILanguages.Add(
                 new UILanguage {
                     Language = "Chinese",
-                    ImageURI = Theme.GetImagePackURI("cn"),
+                    ImageURI = Theme.ChineseFlag,
                     Title = "中國",
                     CultureInfo = new CultureInfo("zh"),
                 });
             AppViewModel.Instance.UILanguages.Add(
                 new UILanguage {
                     Language = "Korean",
-                    ImageURI = Theme.GetImagePackURI("ko"),
+                    ImageURI = Theme.KoreanFlag,
                     Title = "한국어",
                     CultureInfo = new CultureInfo("ko"),
                 });
             AppViewModel.Instance.UILanguages.Add(
                 new UILanguage {
                     Language = "Russian",
-                    ImageURI = Theme.GetImagePackURI("ru"),
+                    ImageURI = Theme.RussianFlag,
                     Title = "Русский",
                     CultureInfo = new CultureInfo("ru"),
                 });
 
+            // Trigger reload of uilanguage now when uilanguages is populated
+            Settings.Default.UILanguage = Settings.Default.UILanguage;
             Initializer.SetupCurrentUICulture();
             Initializer.LoadChatCodes();
             Initializer.LoadAutoTranslate();

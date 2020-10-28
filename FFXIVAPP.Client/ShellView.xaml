@@ -1,14 +1,13 @@
 ﻿<Window x:Class="FFXIVAPP.Client.ShellView"
                            xmlns="https://github.com/avaloniaui"
                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                           xmlns:Converters="clr-namespace:FFXIVAPP.Common.Converters;assembly=FFXIVAPP.Common"
+                           xmlns:Converters="clr-namespace:FFXIVAPP.Client.Converters"
                            xmlns:Properties="clr-namespace:FFXIVAPP.Client.Properties"
                            xmlns:Utilities="clr-namespace:FFXIVAPP.Common.Utilities;assembly=FFXIVAPP.Common"
                            xmlns:ViewModels="clr-namespace:FFXIVAPP.Client.ViewModels"
                            xmlns:Views="clr-namespace:FFXIVAPP.Client.Views"
                            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                            xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                           xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                            xmlns:rs="clr-namespace:FFXIVAPP.ResourceFiles;assembly=FFXIVAPP.ResourceFiles"
                            xmlns:Client="clr-namespace:FFXIVAPP.Client"
@@ -19,6 +18,13 @@
                            d:DesignWidth="480"
                            Icon="FFXIVAPP.ico"
                            Topmost="{Binding TopMost, Source={x:Static Properties:Settings.Default}}"
+
+                           ExtendClientAreaToDecorationsHint="True"
+                           ExtendClientAreaChromeHints="NoChrome"
+                           ExtendClientAreaTitleBarHeightHint="40"
+                           HasSystemDecorations="True"
+                           SystemDecorations="BorderOnly"
+
                            mc:Ignorable="d">
 
 <!-- TODO: Implement this, Properties Left/Top
@@ -27,73 +33,71 @@ Left="{Binding Left, Mode=TwoWay, Source={x:Static Properties:Settings.Default}}
 Top="{Binding Top, Mode=TwoWay, Source={x:Static Properties:Settings.Default}}"
 -->
     <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <!-- TODO: Implement this, Resource package
-                <ResourceDictionary
-                    Source="pack://application:,,,/FFXIVAPP.Client;component/Resources/Styles/TabItem.xaml" />
-                -->
-            </ResourceDictionary.MergedDictionaries>
-            <!-- TODO: Implement this, Converters
-            <Converters:VisibilityConverter x:Key="VisibilityConverter" />
-            <Converters:TabStripBorderConverter x:Key="TabStripBorderConverter" />
-            <<x:Static x:Key="UpdateViewModel" Member="ViewModels:UpdateViewModel.Instance" />
-            -->
-        </ResourceDictionary>
+        <Converters:UILanguageConverter x:Key="UILanguageConverter" />
     </Window.Resources>
-    <!-- TODO: Implement this, Top of window
-        Should be at top of window
-    <MetroControls:MetroWindow.RightWindowCommands>
-        <MetroControls:WindowCommands>
-            <ComboBox x:Name="LanguageSelect"
-                      MinWidth="120"
-                      Utilities:SelectionBehavior.SelectionChanged="{Binding SetLocaleCommand}"
-                      IsReadOnly="False"
-                      ItemsSource="{Binding UILanguages, Source={x:Static Client:AppViewModel.Instance}}"
-                      SelectedValue="{Binding UILanguage, Source={x:Static Properties:Settings.Default}}"
-                      SelectedValuePath="Language">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Width="20"
-                                   RenderOptions.BitmapScalingMode="HighQuality"
-                                   Source="{Binding ImageURI}" />
-                            <TextBlock Margin="5,0"
-                                       Foreground="Black"
-                                       Text="{Binding Title}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-            <Button x:Name="save" Command="{Binding SaveAndClearHistoryCommand}">
-                <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconFontAwesome Kind="FloppyOutline"
-                                                   ToolTip.Tip="{Binding Locale[app_SaveAndClearHistoryToolTip], Source={x:Static Client:AppViewModel.Instance}}" />
-                    <TextBlock Padding="5"
-                               Foreground="White"
-                               Text="{Binding Locale[app_SaveAndClearHistoryToolTip], Source={x:Static Client:AppViewModel.Instance}}"
-                               IsVisible="{Binding EnableHelpLabels, Source={x:Static Properties:Settings.Default}}" />
-                </StackPanel>
-            </Button>
-            <Button x:Name="screenshot" Command="{Binding ScreenShotCommand}">
-                <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconFontAwesome Kind="Camera"
-                                                   ToolTip.Tip="{Binding Locale[app_ScreenShotToolTip], Source={x:Static Client:AppViewModel.Instance}}" />
-                    <TextBlock Padding="5"
-                               Foreground="White"
-                               Text="{Binding Locale[app_ScreenShotToolTip], Source={x:Static Client:AppViewModel.Instance}}"
-                               IsVisible="{Binding EnableHelpLabels, Source={x:Static Properties:Settings.Default}}" />
-                </StackPanel>
-            </Button>
-        </MetroControls:WindowCommands>
-    </MetroControls:MetroWindow.RightWindowCommands>
-    -->
 
-    <Grid x:Name="LayoutRoot">
+    <Grid RowDefinitions="Auto,*">
+        <DockPanel x:Name="CustChrome" Dock="Top" Background="{DynamicResource ThemeControlMidBrush}" Grid.Row="0">
+            <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto">
+                <TextBlock Text="{Binding AppTitle, Source={x:Static Client:AppViewModel.Instance}}" Padding="5" Margin="5,5" Grid.Column="0" />
+                <ComboBox x:Name="LanguageSelect"
+                        Grid.Column="1"
+                        MinWidth="120"
+                        Items="{Binding UILanguages, Source={x:Static Client:AppViewModel.Instance}}"
+                        SelectedItem="{Binding UILanguage, Source={x:Static Properties:Settings.Default}, Converter={StaticResource UILanguageConverter}}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="20"
+                                    Source="{Binding ImageURI}" />
+                                <TextBlock Margin="5,0"
+                                        Foreground="Black"
+                                        Text="{Binding Title}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button x:Name="save" Command="{Binding SaveAndClearHistoryCommand}" Grid.Column="2">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Classes="icon"
+                            Source="{x:Static rs:Theme.SaveIcon20}" 
+                            ToolTip.Tip="{Binding Locale[app_SaveAndClearHistoryToolTip], Source={x:Static Client:AppViewModel.Instance}}" />
+                        <TextBlock Padding="5"
+                                Foreground="White"
+                                Text="{Binding Locale[app_SaveAndClearHistoryToolTip], Source={x:Static Client:AppViewModel.Instance}}"
+                                IsVisible="{Binding EnableHelpLabels, Source={x:Static Properties:Settings.Default}}" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="screenshot" Command="{Binding ScreenShotCommand}" Grid.Column="3">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Classes="icon"
+                            Source="{x:Static rs:Theme.CameraIcon20}" 
+                            ToolTip.Tip="{Binding Locale[app_ScreenShotToolTip], Source={x:Static Client:AppViewModel.Instance}}" />
+                        <TextBlock Padding="5"
+                                Foreground="White"
+                                Text="{Binding Locale[app_ScreenShotToolTip], Source={x:Static Client:AppViewModel.Instance}}"
+                                IsVisible="{Binding EnableHelpLabels, Source={x:Static Properties:Settings.Default}}" />
+                    </StackPanel>
+                </Button>
+                <StackPanel Grid.Column="4" Orientation="Horizontal">
+                    <Button x:Name="BtnMinimize">
+                        <Image Classes="icon" Source="{x:Static rs:Theme.MinimizeIcon20}" />
+                    </Button>
+                    <Button x:Name="BtnMaximize">
+                        <Image x:Name="ImageMaximize" Classes="icon" />
+                    </Button>
+                    <Button x:Name="BtnClose">
+                        <Image Classes="icon" Source="{x:Static rs:Theme.TimesIcon20}" />
+                    </Button>
+                    
+                </StackPanel>
+            </Grid>
+        </DockPanel>
+
         <TabControl x:Name="ShellViewTC"
                     BorderThickness="{Binding TabStripPlacement, RelativeSource={RelativeSource Self}}"
                     TabStripPlacement="Left"
-                    SelectedItem="{Binding ShellViewTCSelectedItem}">
+                    SelectedItem="{Binding ShellViewTCSelectedItem}" Margin="2,2" Grid.Row="1">
             <TabControl.BorderBrush>
                 <SolidColorBrush Color="{DynamicResource AccentColor}" />
             </TabControl.BorderBrush>

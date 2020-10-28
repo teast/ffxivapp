@@ -10,11 +10,12 @@
 
 namespace FFXIVAPP.Client.Models {
     using System.Globalization;
+    using Avalonia.Media.Imaging;
 
     internal class UILanguage {
         public CultureInfo CultureInfo { get; set; }
 
-        public string ImageURI { get; set; }
+        public Bitmap ImageURI { get; set; }
 
         public string Language { get; set; }
 

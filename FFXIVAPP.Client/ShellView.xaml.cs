@@ -24,12 +24,11 @@ namespace FFXIVAPP.Client
     using Avalonia.Threading;
     using FFXIVAPP.Client.Helpers;
     using FFXIVAPP.Client.Models;
-    using FFXIVAPP.Client.Properties;
     using FFXIVAPP.Client.Views;
     using FFXIVAPP.Common.Helpers;
     using FFXIVAPP.Common.Models;
     using FFXIVAPP.Common.Utilities;
-
+    using FFXIVAPP.ResourceFiles;
     using NLog;
 
     /// <summary>
@@ -44,7 +43,6 @@ namespace FFXIVAPP.Client
         public ComboBox LanguageSelect { get; }
         public Button save { get; }
         public Button screenshot { get; }
-        public Grid LayoutRoot { get; }
         public TabControl ShellViewTC { get; }
         public TabItem MainTI { get; }
         public MainView MainV { get; }
@@ -57,6 +55,10 @@ namespace FFXIVAPP.Client
         public UpdateView UpdateV { get; }
         public TabItem AboutTI { get; }
         public AboutView AboutV { get; }
+        public Button BtnMinimize { get; }
+        public Button BtnMaximize { get; }
+        public Button BtnClose { get; }
+        public Image ImageMaximize { get; }
 
         public ObservableCollection<TabItem> PluginsTCItems { get; }
         
@@ -67,7 +69,6 @@ namespace FFXIVAPP.Client
             LanguageSelect = this.FindControl<ComboBox>("LanguageSelect");
             save = this.FindControl<Button>("save");
             screenshot = this.FindControl<Button>("screenshot");
-            LayoutRoot = this.FindControl<Grid>("LayoutRoot");
             ShellViewTC = this.FindControl<TabControl>("ShellViewTC");
             MainTI = this.FindControl<TabItem>("MainTI");
             MainV = this.FindControl<MainView>("MainV");
@@ -80,6 +81,12 @@ namespace FFXIVAPP.Client
             UpdateV = this.FindControl<UpdateView>("UpdateV");
             AboutTI = this.FindControl<TabItem>("AboutTI");
             AboutV = this.FindControl<AboutView>("AboutV");
+            BtnMinimize = this.FindControl<Button>("BtnMinimize");
+            BtnMaximize = this.FindControl<Button>("BtnMaximize");
+            BtnClose = this.FindControl<Button>("BtnClose");
+            ImageMaximize = this.FindControl<Image>("ImageMaximize");
+            
+            ImageMaximize.Source = this.WindowState == WindowState.Maximized ? Theme.RestoreIcon20 : Theme.MaximizeIcon20;
 
             // To spin the refresh icon
             var rotate = (RotateTransform)PluginUpdateSpinner.RenderTransform;
@@ -87,6 +94,30 @@ namespace FFXIVAPP.Client
             _spinner.Elapsed += (s, a) => {
                 DispatcherHelper.Invoke(() => rotate.Angle = rotate.Angle + 10);
             };
+
+            // Ask user to update game language on language change
+            LanguageSelect.GetObservable(ComboBox.SelectedItemProperty).Subscribe(value => {
+                ShellViewModel.Instance.SetLocaleCommand?.Execute(null);
+            });
+
+            BtnClose.Click += delegate { this.Close(); };
+            BtnMinimize.Click += delegate { this.WindowState = WindowState.Minimized; };
+            BtnMaximize.Click += delegate { this.WindowState = this.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized; };
+
+            this.FindControl<DockPanel>("CustChrome").PointerPressed += (s, e) => {
+                if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+                    BeginMoveDrag(e);
+            };
+        }
+
+        protected override void HandleWindowStateChanged(WindowState state)
+        {
+            if (state == WindowState.Maximized)
+                ImageMaximize.Source = Theme.RestoreIcon20;
+            else if (state == WindowState.Normal)
+                ImageMaximize.Source = Theme.MaximizeIcon20;
+
+            base.HandleWindowStateChanged(state);
         }
 
         private void InitializeComponent()
