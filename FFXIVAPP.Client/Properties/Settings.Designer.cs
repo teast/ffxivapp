@@ -71,6 +71,7 @@ namespace FFXIVAPP.Client.Properties
         private ObservableCollection<string> _gameLanguageList;
         private ObservableCollection<string> _serverList;
         private ObservableCollection<PluginSourceItem> _availableSources;
+        private ObservableCollection<string> _themeList;
         #endregion
 
         #region Properties
@@ -219,16 +220,25 @@ namespace FFXIVAPP.Client.Properties
             set => Set(ref _saveLog, value);
         }
 
+        [JsonIgnore]
         public ObservableCollection<string> GameLanguageList
         {
             get => _gameLanguageList;
             set => Set(ref _gameLanguageList, value);
         }
 
+        [JsonIgnore]
         public ObservableCollection<string> ServerList
         {
             get => _serverList;
             set => Set(ref _serverList, value);
+        }
+
+        [JsonIgnore]
+        public ObservableCollection<string> ThemeList
+        {
+            get => _themeList;
+            set => Set(ref _themeList, value);
         }
         #endregion
 
@@ -242,6 +252,7 @@ namespace FFXIVAPP.Client.Properties
             GameLanguageList = new ObservableCollection<string>();
             ServerList = new ObservableCollection<string>();
             AvailableSources = new ObservableCollection<PluginSourceItem>();
+            ThemeList = new ObservableCollection<string>();
 
             Reset();
         }
@@ -259,6 +270,11 @@ namespace FFXIVAPP.Client.Properties
             GameLanguageList.Add("German");
             GameLanguageList.Add("Chinese");
             GameLanguageList.Add("Korean");
+
+            ThemeList.Add("BaseDark");
+            ThemeList.Add("BaseLight");
+
+            Theme = "BaseLight";
 
             #region serverlist
             ServerList.Clear();

@@ -37,7 +37,7 @@ Top="{Binding Top, Mode=TwoWay, Source={x:Static Properties:Settings.Default}}"
     </Window.Resources>
 
     <Grid RowDefinitions="Auto,*">
-        <DockPanel x:Name="CustChrome" Dock="Top" Background="{DynamicResource ThemeControlMidBrush}" Grid.Row="0">
+        <DockPanel x:Name="CustChrome" Dock="Top" Background="{DynamicResource ThemeAccentColor2}" Grid.Row="0">
             <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto">
                 <TextBlock Text="{Binding AppTitle, Source={x:Static Client:AppViewModel.Instance}}" Padding="5" Margin="5,5" Grid.Column="0" />
                 <ComboBox x:Name="LanguageSelect"

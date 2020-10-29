@@ -29,7 +29,7 @@ namespace FFXIVAPP.Client {
             {
                 desktop.MainWindow = new ShellView
                 {
-                    DataContext = new ShellViewModel(),
+                    DataContext = ShellViewModel.Instance,
                 };
             }
 

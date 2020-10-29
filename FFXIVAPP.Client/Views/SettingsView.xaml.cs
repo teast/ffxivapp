@@ -8,9 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.ObjectModel;
+using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using FFXIVAPP.Client.Themes;
 
 namespace FFXIVAPP.Client.Views {
     /// <summary>
@@ -57,6 +59,12 @@ namespace FFXIVAPP.Client.Views {
             TCode = this.FindControl<TextBox>("TCode");
             TColor = this.FindControl<TextBox>("TColor");
             Colors = this.FindControl<DataGrid>("Colors");
+
+            ThemeSelect.GetObservable(ComboBox.SelectedItemProperty).Subscribe(value =>
+            {
+                if (value is string theme)
+                    ThemeManager.SetTheme(theme);
+            });
         }
 
         private void InitializeComponent()

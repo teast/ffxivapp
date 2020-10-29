@@ -150,6 +150,9 @@ namespace FFXIVAPP.Client
         /// <summary>
         /// </summary>
         public static void UpdateTitle() {
+            if (ShellView.View.ShellViewTC.SelectedItem == null)
+                return;
+                
             var currentMain = ((TabItem) ShellView.View.ShellViewTC.SelectedItem).Name;
             switch (currentMain) {
                 case "PluginsTI":
