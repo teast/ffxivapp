@@ -4,9 +4,73 @@
     <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>
     <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Default.xaml"/>
 
+    <StyleInclude Source="avares://FFXIVAPP.Client/Themes/Structure/TextBlock.xaml"/>
+    <StyleInclude Source="avares://FFXIVAPP.Client/Themes/Structure/GroupBox.xaml"/>
+    <StyleInclude Source="avares://FFXIVAPP.Client/Themes/Structure/Topbar.xaml"/>
+    <StyleInclude Source="avares://FFXIVAPP.Client/Themes/Structure/TabControl.xaml"/>
+    <StyleInclude Source="avares://FFXIVAPP.Client/Themes/Structure/MainTab.xaml"/>
+
+    <Style Selector="Border.notice">
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="Height" Value="33" />
+        <Setter Property="Background" Value="{DynamicResource ThemeNoticeBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderMidColor}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="CornerRadius" Value="2" />
+    </Style>
+
     <Style Selector="Image.icon">
         <Setter Property="Width" Value="12" />
         <Setter Property="Height" Value="12" />
         <Setter Property="Stretch" Value="Uniform" />
     </Style>
+
+    <!--
+        ThemeAccentColor                - Switch that is on
+        ThemeAccentColor2               - :mouseactive(?) TabItem background (also :pointover on selected TabItem background)
+                                          also :pointover Switch that is in on state. :pointover selected item in combobox
+        ThemeAccentColor3               - :selected(?) TabItem background, selected item in combobox
+                                          also :mouaseactive(?) switch that is in on state
+        ThemeAccentColor4               - Unfocus TabItem selected background, DataGrid uneven unseleted row
+        ThemeBackgroundColor            - background window, control, tabcontrol
+        ThemeBorderLowColor             - Border button, 
+        ThemeBorderMidColor             - Border combobox, Border Switch, :pointover Button border
+        ThemeBorderHighColor            - :pointover Combobox border and switch border, Textbox pointover and selected
+        ThemeControlMidColor            - Button background, DataGrid caption background, scrollbar color
+        ThemeBorderMidBrush             - Borders, combobox border, switch border
+        ThemeControlHighColor           - button pressed, text selection
+        ThemeControlHighlightMidColor   - :pointover on tab items and combobox items
+
+        ThemeControlHighlightLowColor   - not found
+        ThemeControlHighlightHighColor  - not found
+
+        ThemeForegroundColor            - textblock, textbox, combobox, switch text, DataGrid text, etc
+        ThemeForegroundLowColor         - TabItem text
+
+        HighlightColor                  - DataGrid selected row, opacity version on DataGrid hover item mby?
+    -->
+
+
+    <!--
+Datagrid caption background	ffffff	                <- Custom
+Tab item background:	e2e2e2                      <- custom
+DataGrid hover row background	a0d8f0	HighlightColor (opacity change?) <- check if to use this or not...
+
+	ThemeControlHighlightMidColor       - ff41b1e1
+    ThemeForegroundColor                - ff000000
+    ThemeControlMidColor                - fff7f7f7
+    ThemeBorderMidColor                 - ff41b1e1
+    ThemeBorderLowColor                 - ffcccccc
+    ThemeBackgroundColor                - ffffffff
+    ThemeAccentColor3                   - ff70c5e9
+    HighlightColor                      - ff70c5e9
+
+    Custom stuff
+    ThemeBadgedColor                    - ff119eda
+    ThemeTopbarColor                    - ffa0d8f0
+    ThemeNoticeColor                    - ffffffe0
+    ThemeTopbarTitleColor               - ffffffff
+    ThemeTopbarButtonColor              - ff
+
+    -->
 </Styles>

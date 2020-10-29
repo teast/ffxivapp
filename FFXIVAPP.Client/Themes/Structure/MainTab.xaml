@@ -1,0 +1,10 @@
+<Styles xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <Style Selector="#ShellViewTC Border.TabSplit">
+        <Setter Property="BorderThickness" Value="1,0,0,0" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderMidColor}" />
+    </Style>
+
+</Styles>

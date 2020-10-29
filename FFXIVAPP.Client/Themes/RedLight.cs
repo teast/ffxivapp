@@ -3,8 +3,8 @@ using Avalonia.Styling;
 
 namespace FFXIVAPP.Client.Themes
 {
-    public class BaseDark: Styles
+    public class RedLight: Styles
     {
-        public BaseDark() => AvaloniaXamlLoader.Load(this);
+        public RedLight() => AvaloniaXamlLoader.Load(this);
     }
 }

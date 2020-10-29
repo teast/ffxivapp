@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 using Avalonia.Styling;
 using FFXIVAPP.Client.Properties;
@@ -7,10 +9,18 @@ namespace FFXIVAPP.Client.Themes
 {
     public static class ThemeManager
     {
-        private static string _currentTheme = null;
-        public static void SetTheme(string theme)
+        public static List<ThemeItem> AvailableThemes => new List<ThemeItem>
         {
-            if (theme != null && theme == _currentTheme)
+            Default,
+            new ThemeItem("Red|Light", new Themes.RedLight()),
+        };
+
+        public static ThemeItem Default => new ThemeItem("Blue|Light", new Themes.BlueLight());
+        
+        private static string _currentTheme = null;
+        public static void SetTheme(string themeName)
+        {
+            if (themeName != null && themeName == _currentTheme)
                 return;
 
             Action<Styles> setter;
@@ -19,22 +29,26 @@ namespace FFXIVAPP.Client.Themes
             else
                 setter = (s) => Application.Current.Styles[0] = s;
 
-            switch(theme)
+            var theme = AvailableThemes.FirstOrDefault(t => t.Name == themeName);
+            if (theme == null)
             {
-                case "BaseDark":
-                    setter(new Themes.BaseDark());
-                    _currentTheme = "BaseDark";
-                    break;
-                case "BaseLight":
-                    setter(new Themes.BaseLight());
-                    _currentTheme = "BaseLight";
-                    break;
-                default:
-                    setter(new Themes.BaseLight());
-                    _currentTheme = "BaseLight";
-                    Settings.Default.Theme = "BaseLight";
-                    break;
+                theme = AvailableThemes.Single(t => t.Name == "Blue|Light");
+                Settings.Default.Theme = theme.Name;
             }
+
+            setter(theme.Theme);
+        }
+    }
+
+    public class ThemeItem
+    {
+        public string Name { get; set; }
+        public Styles Theme { get; set; }
+
+        public ThemeItem(string name, Styles theme)
+        {
+            Name = name;
+            Theme = theme;
         }
     }
 }

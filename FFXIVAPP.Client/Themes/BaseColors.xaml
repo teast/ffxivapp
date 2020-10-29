@@ -1,33 +1,36 @@
 <Styles xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:sys="clr-namespace:System;assembly=mscorlib"
-    x:Class="FFXIVAPP.Client.Themes.BaseDark">
-    <StyleInclude Source="avares://FFXIVAPP.Client/Themes/Structure/Index.xaml"/>
-
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <Style>
         <Style.Resources>
+            <Color x:Key="ThemeAccentColor4">#FFFFFFFF</Color>
 
-            <Color x:Key="ThemeAccentColor">#CC119EDA</Color>
-            <Color x:Key="ThemeAccentColor2">#99119EDA</Color>
-            <Color x:Key="ThemeAccentColor3">#66119EDA</Color>
-            <Color x:Key="ThemeAccentColor4">#33119EDA</Color>
-
-            <Color x:Key="ThemeBackgroundColor">#FF282828</Color>
-            <Color x:Key="ThemeBorderLowColor">#FF505050</Color>
-            <Color x:Key="ThemeBorderMidColor">#FF808080</Color>
-            <Color x:Key="ThemeBorderHighColor">#FFA0A0A0</Color>
-            <Color x:Key="ThemeControlLowColor">#FF282828</Color>
-            <Color x:Key="ThemeControlMidColor">#FF505050</Color>
-            <Color x:Key="ThemeControlHighColor">#FF808080</Color>
-            <Color x:Key="ThemeControlHighlightLowColor">#FFA8A8A8</Color>
-            <Color x:Key="ThemeControlHighlightMidColor">#FF828282</Color>
-            <Color x:Key="ThemeControlHighlightHighColor">#FF505050</Color>
-            <Color x:Key="ThemeForegroundColor">#FFDEDEDE</Color>
+            <Color x:Key="ThemeBackgroundColor">#FFFFFFFF</Color>
+            <Color x:Key="ThemeBorderLowColor">#ffcccccc</Color>
+            <Color x:Key="ThemeBorderHighColor">#FF333333</Color>
+            <Color x:Key="ThemeControlLowColor">#FFFFFFFF</Color>
+            <Color x:Key="ThemeControlMidColor">#fff7f7f7</Color>
+            <Color x:Key="ThemeControlHighColor">#FF888888</Color>
+            <Color x:Key="ThemeControlHighlightLowColor">#FFF0F0F0</Color>
+            <Color x:Key="ThemeControlHighlightHighColor">#FF808080</Color>
+            <Color x:Key="ThemeForegroundColor">#FF000000</Color>
             <Color x:Key="ThemeForegroundLowColor">#FF808080</Color>
 
-            <Color x:Key="HighlightColor">#FF119EDA</Color>
             <Color x:Key="ErrorColor">#FFFF0000</Color>
             <Color x:Key="ErrorLowColor">#10FF0000</Color>
+
+            <!-- Custom Colors and brushes-->
+            <Color x:Key="ThemeTabBackgroundColor">#ffe2e2e2</Color>
+            <Color x:Key="ThemeNoticeColor">#ffffffe0</Color>
+            <Color x:Key="ThemeTopbarTitleColor">#ffffffff</Color>
+            <Color x:Key="ThemeTopbarButtonColor">#88ffffff</Color>
+            <SolidColorBrush x:Key="ThemeTabBackgroundBrush" Color="{DynamicResource ThemeTabBackgroundColor}"></SolidColorBrush>
+            <SolidColorBrush x:Key="ThemeBadgedBrush" Color="{DynamicResource ThemeBadgedColor}"></SolidColorBrush>
+            <SolidColorBrush x:Key="ThemeTopbarBrush" Color="{DynamicResource ThemeTopbarColor}"></SolidColorBrush>
+            <SolidColorBrush x:Key="ThemeNoticeBrush" Color="{DynamicResource ThemeNoticeColor}"></SolidColorBrush>
+            <SolidColorBrush x:Key="ThemeTopbarTitleBrush" Color="{DynamicResource ThemeTopbarTitleColor}"></SolidColorBrush>
+            <SolidColorBrush x:Key="ThemeTopbarButtonBrush" Color="{DynamicResource ThemeTopbarButtonColor}"></SolidColorBrush>
+
 
             <SolidColorBrush x:Key="ThemeBackgroundBrush" Color="{DynamicResource ThemeBackgroundColor}"></SolidColorBrush>
             <SolidColorBrush x:Key="ThemeBorderLowBrush" Color="{DynamicResource ThemeBorderLowColor}"></SolidColorBrush>
@@ -60,4 +63,6 @@
             <sys:Double x:Key="ScrollBarThickness">10</sys:Double>
         </Style.Resources>
     </Style>
+
+    <StyleInclude Source="avares://FFXIVAPP.Client/Themes/Structure/Index.xaml"/>
 </Styles>

@@ -1,0 +1,20 @@
+<Styles xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    x:Class="FFXIVAPP.Client.Themes.BlueLight">
+    <Style>
+        <Style.Resources>
+            <!-- Theme unique colors-->
+            <Color x:Key="HighlightColor">#ff70c5e9</Color>
+            <Color x:Key="ThemeAccentColor3">#ff70c5e9</Color>
+            <Color x:Key="ThemeBorderMidColor">#ff41b1e1</Color>
+            <Color x:Key="ThemeControlHighlightMidColor">#ff41b1e1</Color>
+            <Color x:Key="ThemeAccentColor">#ff41b1e1</Color>
+            <Color x:Key="ThemeBadgedColor">#ff119eda</Color>
+            <Color x:Key="ThemeTopbarColor">#ffa0d8f0</Color>
+            <Color x:Key="ThemeAccentColor2">#ff41b1e1</Color>
+        </Style.Resources>
+    </Style>
+
+    <StyleInclude Source="avares://FFXIVAPP.Client/Themes/BaseColors.xaml"/>
+</Styles>

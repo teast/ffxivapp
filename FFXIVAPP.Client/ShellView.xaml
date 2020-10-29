@@ -37,12 +37,13 @@ Top="{Binding Top, Mode=TwoWay, Source={x:Static Properties:Settings.Default}}"
     </Window.Resources>
 
     <Grid RowDefinitions="Auto,*">
-        <DockPanel x:Name="CustChrome" Dock="Top" Background="{DynamicResource ThemeAccentColor2}" Grid.Row="0">
-            <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto">
-                <TextBlock Text="{Binding AppTitle, Source={x:Static Client:AppViewModel.Instance}}" Padding="5" Margin="5,5" Grid.Column="0" />
+        <DockPanel x:Name="CustChrome" Dock="Top" Grid.Row="0">
+            <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                <TextBlock Text="{Binding AppTitle, Source={x:Static Client:AppViewModel.Instance}}" Classes="title topbar" Grid.Column="0" />
                 <ComboBox x:Name="LanguageSelect"
                         Grid.Column="1"
                         MinWidth="120"
+                        Classes="topbar"
                         Items="{Binding UILanguages, Source={x:Static Client:AppViewModel.Instance}}"
                         SelectedItem="{Binding UILanguage, Source={x:Static Properties:Settings.Default}, Converter={StaticResource UILanguageConverter}}">
                     <ComboBox.ItemTemplate>
@@ -57,29 +58,30 @@ Top="{Binding Top, Mode=TwoWay, Source={x:Static Properties:Settings.Default}}"
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <Button x:Name="save" Command="{Binding SaveAndClearHistoryCommand}" Grid.Column="2">
+                <Border Classes="Seperator" Grid.Column="2"><Border Classes="Inner" /></Border>
+                <Button x:Name="save" Command="{Binding SaveAndClearHistoryCommand}" Grid.Column="3">
                     <StackPanel Orientation="Horizontal">
                         <Image Classes="icon"
                             Source="{x:Static rs:Theme.SaveIcon20}" 
                             ToolTip.Tip="{Binding Locale[app_SaveAndClearHistoryToolTip], Source={x:Static Client:AppViewModel.Instance}}" />
                         <TextBlock Padding="5"
-                                Foreground="White"
                                 Text="{Binding Locale[app_SaveAndClearHistoryToolTip], Source={x:Static Client:AppViewModel.Instance}}"
                                 IsVisible="{Binding EnableHelpLabels, Source={x:Static Properties:Settings.Default}}" />
                     </StackPanel>
                 </Button>
-                <Button x:Name="screenshot" Command="{Binding ScreenShotCommand}" Grid.Column="3">
+                <Border Classes="Seperator" Grid.Column="4"><Border Classes="Inner" /></Border>
+                <Button x:Name="screenshot" Command="{Binding ScreenShotCommand}" Grid.Column="5">
                     <StackPanel Orientation="Horizontal">
                         <Image Classes="icon"
                             Source="{x:Static rs:Theme.CameraIcon20}" 
                             ToolTip.Tip="{Binding Locale[app_ScreenShotToolTip], Source={x:Static Client:AppViewModel.Instance}}" />
                         <TextBlock Padding="5"
-                                Foreground="White"
                                 Text="{Binding Locale[app_ScreenShotToolTip], Source={x:Static Client:AppViewModel.Instance}}"
                                 IsVisible="{Binding EnableHelpLabels, Source={x:Static Properties:Settings.Default}}" />
                     </StackPanel>
                 </Button>
-                <StackPanel Grid.Column="4" Orientation="Horizontal">
+                <Border Classes="Seperator" Grid.Column="6"><Border Classes="Inner" /></Border>
+                <StackPanel Classes="SysButtons" Orientation="Horizontal" Grid.Column="7">
                     <Button x:Name="BtnMinimize">
                         <Image Classes="icon" Source="{x:Static rs:Theme.MinimizeIcon20}" />
                     </Button>
@@ -89,13 +91,11 @@ Top="{Binding Top, Mode=TwoWay, Source={x:Static Properties:Settings.Default}}"
                     <Button x:Name="BtnClose">
                         <Image Classes="icon" Source="{x:Static rs:Theme.TimesIcon20}" />
                     </Button>
-                    
                 </StackPanel>
             </Grid>
         </DockPanel>
 
         <TabControl x:Name="ShellViewTC"
-                    BorderThickness="{Binding TabStripPlacement, RelativeSource={RelativeSource Self}}"
                     TabStripPlacement="Left"
                     SelectedItem="{Binding ShellViewTCSelectedItem}" Margin="2,2" Grid.Row="1">
             <TabControl.BorderBrush>
@@ -118,7 +118,9 @@ Top="{Binding Top, Mode=TwoWay, Source={x:Static Properties:Settings.Default}}"
                                     IsVisible="{Binding EnableHelpLabels, Source={x:Static Properties:Settings.Default}}" />
                     </StackPanel>
                 </TabItem.Header>
-                <Views:MainView x:Name="MainV" Margin="10,0,10,10" />
+                <Border Classes="TabSplit">
+                    <Views:MainView x:Name="MainV" Margin="10,0,10,10" />
+                </Border>
             </TabItem>
             <TabItem x:Name="PluginsTI">
                 <TabItem.Header>
@@ -138,6 +140,7 @@ Top="{Binding Top, Mode=TwoWay, Source={x:Static Properties:Settings.Default}}"
                                     IsVisible="{Binding EnableHelpLabels, Source={x:Static Properties:Settings.Default}}" />
                     </StackPanel>
                 </TabItem.Header>
+                <Border Classes="TabSplit">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -169,6 +172,7 @@ Top="{Binding Top, Mode=TwoWay, Source={x:Static Properties:Settings.Default}}"
                         </TabControl.BorderBrush>
                     </TabControl>
                 </Grid>
+                </Border>
             </TabItem>
             <TabItem x:Name="SettingsTI">
                 <TabItem.Header>
@@ -188,7 +192,9 @@ Top="{Binding Top, Mode=TwoWay, Source={x:Static Properties:Settings.Default}}"
                                     IsVisible="{Binding EnableHelpLabels, Source={x:Static Properties:Settings.Default}}" />
                     </StackPanel>
                 </TabItem.Header>
-                <Views:SettingsView x:Name="SettingsV" Margin="10,0,10,10" />
+                <Border Classes="TabSplit">
+                    <Views:SettingsView x:Name="SettingsV" Margin="10,0,10,10" />
+                </Border>
             </TabItem>
             <TabItem x:Name="UpdateTI">
                 <TabItem.Header>
@@ -216,7 +222,9 @@ Top="{Binding Top, Mode=TwoWay, Source={x:Static Properties:Settings.Default}}"
                                     IsVisible="{Binding EnableHelpLabels, Source={x:Static Properties:Settings.Default}}" />
                     </StackPanel>
                 </TabItem.Header>
-                <Views:UpdateView x:Name="UpdateV" Margin="10,0,10,10" />
+                <Border Classes="TabSplit">
+                    <Views:UpdateView x:Name="UpdateV" Margin="10,0,10,10" />
+                </Border>
             </TabItem>
             <TabItem x:Name="AboutTI">
                 <TabItem.Header>
@@ -235,7 +243,9 @@ Top="{Binding Top, Mode=TwoWay, Source={x:Static Properties:Settings.Default}}"
                                     IsVisible="{Binding EnableHelpLabels, Source={x:Static Properties:Settings.Default}}" />
                     </StackPanel>
                 </TabItem.Header>
-                <Views:AboutView x:Name="AboutV" Margin="10,0,10,10" />
+                <Border Classes="TabSplit">
+                    <Views:AboutView x:Name="AboutV" Margin="10,0,10,10" />
+                </Border>
             </TabItem>
         </TabControl>
     </Grid>
