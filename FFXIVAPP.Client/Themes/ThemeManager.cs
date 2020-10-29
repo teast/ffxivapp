@@ -1,6 +1,7 @@
 using System;
 using Avalonia;
 using Avalonia.Styling;
+using FFXIVAPP.Client.Properties;
 
 namespace FFXIVAPP.Client.Themes
 {
@@ -9,7 +10,7 @@ namespace FFXIVAPP.Client.Themes
         private static string _currentTheme = null;
         public static void SetTheme(string theme)
         {
-            if (theme == _currentTheme)
+            if (theme != null && theme == _currentTheme)
                 return;
 
             Action<Styles> setter;
@@ -24,9 +25,14 @@ namespace FFXIVAPP.Client.Themes
                     setter(new Themes.BaseDark());
                     _currentTheme = "BaseDark";
                     break;
+                case "BaseLight":
+                    setter(new Themes.BaseLight());
+                    _currentTheme = "BaseLight";
+                    break;
                 default:
                     setter(new Themes.BaseLight());
                     _currentTheme = "BaseLight";
+                    Settings.Default.Theme = "BaseLight";
                     break;
             }
         }

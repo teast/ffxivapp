@@ -261,6 +261,7 @@ namespace FFXIVAPP.Client.Properties
         {
             DefaultAudioDeviceList = new List<string>();
             HomePluginList = new List<string>();
+            UILanguage = "English";
             GameLanguage = "English";
             EnableNLog = true;
             GameLanguageList.Clear();

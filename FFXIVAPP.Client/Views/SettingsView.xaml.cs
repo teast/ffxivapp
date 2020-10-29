@@ -62,8 +62,8 @@ namespace FFXIVAPP.Client.Views {
 
             ThemeSelect.GetObservable(ComboBox.SelectedItemProperty).Subscribe(value =>
             {
-                if (value is string theme)
-                    ThemeManager.SetTheme(theme);
+                var theme = value as string;
+                ThemeManager.SetTheme(theme);
             });
         }
 
