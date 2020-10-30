@@ -664,7 +664,6 @@ namespace FFXIVAPP.Client
                     });
             }
 
-            Constants.ProcessModels = new List<ProcessModel>();
             foreach (Process process in Process.GetProcessesByName("ffxiv.exe")) {
                 Constants.ProcessModels.Add(
                     new ProcessModel {
