@@ -12,10 +12,10 @@ namespace FFXIVAPP.Client.Themes
         public static List<ThemeItem> AvailableThemes => new List<ThemeItem>
         {
             Default,
-            new ThemeItem("Red|Light", new Themes.RedLight()),
+            new ThemeItem("Red|Light", () => new Themes.RedLight()),
         };
 
-        public static ThemeItem Default => new ThemeItem("Blue|Light", new Themes.BlueLight());
+        public static ThemeItem Default => new ThemeItem("Blue|Light", () => new Themes.BlueLight());
         
         private static string _currentTheme = null;
         public static void SetTheme(string themeName)
@@ -36,16 +36,16 @@ namespace FFXIVAPP.Client.Themes
                 Settings.Default.Theme = theme.Name;
             }
 
-            setter(theme.Theme);
+            setter(theme.Theme());
         }
     }
 
     public class ThemeItem
     {
         public string Name { get; set; }
-        public Styles Theme { get; set; }
+        public Func<Styles> Theme { get; set; }
 
-        public ThemeItem(string name, Styles theme)
+        public ThemeItem(string name, Func<Styles> theme)
         {
             Name = name;
             Theme = theme;
