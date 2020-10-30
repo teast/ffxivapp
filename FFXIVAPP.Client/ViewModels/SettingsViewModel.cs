@@ -61,7 +61,7 @@ namespace FFXIVAPP.Client.ViewModels
             this.RefreshListCommand = new DelegateCommand(RefreshList);
             this.DefaultSettingsCommand = new DelegateCommand(DefaultSettings);
             this.ChangeAudioModeCommand = new DelegateCommand(ChangeAudioMode);
-            this.GetCICUIDCommand = new DelegateCommand(GetCICUID);
+            this.GetCICUIDCommand = new AsyncDelegateCommand(GetCICUID, Logger);
             this.ColorSelectionCommand = new DelegateCommand(ColorSelection);
             this.UpdateColorCommand = new DelegateCommand(UpdateColor);
         }
@@ -179,57 +179,49 @@ namespace FFXIVAPP.Client.ViewModels
 
         /// <summary>
         /// </summary>
-        private static void GetCICUID() {
-            var characterName = Settings.Default.CharacterName;
-            var serverName = Settings.Default.ServerName;
+        private static async Task GetCICUID() {
+            var characterName = Settings.Default.CharacterName ?? string.Empty;
+            var serverName = Settings.Default.ServerName ?? string.Empty;
             if (characterName.Replace(" ", string.Empty).Length < 3 || string.IsNullOrWhiteSpace(serverName)) {
                 return;
             }
 
-            Func<string> lodestoneRender = delegate {
-                var cicuid = string.Empty;
-                try {
-                    var url = "http://na.finalfantasyxiv.com/lodestone/character/?q={0}&worldname={1}";
-                    var request = (HttpWebRequest) WebRequest.Create(string.Format(url, HttpUtility.UrlEncode(Constants.CharacterName), serverName));
-                    request.UserAgent = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.70 Safari/533.4";
-                    request.Headers.Add("Accept-Language", "en;q=0.8");
-                    request.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
-                    var response = (HttpWebResponse) request.GetResponse();
-                    Stream stream = response.GetResponseStream();
-                    if (response.StatusCode != HttpStatusCode.OK || stream == null) { }
-                    else {
-                        var doc = new HtmlDocument();
-                        doc.Load(stream);
+            try {
+                var url = "http://na.finalfantasyxiv.com/lodestone/character/?q={0}&worldname={1}";
+                var request = (HttpWebRequest) WebRequest.Create(string.Format(url, HttpUtility.UrlEncode(Constants.CharacterName), serverName));
+                request.UserAgent = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.70 Safari/533.4";
+                request.Headers.Add("Accept-Language", "en;q=0.8");
+                request.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
+                var response = (HttpWebResponse)(await request.GetResponseAsync());
+                Stream stream = response.GetResponseStream();
+                if (response.StatusCode != HttpStatusCode.OK || stream == null) { }
+                else {
+                    var doc = new HtmlDocument();
+                    doc.Load(stream);
+                    var entries = doc.DocumentNode.SelectNodes("//div[@class='entry']");
+                    foreach(var entry in entries)
+                    {
                         try {
-                            var htmlSource = doc.DocumentNode.SelectSingleNode("//html").OuterHtml;
-                            var CICUID = new Regex(@"(?<cicuid>\d+)/string.Empty>" + HttpUtility.HtmlEncode(characterName), RegexOptions.ExplicitCapture | RegexOptions.Multiline | RegexOptions.IgnoreCase);
-                            cicuid = CICUID.Match(htmlSource).Groups["cicuid"].Value;
+                            var name = entry.SelectSingleNode("//p[@class='entry__name']");
+                            if (name == null) continue;
+                            if (name.OuterHtml.Contains(HttpUtility.HtmlEncode(characterName)))
+                            {
+                                var CICUID = new Regex(@"/lodestone/character/(?<cicuid>\d+)/", RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase);
+                                Settings.Default.CICUID = CICUID.Match(entry.OuterHtml).Groups["cicuid"].Value;
+
+
+                                break;
+                            }
                         }
                         catch (Exception ex) {
                             Logging.Log(Logger, new LogItem(ex, true));
                         }
                     }
                 }
-                catch (Exception ex) {
-                    Logging.Log(Logger, new LogItem(ex, true));
-                }
-
-                return cicuid;
-            };
-            Task.Run(() => LodestoneCallBack(Task.Run(() => lodestoneRender())));
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="asyncResult"> </param>
-        private static void LodestoneCallBack(IAsyncResult asyncResult) {
-            Func<string> function = asyncResult.AsyncState as Func<string>;
-            if (function == null) {
-                return;
             }
-
-            var result = function.EndInvoke(asyncResult);
-            Settings.Default.CICUID = result;
+            catch (Exception ex) {
+                Logging.Log(Logger, new LogItem(ex, true));
+            }
         }
 
         /// <summary>
