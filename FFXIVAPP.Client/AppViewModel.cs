@@ -78,6 +78,11 @@ namespace FFXIVAPP.Client
 
         private string _updateNotes;
 
+        public AppViewModel()
+        {
+            AppTitle = "FFXIVAPP";
+        }
+        
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
         public static AppViewModel Instance {
