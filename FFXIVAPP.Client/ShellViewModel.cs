@@ -13,9 +13,13 @@ namespace FFXIVAPP.Client
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+    using System.IO;
     using System.Runtime.CompilerServices;
     using System.Windows.Input;
     using Avalonia.Controls;
+    using Avalonia.Platform;
     using FFXIVAPP.Client.Helpers;
     using FFXIVAPP.Client.Properties;
     using FFXIVAPP.Common.ViewModelBase;
@@ -67,15 +71,16 @@ namespace FFXIVAPP.Client
         /// </summary>
         private static void ScreenShot() {
             try {
-                /* TODO: Implement this, Screenshot
                 var date = DateTime.Now.ToString("yyyy_MM_dd_HH.mm.ss_");
                 var fileName = Path.Combine(AppViewModel.Instance.ScreenShotsPath, $"{date}.jpg");
-                byte[] screenShot = ScreenCapture.GetJpgImage(ShellView.View, 1, 100);
-                var fileStream = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite);
-                using (var stream = new BinaryWriter(fileStream)) {
-                    stream.Write(screenShot);
+                var x = ShellView.View.Position.X;
+                var y = ShellView.View.Position.Y;
+                using (var bitmap = new Bitmap(Convert.ToInt32(ShellView.View.Width), Convert.ToInt32(ShellView.View.Height)))
+                using (var g = Graphics.FromImage(bitmap))
+                {
+                    g.CopyFromScreen(x, y, 0, 0, bitmap.Size, CopyPixelOperation.SourceCopy);
+                    bitmap.Save(fileName, ImageFormat.Jpeg);                
                 }
-                */
             }
             catch (Exception ex) {
                 var title = AppViewModel.Instance.Locale["app_WarningMessage"];
