@@ -14,7 +14,6 @@ namespace FFXIVAPP.Client.Helpers
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using System.Threading;
     using Avalonia;
     using Avalonia.Controls;
     using Avalonia.Layout;
@@ -28,7 +27,8 @@ namespace FFXIVAPP.Client.Helpers
 
     using NLog;
 
-    internal static class TabItemHelper {
+    internal static class TabItemHelper
+    {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
@@ -36,19 +36,22 @@ namespace FFXIVAPP.Client.Helpers
         /// <param name="image"> </param>
         /// <param name="name"> </param>
         /// <returns> </returns>
-        public static StackPanel ImageHeader(Bitmap image, string name) {
+        public static StackPanel ImageHeader(Bitmap image, string name)
+        {
             var stackPanelFactory = new StackPanel { Orientation = Orientation.Horizontal };
-            var imageFactory = new Image { 
+            var imageFactory = new Image
+            {
                 Width = 24,
                 Height = 24,
-                [ToolTip.TipProperty] = name, 
-                Source = image 
+                [ToolTip.TipProperty] = name,
+                Source = image
             };
-            var labelFactory = new TextBlock {
+            var labelFactory = new TextBlock
+            {
                 Name = "TheLabel",
                 Text = name,
                 VerticalAlignment = VerticalAlignment.Center,
-                Margin = Thickness.Parse("5,0,0,0") 
+                Margin = Thickness.Parse("5,0,0,0")
             };
 
             /* TODO: Implement this, Binding EnableHelpLabels
@@ -62,23 +65,28 @@ namespace FFXIVAPP.Client.Helpers
             return stackPanelFactory;
         }
 
-        public static void LoadPluginTabItem(PluginInstance pluginInstance) {
-            try {
-                if (!pluginInstance.Loaded) {
+        public static void LoadPluginTabItem(PluginInstance pluginInstance)
+        {
+            try
+            {
+                if (!pluginInstance.Loaded)
+                {
                     return;
                 }
 
                 var pluginName = pluginInstance.Instance.FriendlyName;
-                if (SettingsViewModel.Instance.HomePluginList.Any(p => p.ToUpperInvariant().StartsWith(pluginName.ToUpperInvariant()))) {
+                if (SettingsViewModel.Instance.HomePluginList.Any(p => p.ToUpperInvariant().StartsWith(pluginName.ToUpperInvariant())))
+                {
                     pluginName = $"{pluginName}[{new Random().Next(1000, 9999)}]";
                 }
 
                 SettingsViewModel.Instance.HomePluginList.Add(pluginName);
-                TabItem tabItem = null;
-                var creater = new AutoResetEvent(false);
-                DispatcherHelper.Invoke(() => {
+
+                DispatcherHelper.Invoke(() =>
+                {
                     try
                     {
+                        TabItem tabItem = null;
                         tabItem = pluginInstance.Instance.CreateTab();
                         tabItem.Name = Regex.Replace(pluginInstance.Instance.Name, @"[^A-Za-z]", string.Empty);
                         var iconfile = Path.Combine(Path.GetDirectoryName(pluginInstance.AssemblyPath), pluginInstance.Instance.Icon);
@@ -87,21 +95,17 @@ namespace FFXIVAPP.Client.Helpers
                                 ? ImageUtilities.LoadImageFromStream(iconfile)
                                 : icon;
                         tabItem.Header = ImageHeader(icon, pluginInstance.Instance.FriendlyName);
+                        if (tabItem != null)
+                            AppViewModel.Instance.PluginTabItems.Add(tabItem);
                     }
-                    catch (Exception ex) {
+                    catch (Exception ex)
+                    {
                         Logging.Log(Logger, new LogItem(ex, true));
                     }
-                    finally
-                    {
-                        creater.Set();
-                    }
                 });
-
-                creater.WaitOne();
-                if (tabItem != null)
-                    AppViewModel.Instance.PluginTabItems.Add(tabItem);
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 Logging.Log(Logger, new LogItem(ex, true));
             }
         }
