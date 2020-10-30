@@ -51,7 +51,6 @@ namespace FFXIVAPP.Client.ViewModels
             this.UnInstallCommand = new DelegateCommand(UnInstall);
             this.AddOrUpdateSourceCommand = new DelegateCommand(AddOrUpdateSource);
             this.DeleteSourceCommand = new DelegateCommand(DeleteSource);
-            this.SourceSelectionCommand = new DelegateCommand(SourceSelection);
             this.AvailableDGDoubleClickCommand = new DelegateCommand(AvailableDGDoubleClick);
         }
 
@@ -94,8 +93,6 @@ namespace FFXIVAPP.Client.ViewModels
         public ICommand InstallCommand { get; private set; }
 
         public ICommand RefreshAvailableCommand { get; private set; }
-
-        public ICommand SourceSelectionCommand { get; private set; }
 
         public ICommand UnInstallCommand { get; private set; }
 
@@ -286,21 +283,6 @@ namespace FFXIVAPP.Client.ViewModels
         private static void RefreshAvailable() {
             Instance.AvailablePlugins.Clear();
             Initializer.LoadAvailablePlugins();
-        }
-
-        /// <summary>
-        /// </summary>
-        // TODO: AvailableSource, Move this logic to the view Updateview.xaml with an binding on TSource... Remove this if it works
-        private static void SourceSelection() {
-            if (UpdateView.View.PluginSourceDG.SelectedItems.Count != 1) {
-                return;
-            }
-
-            if (UpdateView.View.PluginSourceDG.SelectedIndex < 0) {
-                return;
-            }
-
-            UpdateView.View.TSource.Text = GetValueBySelectedItem(UpdateView.View.PluginSourceDG, "SourceURI");
         }
 
         /// <summary>

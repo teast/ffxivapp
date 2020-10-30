@@ -59,7 +59,6 @@ namespace FFXIVAPP.Client.ViewModels
             this.RefreshMemoryWorkersCommand = new DelegateCommand(RefreshMemoryWorkers);
             this.SetProcessCommand = new DelegateCommand(SetProcess);
             this.RefreshListCommand = new DelegateCommand(RefreshList);
-            this.ChangeThemeCommand = new DelegateCommand(ChangeTheme);
             this.DefaultSettingsCommand = new DelegateCommand(DefaultSettings);
             this.ChangeAudioModeCommand = new DelegateCommand(ChangeAudioMode);
             this.GetCICUIDCommand = new DelegateCommand(GetCICUID);
@@ -106,8 +105,6 @@ namespace FFXIVAPP.Client.ViewModels
         }
 
         public ICommand ChangeAudioModeCommand { get; private set; }
-
-        public ICommand ChangeThemeCommand { get; private set; }
 
         public ICommand ColorSelectionCommand { get; private set; }
 
@@ -158,16 +155,6 @@ namespace FFXIVAPP.Client.ViewModels
         /// </summary>
         public static void ChangeAudioMode() {
             SoundPlayerHelper.CacheSoundFiles();
-        }
-
-        /// <summary>
-        /// </summary>
-        private static void ChangeTheme() {
-            /* TODO: Implement this, Theme
-            List<MetroWindow> windows = (from object window in Application.Current.Windows
-                                         select window as MetroWindow).ToList();
-            ThemeHelper.ChangeTheme(Settings.Default.Theme, windows);
-            */
         }
 
         /// <summary>

@@ -156,9 +156,7 @@ namespace FFXIVAPP.Client
                     }
             });
 
-            /* TODO: Implement this, Theme
-            ThemeHelper.ChangeTheme(Settings.Default.Theme, null);
-            TODO: Implement this, NotifyIcon
+            /* TODO: Implement this, NotifyIcon
             AppViewModel.Instance.NotifyIcon.Text = "FFXIVAPP";
             AppViewModel.Instance.NotifyIcon.ContextMenu.MenuItems[0].Enabled = false;
             */
