@@ -31,6 +31,8 @@ namespace FFXIVAPP.Client {
                 {
                     DataContext = ShellViewModel.Instance,
                 };
+
+                AppBootstrapper.Init();
             }
 
             base.OnFrameworkInitializationCompleted();

@@ -8,12 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FFXIVAPP.Client {
-    using System;
+namespace FFXIVAPP.Client
+{
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Globalization;
-    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
     using FFXIVAPP.Client.Helpers;
     using FFXIVAPP.Client.Models;
@@ -26,10 +24,8 @@ namespace FFXIVAPP.Client {
 
     using Sharlayan.Models;
 
-    internal class AppBootstrapper : INotifyPropertyChanged {
+    internal class AppBootstrapper {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        private static Lazy<AppBootstrapper> _instance = new Lazy<AppBootstrapper>(() => new AppBootstrapper());
 
         /*main entry to app
          * used for:
@@ -37,7 +33,7 @@ namespace FFXIVAPP.Client {
          *  configuring collections
          *  setting up dependencies
          */
-        private AppBootstrapper() {
+        internal static void Init() {
             if (App.MArgs != null) {
                 foreach (var argument in App.MArgs) {
                     Logging.Log(Logger, $"ArgumentProvided : {argument}");
@@ -166,18 +162,6 @@ namespace FFXIVAPP.Client {
             AppViewModel.Instance.NotifyIcon.Text = "FFXIVAPP";
             AppViewModel.Instance.NotifyIcon.ContextMenu.MenuItems[0].Enabled = false;
             */
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
-
-        public static AppBootstrapper Instance {
-            get {
-                return _instance.Value;
-            }
-        }
-
-        private void RaisePropertyChanged([CallerMemberName,] string caller = "") {
-            this.PropertyChanged(this, new PropertyChangedEventArgs(caller));
         }
     }
 }

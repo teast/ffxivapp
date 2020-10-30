@@ -155,7 +155,7 @@ namespace FFXIVAPP.Client
         /// <param name="e"> </param>
         private static void SettingsPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            Logging.Log(Logger, $"PropertyChanged : {e.PropertyName}");
+            //Logging.Log(Logger, $"PropertyChanged : {e.PropertyName}");
             try
             {
                 switch (e.PropertyName)

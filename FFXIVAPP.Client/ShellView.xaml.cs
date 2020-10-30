@@ -125,14 +125,6 @@ namespace FFXIVAPP.Client
             AvaloniaXamlLoader.Load(this);
         }
 
-        protected override void OnInitialized()
-        {
-            base.OnInitialized();
-
-            // TODO: Kickstart bootstrapper...
-            System.Threading.Tasks.Task.Run(() => AppBootstrapper.Instance);
-        }
-
         /// <summary>
         /// </summary>
         /// <param name="update"></param>
