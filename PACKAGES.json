@@ -1,7 +1,7 @@
 [{
     "Name": "FFXIVAPP.Plugin.TeastParse",
     "Enabled": "True",
-    "SourceURI": "https://github.com/teast/ffxivapp-plugin-teastparse/raw/master/VERSION.json"
+    "SourceURI": "https://ffxivapp.nightflyers.org/teastparse.php"
 },
 
 
