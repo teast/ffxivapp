@@ -75,7 +75,8 @@
                               BorderBrush="{DynamicResource AccentColorBrush}"
                               BorderThickness="1"
                               Items="{Binding AvailablePlugins}"
-                              SelectionMode="Extended">
+                              SelectionMode="Extended"
+                              IsReadOnly="True">
                         <!-- TODO: Implement this, DataGrid InputBinding
                         <DataGrid.InputBindings>
                             <MouseBinding Command="{Binding AvailableDGDoubleClickCommand}"
@@ -164,6 +165,7 @@
                                   AutoGenerateColumns="False"
                                   BorderBrush="{DynamicResource AccentColorBrush}"
                                   BorderThickness="1"
+                                  IsReadOnly="True"
                                   Items="{Binding AvailableSources, Source={x:Static Properties:Settings.Default}}"
                                   SelectionMode="Single">
                             <DataGrid.Columns>

@@ -13,6 +13,7 @@ using System.Timers;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using FFXIVAPP.Client.ViewModels;
 using FFXIVAPP.Common.Helpers;
 
 namespace FFXIVAPP.Client.Views
@@ -54,6 +55,11 @@ namespace FFXIVAPP.Client.Views
             _spinner = new Timer(25);
             _spinner.Elapsed += (s, a) => {
                 DispatcherHelper.Invoke(() => rotate.Angle = rotate.Angle + 10);
+            };
+
+            AvailableDG.DoubleTapped += delegate {
+                if (UpdateViewModel.Instance.AvailableDGDoubleClickCommand?.CanExecute(null) ?? false)
+                    UpdateViewModel.Instance.AvailableDGDoubleClickCommand?.Execute(null);
             };
         }
 
