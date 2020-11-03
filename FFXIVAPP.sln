@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFXIVAPP.Client", "FFXIVAPP.Client\FFXIVAPP.Client.csproj", "{08D955FD-1905-46EE-9C12-8BDB7EF2B2F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFXIVAPP.Updater", "FFXIVAPP.Updater\FFXIVAPP.Updater.csproj", "{E16A0300-173C-492C-A0B7-B00E3ADA1274}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,17 @@ Global
 		{08D955FD-1905-46EE-9C12-8BDB7EF2B2F7}.Release|x64.Build.0 = Release|Any CPU
 		{08D955FD-1905-46EE-9C12-8BDB7EF2B2F7}.Release|x86.ActiveCfg = Release|Any CPU
 		{08D955FD-1905-46EE-9C12-8BDB7EF2B2F7}.Release|x86.Build.0 = Release|Any CPU
+		{E16A0300-173C-492C-A0B7-B00E3ADA1274}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E16A0300-173C-492C-A0B7-B00E3ADA1274}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E16A0300-173C-492C-A0B7-B00E3ADA1274}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E16A0300-173C-492C-A0B7-B00E3ADA1274}.Debug|x64.Build.0 = Debug|Any CPU
+		{E16A0300-173C-492C-A0B7-B00E3ADA1274}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E16A0300-173C-492C-A0B7-B00E3ADA1274}.Debug|x86.Build.0 = Debug|Any CPU
+		{E16A0300-173C-492C-A0B7-B00E3ADA1274}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E16A0300-173C-492C-A0B7-B00E3ADA1274}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E16A0300-173C-492C-A0B7-B00E3ADA1274}.Release|x64.ActiveCfg = Release|Any CPU
+		{E16A0300-173C-492C-A0B7-B00E3ADA1274}.Release|x64.Build.0 = Release|Any CPU
+		{E16A0300-173C-492C-A0B7-B00E3ADA1274}.Release|x86.ActiveCfg = Release|Any CPU
+		{E16A0300-173C-492C-A0B7-B00E3ADA1274}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -20,6 +20,7 @@ namespace FFXIVAPP.Client
     using System.Net.Cache;
     using System.Net.NetworkInformation;
     using System.Reflection;
+    using System.Runtime.InteropServices;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
@@ -97,8 +98,8 @@ namespace FFXIVAPP.Client
             Task.Run(delegate {
                 var current = Assembly.GetExecutingAssembly().GetName().Version.ToString();
                 AppViewModel.Instance.CurrentVersion = current;
-                var httpWebRequest = (HttpWebRequest) WebRequest.Create("https://api.github.com/repos/Icehunter/ffxivapp/releases");
-                httpWebRequest.UserAgent = "Icehunter-FFXIVAPP";
+                var httpWebRequest = (HttpWebRequest) WebRequest.Create("https://api.github.com/repos/teast/ffxivapp/releases");
+                httpWebRequest.UserAgent = "Teast-FFXIVAPP";
                 httpWebRequest.Headers.Add("Accept-Language", "en;q=0.8");
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
@@ -119,7 +120,9 @@ namespace FFXIVAPP.Client
                         }
                         else {
                             JArray releases = JArray.Parse(responseText);
-                            JToken release = releases.FirstOrDefault(r => r?["target_commitish"].ToString() == "master");
+                            // TODO: Probably good to update this so we fetch releases from master branch later on when this is stable
+                            //JToken release = releases.FirstOrDefault(r => r?["target_commitish"].ToString() == "master");
+                            JToken release = releases.FirstOrDefault();
                             var latest = release?["name"].ToString() ?? "Unknown";
                             latest = latest.Split(' ')[0];
                             AppViewModel.Instance.LatestVersion = latest;
@@ -128,7 +131,11 @@ namespace FFXIVAPP.Client
                                     AppViewModel.Instance.HasNewVersion = false;
                                     break;
                                 default:
-                                    AppViewModel.Instance.DownloadUri = string.Format("https://github.com/Icehunter/ffxivapp/releases/download/{0}/{0}.zip", latest);
+                                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                                        AppViewModel.Instance.DownloadUri = string.Format("https://github.com/teast/ffxivapp/releases/download/{0}/ffxivapp-win-x64.zip", latest);
+                                    else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                                        AppViewModel.Instance.DownloadUri = string.Format("https://github.com/teast/ffxivapp/releases/download/{0}/ffxivapp-linux-x64.zip", latest);
+
                                     AppViewModel.Instance.HasNewVersion = BuildUtilities.NeedsUpdate(latest, current, ref latestBuild, ref currentBuild);
                                     break;
                             }
@@ -141,7 +148,7 @@ namespace FFXIVAPP.Client
                                     DateTime currentBuildDateTime = new DateTime(2000, 1, 1).Add(new TimeSpan(TimeSpan.TicksPerDay * currentBuild.Build + TimeSpan.TicksPerSecond * 2 * currentBuild.Revision));
                                     TimeSpan timeSpan = latestBuildDateTime - currentBuildDateTime;
                                     if (timeSpan.TotalSeconds > 0) {
-                                        message.AppendLine(string.Format("Missing {0} days, {1} hours and {2} seconds of updates.{3}", timeSpan.Days, timeSpan.Hours, timeSpan.Seconds));
+                                        message.AppendLine(string.Format("Missing {0} days, {1} hours and {2} seconds of updates.", timeSpan.Days, timeSpan.Hours, timeSpan.Seconds));
                                     }
                                 }
                                 catch (Exception ex) {

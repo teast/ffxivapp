@@ -2,13 +2,11 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
-    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <AssemblyTitle>FFXIVAPP.Client</AssemblyTitle>
+    <AssemblyDescription>FFXIVAPP Client Host</AssemblyDescription>
+    <Copyright>Copyright © 2020 Niklas Jansson</Copyright>
+    <Product>FFXIVAPP.Client</Product>
+    <Company></Company>
     <Deterministic>false</Deterministic>
     <ApplicationIcon>FFXIVAPP.ico</ApplicationIcon>
   </PropertyGroup>

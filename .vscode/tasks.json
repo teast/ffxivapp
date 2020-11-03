@@ -2,8 +2,55 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "build updater",
+            "command": "dotnet",
+            "group": "build",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/FFXIVAPP.Updater/FFXIVAPP.Updater.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish updater",
+            "command": "dotnet",
+            "type": "process",
+            "linux":{
+                "args": [
+                    "publish",
+                    "${workspaceFolder}/FFXIVAPP.Updater/FFXIVAPP.Updater.csproj",
+                    "-r",
+                    "linux-x64",
+                    "/property:GenerateFullPaths=true",
+                    "/consoleloggerparameters:NoSummary",
+                    "--self-contained",
+                    "true",
+                    "/p:PublishSingleFile=true",
+                    "/p:PublishTrimmed=true"
+                ]
+            },
+            "windows": {
+                "args": [
+                    "publish",
+                    "${workspaceFolder}/FFXIVAPP.Updater/FFXIVAPP.Updater.csproj",
+                    "-r",
+                    "win-x64",
+                    "/property:GenerateFullPaths=true",
+                    "/consoleloggerparameters:NoSummary",
+                    "--self-contained",
+                    "true",
+                    "/p:PublishSingleFile=true",
+                    "/p:PublishTrimmed=true"
+                ]
+            },
+            "problemMatcher": "$msCompile"
+        },        {
             "label": "build",
             "command": "dotnet",
+            "group": "build",
             "type": "process",
             "args": [
                 "build",

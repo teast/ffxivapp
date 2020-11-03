@@ -8,68 +8,53 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FFXIVAPP.Updater {
+namespace FFXIVAPP.Updater
+{
     using System;
-    using System.CodeDom.Compiler;
-    using System.Diagnostics;
-    using System.Windows;
-    using System.Windows.Threading;
-
+    using Avalonia;
+    using FFXIVAPP.Common;
+    using FFXIVAPP.Common.Models;
+    using FFXIVAPP.Common.Utilities;
+    using FFXIVAPP.Common.WPF;
     using NLog;
 
     public partial class App {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private App() {
-            this.Startup += this.ApplicationStartup;
-            this.StartupUri = new Uri("MainWindow.xaml", UriKind.Relative);
-            var resourceLocater = new Uri("/FFXIVAPP.Updater;component/App.xaml", UriKind.Relative);
-            LoadComponent(this, resourceLocater);
-            this.Dispatcher.UnhandledException += OnDispatcherUnhandledException;
-            this.Dispatcher.UnhandledExceptionFilter += this.DispatcherOnUnhandledExceptionFilter;
-        }
+        public static string DownloadUri;
+        public static string Version;
 
         /// <summary>
         ///     Application Entry Point.
         /// </summary>
         [STAThread]
-        [DebuggerNonUserCode]
-        [GeneratedCode("PresentationBuildTasks", "4.0.0.0")]
         [LoaderOptimization(LoaderOptimization.MultiDomainHost)]
-        public static void Main() {
-            var app = new App();
-            app.Run();
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="sender"> </param>
-        /// <param name="e"> </param>
-        private static void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e) {
-            e.Handled = true;
-            MessageBox.Show(e.Exception.Message);
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="sender"> </param>
-        /// <param name="startupEventArgs"> </param>
-        private void ApplicationStartup(object sender, StartupEventArgs startupEventArgs) {
-            if (startupEventArgs.Args.Length <= 0) {
-                return;
+        public static int Main(string[] args) {
+            try
+            {
+                if (args?.Length != 2)
+                    return -1;
+                DownloadUri = args[0];
+                Version = args[1];
+                Constants.EnableNLog = true;
+                AppBuilder.Configure<App>()
+                                .UsePlatformDetect()
+                                .LogToDebug()
+                                .StartWithClassicDesktopLifetime(args);
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Logging.Log(Logger, new LogItem(ex, true));
+                MessageBox.Show(ex.Message);
             }
 
-            this.Properties["DownloadUri"] = startupEventArgs.Args[0];
-            this.Properties["Version"] = startupEventArgs.Args[1];
+            return -2;
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DispatcherOnUnhandledExceptionFilter(object sender, DispatcherUnhandledExceptionFilterEventArgs e) {
-            e.RequestCatch = true;
-            MessageBox.Show(e.Exception.Message);
+        public static void PrintDebug(string line)
+        {
+            //Console.WriteLine(line);
         }
     }
 }

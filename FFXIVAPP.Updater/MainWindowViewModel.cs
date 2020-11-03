@@ -11,19 +11,14 @@
 namespace FFXIVAPP.Updater {
     using System;
     using System.ComponentModel;
-    using System.ComponentModel.Composition;
     using System.Runtime.CompilerServices;
 
-    [Export(typeof(MainWindowViewModel))]
     internal sealed class MainWindowViewModel : INotifyPropertyChanged {
         private static Lazy<MainWindowViewModel> _instance = new Lazy<MainWindowViewModel>(() => new MainWindowViewModel());
 
-        private string _downloadUri;
-
-        private string _version;
-
+        private double _extractProgress;
+        private double _downloadProgress;
         private string _zipFileName;
-
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
         public static MainWindowViewModel Instance {
@@ -32,36 +27,42 @@ namespace FFXIVAPP.Updater {
             }
         }
 
-        public string DownloadURI {
-            get {
-                return this._downloadUri;
+        public string ZipFileName
+        {
+            get
+            {
+                return _zipFileName;
             }
-
-            set {
-                this._downloadUri = value;
-                this.RaisePropertyChanged();
-            }
-        }
-
-        public string Version {
-            get {
-                return this._version;
-            }
-
-            set {
-                this._version = value;
-                this.RaisePropertyChanged();
+            set
+            {
+                _zipFileName = value;
+                RaisePropertyChanged();
             }
         }
 
-        public string ZipFileName {
-            get {
-                return this._zipFileName;
+        public double DownloadProgress
+        {
+            get
+            {
+                return _downloadProgress;
             }
+            set
+            {
+                _downloadProgress = value;
+                RaisePropertyChanged();
+            }
+        }
 
-            set {
-                this._zipFileName = value;
-                this.RaisePropertyChanged();
+        public double ExtractProgress
+        {
+            get
+            {
+                return _extractProgress;
+            }
+            set
+            {
+                _extractProgress = value;
+                RaisePropertyChanged();
             }
         }
 
