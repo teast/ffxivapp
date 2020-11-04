@@ -18,7 +18,7 @@
             "label": "publish updater",
             "command": "dotnet",
             "type": "process",
-            "linux":{
+            "linux": {
                 "args": [
                     "publish",
                     "${workspaceFolder}/FFXIVAPP.Updater/FFXIVAPP.Updater.csproj",
@@ -29,7 +29,9 @@
                     "--self-contained",
                     "true",
                     "/p:PublishSingleFile=true",
-                    "/p:PublishTrimmed=true"
+                    "/p:PublishTrimmed=true",
+                    "-o",
+                    "${workspaceFolder}/FFXIVAPP.Updater/bin/Publish"
                 ]
             },
             "windows": {
@@ -43,11 +45,14 @@
                     "--self-contained",
                     "true",
                     "/p:PublishSingleFile=true",
-                    "/p:PublishTrimmed=true"
+                    "/p:PublishTrimmed=true",
+                    "-o",
+                    "${workspaceFolder}/FFXIVAPP.Updater/bin/Publish"
                 ]
             },
             "problemMatcher": "$msCompile"
-        },        {
+        },
+        {
             "label": "build",
             "command": "dotnet",
             "group": "build",
@@ -84,6 +89,31 @@
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "copy updater",
+            "type": "shell",
+            "dependsOn":[ "publish updater"],
+            "linux": {
+                "command": "cp"
+            },
+            "windows": {
+                "command": "copy"
+            },
+            "args": [
+                "${workspaceFolder}/FFXIVAPP.Updater/bin/Publish/*",
+                "${workspaceFolder}/FFXIVAPP.Client/bin/Debug/netcoreapp3.0/"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "build client with updater",
+            "dependsOn": [
+                "build",
+                "copy updater",
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": []
         }
-    ]
+   ]
 }

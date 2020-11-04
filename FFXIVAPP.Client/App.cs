@@ -69,6 +69,11 @@ namespace FFXIVAPP.Client
         }
 
         /// <summary>
+        /// Get root path for this program
+        /// </summary>
+        internal static string RootPath { get; private set; }
+
+        /// <summary>
         ///     Application Entry Point.
         /// </summary>
         [STAThread]
@@ -83,6 +88,10 @@ namespace FFXIVAPP.Client
 
             try
             {
+                // TODO: If we move to warp-packer we need to come up with a better solution than this
+                //       because warp-packer will unpack the program into an temporary folder and execute it from there
+                RootPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+
                 AppBuilder.Configure<App>()
                                 .UsePlatformDetect()
                                 .LogToDebug()

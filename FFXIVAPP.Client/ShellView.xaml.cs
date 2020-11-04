@@ -16,6 +16,7 @@ namespace FFXIVAPP.Client
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
+    using System.Runtime.InteropServices;
     using System.Timers;
     using Avalonia;
     using Avalonia.Controls;
@@ -147,23 +148,33 @@ namespace FFXIVAPP.Client
             // TODO: Implement this, NotifyIcon
             //AppViewModel.Instance.NotifyIcon.Visible = false;
             if (update) {
+                var updaterFile = "FFXIVAPP.Updater";
+                var updaterBak = "FFXIVAPP.Updater.Backup";
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    updaterFile = "FFXIVAPP.Updater.exe";
+                    updaterBak = "FFXIVAPP.Updater.Backup.exe";
+                }
+
                 try {
                     Process[] updaters = Process.GetProcessesByName("FFXIVAPP.Updater");
                     foreach (Process updater in updaters) {
                         updater.Kill();
                     }
-
-                    if (File.Exists("FFXIVAPP.Updater.exe")) {
-                        File.Delete("FFXIVAPP.Updater.Backup.exe");
+                        
+                    if (File.Exists(Path.Combine(App.RootPath, updaterBak))) {
+                        File.Delete(Path.Combine(App.RootPath, updaterBak));
                     }
 
-                    File.Move("FFXIVAPP.Updater.exe", "FFXIVAPP.Updater.Backup.exe");
+                    File.Move(Path.Combine(App.RootPath, updaterFile), Path.Combine(App.RootPath, updaterBak));
                 }
                 catch (Exception ex) {
                     Logging.Log(Logger, new LogItem(ex, true));
                 }
 
-                Process.Start("FFXIVAPP.Updater.Backup.exe", $"{AppViewModel.Instance.DownloadUri} {AppViewModel.Instance.LatestVersion}");
+                var psi = new ProcessStartInfo(Path.Combine(App.RootPath, updaterBak), $"{AppViewModel.Instance.DownloadUri} {AppViewModel.Instance.LatestVersion}");
+                psi.WorkingDirectory = App.RootPath;
+                Process.Start(psi);
             }
 
             Environment.Exit(0);

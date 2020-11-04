@@ -1,5 +1,4 @@
-
-# [System.Environment]::SetEnvironmentVariable('FOO', 'bar',[System.EnvironmentVariableTarget]::Machine)
+$ErrorActionPreference = "Stop"
 
 if ( -not (Test-Path env:BuildVersion)) {
   $env:BuildVersion = "1.0.0.0"
@@ -37,9 +36,15 @@ If ($IsLinux) {
 
   if ( -not (Test-Path -LiteralPath "$scriptPath/$warp")) {
     curl -Lo $scriptPath/$warp https://github.com/dgiagio/warp/releases/download/v0.3.0/linux-x64.warp-packer
+    if ($LastExitCode -ne 0) {
+      exit 1
+    }
   }
 
   chmod +x "$scriptPath/$warp"
+  if ($LastExitCode -ne 0) {
+    exit 1
+  }
 }
 If ($IsWindows) {
   $warp = "warp-packer.exe";
@@ -48,6 +53,9 @@ If ($IsWindows) {
 
   if ( -not (Test-Path -LiteralPath "$scriptPath/$warp")) {
     curl -Lo $scriptPath/$warp https://github.com/dgiagio/warp/releases/download/v0.3.0/windows-x64.warp-packer.exe
+    if ($LastExitCode -ne 0) {
+      exit 1
+    }
   }
 }
 If ($IsMacOS) {
@@ -57,15 +65,31 @@ If ($IsMacOS) {
 
   if ( -not (Test-Path -LiteralPath "$scriptPath/$warp")) {
     curl -Lo $scriptPath/$warp https://github.com/dgiagio/warp/releases/download/v0.3.0/macos-x64.warp-packer
+    if ($LastExitCode -ne 0) {
+      exit 1
+    }
   }
 
   chmod +x "$scriptPath/$warp"
+  if ($LastExitCode -ne 0) {
+    exit 1
+  }
 }
 
 # Build FFXIVAPP.Updater
 dotnet publish FFXIVAPP.Updater/FFXIVAPP.Updater.csproj -r $runtime -c Release --self-contained true /p:PublishSingleFile=true /p:PublishTrimmed=true /p:Version=$env:BuildVersion /p:FileVersion=$env:BuildVersion /p:AssemblyVersion=$env:BuildVersion -o $updaterPath
+if ($LastExitCode -ne 0) {
+  exit 1
+}
+
 $warpCommand = "$scriptPath/$warp --arch $runtime --input_dir $updaterPath --exec $updateExec --output $binPath/$updateExec"
 Invoke-Expression $warpCommand
+if ($LastExitCode -ne 0) {
+  exit 1
+}
 
 # Build FFXIVAPP.Client
 dotnet publish FFXIVAPP.Client/FFXIVAPP.Client.csproj -r $runtime -c Release --self-contained true /p:Version=$env:BuildVersion /p:FileVersion=$env:BuildVersion /p:AssemblyVersion=$env:BuildVersion -o $binPath
+if ($LastExitCode -ne 0) {
+  exit 1
+}

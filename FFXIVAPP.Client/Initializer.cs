@@ -465,7 +465,7 @@ namespace FFXIVAPP.Client
         /// <summary>
         /// </summary>
         public static void LoadPlugins() {
-            var pluginsDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Plugins");
+            var pluginsDirectory = Path.Combine(App.RootPath, "Plugins");
             App.Plugins.LoadPlugins(pluginsDirectory);
             foreach (PluginInstance pluginInstance in App.Plugins.Loaded) {
                 TabItemHelper.LoadPluginTabItem(pluginInstance);

@@ -209,7 +209,7 @@ namespace FFXIVAPP.Client.ViewModels
                         using (var client = new WebClient {
                             CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore),
                         }) {
-                            var saveLocation = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Plugins", plugin.Name, pluginFile.Location, pluginFile.Name);
+                            var saveLocation = Path.Combine(App.RootPath, "Plugins", plugin.Name, pluginFile.Location, pluginFile.Name);
                             Directory.CreateDirectory(Path.GetDirectoryName(saveLocation));
 
                             if (UpdateUtilities.VerifyFile(saveLocation, pluginFile.Checksum)) {
@@ -313,7 +313,7 @@ namespace FFXIVAPP.Client.ViewModels
                     }
 
                     try {
-                        var saveLocation = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Plugins", plugin.Name);
+                        var saveLocation = Path.Combine(App.RootPath, "Plugins", plugin.Name);
                         Directory.Delete(saveLocation, true);
                     }
                     catch (Exception ex) {
