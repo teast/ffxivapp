@@ -4,6 +4,8 @@ signatures-x64.json
 statuses.json
 structures-x64.json
 zones.json
+build/
+scripts/warp-packer*
 
 .idea/
 ## Ignore Visual Studio temporary files, build results, and
