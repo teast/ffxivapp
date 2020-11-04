@@ -36,7 +36,7 @@ If ($IsLinux) {
   $updateExec = "FFXIVAPP.Updater"
 
   if ( -not (Test-Path -LiteralPath "$scriptPath/$warp")) {
-    curl -Lo $warp https://github.com/dgiagio/warp/releases/download/v0.3.0/linux-x64.warp-packer
+    curl -Lo $scriptPath/$warp https://github.com/dgiagio/warp/releases/download/v0.3.0/linux-x64.warp-packer
   }
 
   chmod +x "$scriptPath/$warp"
@@ -47,7 +47,7 @@ If ($IsWindows) {
   $updateExec = "FFXIVAPP.Updater.exe"
 
   if ( -not (Test-Path -LiteralPath "$scriptPath/$warp")) {
-    curl -Lo $warp https://github.com/dgiagio/warp/releases/download/v0.3.0/windows-x64.warp-packer.exe
+    curl -Lo $scriptPath/$warp https://github.com/dgiagio/warp/releases/download/v0.3.0/windows-x64.warp-packer.exe
   }
 }
 If ($IsMacOS) {
@@ -56,7 +56,7 @@ If ($IsMacOS) {
   $updateExec = "FFXIVAPP.Updater"
 
   if ( -not (Test-Path -LiteralPath "$scriptPath/$warp")) {
-    curl -Lo $warp https://github.com/dgiagio/warp/releases/download/v0.3.0/macos-x64.warp-packer
+    curl -Lo $scriptPath/$warp https://github.com/dgiagio/warp/releases/download/v0.3.0/macos-x64.warp-packer
   }
 
   chmod +x "$scriptPath/$warp"
