@@ -17,6 +17,7 @@ $binPath = "$buildPath/ffxivapp"
 $updaterPath = "$buildPath/updater"
 $updateExec = "FFXIVAPP.Updater"
 $runtime = "linux-x64"
+$warpRuntime = "linux-x64"
 
 $warp = "warp-packer";
 If ( -not (Test-Path -LiteralPath $buildPath)) {
@@ -32,6 +33,7 @@ Else {
 If ($IsLinux) {
   $warp = "warp-packer";
   $runtime = "linux-x64"
+  $warpRuntime = "linux-x64"
   $updateExec = "FFXIVAPP.Updater"
 
   if ( -not (Test-Path -LiteralPath "$scriptPath/$warp")) {
@@ -49,6 +51,7 @@ If ($IsLinux) {
 If ($IsWindows) {
   $warp = "warp-packer.exe";
   $runtime = "win-x64"
+  $warpRuntime = "windows-x64"
   $updateExec = "FFXIVAPP.Updater.exe"
 
   if ( -not (Test-Path -LiteralPath "$scriptPath/$warp")) {
@@ -61,6 +64,7 @@ If ($IsWindows) {
 If ($IsMacOS) {
   $warp = "warp-packer";
   $runtime = "osx-x64"
+  $warpRuntime = "macos-x64"
   $updateExec = "FFXIVAPP.Updater"
 
   if ( -not (Test-Path -LiteralPath "$scriptPath/$warp")) {
@@ -82,7 +86,7 @@ if ($LastExitCode -ne 0) {
   exit 1
 }
 
-$warpCommand = "$scriptPath/$warp --arch $runtime --input_dir $updaterPath --exec $updateExec --output $binPath/$updateExec"
+$warpCommand = "$scriptPath/$warp --arch $warpRuntime --input_dir $updaterPath --exec $updateExec --output $binPath/$updateExec"
 Invoke-Expression $warpCommand
 if ($LastExitCode -ne 0) {
   exit 1
