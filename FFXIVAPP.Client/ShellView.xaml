@@ -6,6 +6,7 @@
                            xmlns:Utilities="clr-namespace:FFXIVAPP.Common.Utilities;assembly=FFXIVAPP.Common"
                            xmlns:ViewModels="clr-namespace:FFXIVAPP.Client.ViewModels"
                            xmlns:Views="clr-namespace:FFXIVAPP.Client.Views"
+                           xmlns:custom="clr-namespace:FFXIVAPP.Client.Controls"
                            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                            xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -199,13 +200,7 @@ Top="{Binding Top, Mode=TwoWay, Source={x:Static Properties:Settings.Default}}"
             <TabItem x:Name="UpdateTI">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
-                    <!-- TODO: Implement this, MetroControls:Badged
-                            What is badged?
-                            It did cover the border below this comments
-                        <MetroControls:Badged
-                            Badge="{Binding Source={x:Static ViewModels:UpdateViewModel.Instance}, Path=AvailablePluginUpdates}">
-                        </MetroControls:Badged>
-                        -->
+                        <custom:Badge BadgeText="{Binding Source={x:Static ViewModels:UpdateViewModel.Instance}, Path=AvailablePluginUpdates}">
                             <Border Padding="4"
                                     Background="White"
                                     BorderBrush="#FF000000"
@@ -217,6 +212,7 @@ Top="{Binding Top, Mode=TwoWay, Source={x:Static Properties:Settings.Default}}"
                                     </Image.RenderTransform>
                                 </Image>
                             </Border>
+                        </custom:Badge>
                         <TextBlock Padding="5"
                                     Text="{Binding Locale[app_UpdateToolTip], Source={x:Static Client:AppViewModel.Instance}}"
                                     IsVisible="{Binding EnableHelpLabels, Source={x:Static Properties:Settings.Default}}" />

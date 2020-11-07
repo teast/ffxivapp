@@ -1,0 +1,22 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:custom="clr-namespace:FFXIVAPP.Client.Controls" mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" x:Class="FFXIVAPP.Client.Controls.Badge"
+  ClipToBounds="False">
+  <UserControl.Styles>
+    <Style Selector="custom|Badge">
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Grid>
+            <ContentControl Grid.Row="1" Content="{TemplateBinding Content}" Margin="{TemplateBinding Margin}" />
+            <custom:SameSizeBorder x:Name="BadgeBorder" Padding="1" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="15"
+              Margin="0,-5,-5,0">
+              <TextBlock Text="{TemplateBinding BadgeText}" Foreground="{TemplateBinding Foreground}" FontWeight="{TemplateBinding FontWeight}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </custom:SameSizeBorder>
+          </Grid>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+  </UserControl.Styles>
+</UserControl>

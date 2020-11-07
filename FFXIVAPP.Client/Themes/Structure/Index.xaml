@@ -9,6 +9,7 @@
     <StyleInclude Source="avares://FFXIVAPP.Client/Themes/Structure/Topbar.xaml"/>
     <StyleInclude Source="avares://FFXIVAPP.Client/Themes/Structure/TabControl.xaml"/>
     <StyleInclude Source="avares://FFXIVAPP.Client/Themes/Structure/MainTab.xaml"/>
+    <StyleInclude Source="avares://FFXIVAPP.Client/Themes/Structure/Badge.xaml"/>
 
     <Style Selector="Border.notice">
         <Setter Property="Margin" Value="5" />
