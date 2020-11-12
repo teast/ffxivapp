@@ -155,6 +155,8 @@ namespace FFXIVAPP.Client
             using (XmlReader xmlReader = XmlReader.Create(stringReader))
             {
                 LogManager.Configuration = new XmlLoggingConfiguration(xmlReader, null);
+                if (LogManager.Configuration.Variables.ContainsKey("configFolder"))
+                    LogManager.Configuration.Variables["configFolder"] = FFXIVAPP.Common.Constants.LogsPath;
             }
         }
 
